@@ -4,7 +4,7 @@ teaching: 45
 exercises: 15
 ---
 
-# Anatomy of a Large language model
+# Anatomy of a Large Language Model
 
 A language model does not read text as words and sentences. Text must first be
 converted into numerical representations. Transformer layers then update
