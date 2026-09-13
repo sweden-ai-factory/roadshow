@@ -10,10 +10,15 @@
 ```{toctree}
 :caption: The lesson
 :maxdepth: 1
-
 llm-anatomy
-choosing-an-adaption-strategy
+choosing-an-adaptation-strategy
 fine-tuning
+```
+
+```{toctree}
+:caption: Optional material
+:maxdepth: 1
+quantisation
 ```
 
 ```{toctree}
