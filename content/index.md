@@ -1,26 +1,19 @@
-# LESSON NAME
-
-Intro
+# Adapting large language models
 
 :::{prereq}
 
-- FIXME
-- ...
-- ...
+- Basic familiarity with Python
+- Some familiarity with linear algebra
+- If you have used a LLM-based chat application it'd be beneficial
   :::
-
-```{csv-table}
-:delim: ;
-:widths: auto
-
-20 min ; {doc}`filename`
-```
 
 ```{toctree}
 :caption: The lesson
 :maxdepth: 1
 
-episode.md
+llm-anatomy
+choosing-an-adaption-strategy
+fine-tuning
 ```
 
 ```{toctree}
@@ -31,27 +24,107 @@ quick-reference
 guide
 ```
 
-## Learning outcomes
+Large language models can be adapted to a task in several ways. We can change
+the instructions given to the model, provide external information at inference
+time, or continue training the model on examples of the desired behaviour.
 
-FIXME
+These approaches form a progression:
 
-This material is for ...
+```text
+Prompt engineering -> Retrieval-augmented generation -> Fine-tuning
+```
 
-By the end of this module, learners should:
+Moving from left to right gives us additional ways to influence the system. It
+also introduces more infrastructure, more data preparation, more evaluation
+work, and more opportunities for failure.
 
-- ...
-- ...
+The central principle of this lesson is:
+
+:::{admonition} Start with the simplest intervention
+:class: important
+
+Use the least complex approach that can be shown, through evaluation, to meet
+the requirements of the application.
+:::
+
+Prompt engineering is therefore not merely a preliminary step before
+fine-tuning. For many applications, it is the appropriate final solution.
+Retrieval-augmented generation is useful when the model needs access to
+external or changing information. Fine-tuning becomes useful when the
+remaining problem is a persistent pattern of behaviour that instructions and
+retrieved evidence do not solve adequately.
+
+```{figure} img/adaptation-ladder.png
+:alt: Prompt engineering, retrieval-augmented generation, and fine-tuning
+      arranged along a progression of increasing complexity and computational
+      cost.
+:width: 95%
+:class: img-responsive
+
+Prompt engineering changes the instructions. RAG adds external evidence.
+Fine-tuning changes model parameters. Original figure created by VSC [here](https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers/-/tree/main/presentations?ref_type=heads).
+```
+
+## Who is the lesson for?
+
+The lesson is intended for researchers, research software engineers, and
+technical staff who want to understand how large language models can be
+adapted to specialist tasks.
+
+The main focus is not on any particular model or software library (our example
+will be, though). Instead, the lesson develops a conceptual framework that can
+be applied when planning an LLM-based application or a fine-tuning experiment.
+
+## Learning objectives
+
+By the end of the lesson, learners should be able to:
+
+- explain how text becomes a sequence of contextual token representations;
+- describe the roles of tokenization, embeddings, attention, and feed-forward
+  layers;
+- distinguish a problem with instructions from a problem with evidence;
+- choose between prompting, RAG, and fine-tuning for a concrete use case;
+- explain why fine-tuning is not a reliable substitute for document retrieval;
+- describe the difference between full fine-tuning and parameter-efficient
+  fine-tuning;
+- explain the central idea behind low-rank adaptation;
+- design a baseline and evaluation before introducing additional complexity.
+
+## Lesson schedule
+
+A possible schedule for a three-hour lesson is:
+
+```text
+Introduction                              10 minutes
+How an LLM processes text                 20 minutes
+Break                                     10 minutes
+Choosing an adaptation strategy           40 minutes
+Fine-tuning large language models         40 minutes
+Discussion and conclusions                15 minutes
+```
+
+The episodes can also be taught separately. The adaptation-strategy episode
+does not require a detailed mathematical understanding of attention, although
+the anatomy episode provides useful context.
+
+## Software and infrastructure
+
+The conceptual parts of the lesson do not require a GPU. Exercises can be
+completed through discussion or using an existing model interface.
+
+A later hands-on fine-tuning lesson may use the Hugging Face ecosystem,
+including Transformers, Datasets, TRL, PEFT, and Accelerate. Those
+implementation details are deliberately kept separate from the conceptual
+material in this lesson.
+
+Instructors should also resist treating fine-tuning as the natural conclusion
+of the lesson. The progression from prompt engineering to RAG to fine-tuning
+is a decision process, not a maturity model. The simpler system is preferable
+when it meets the requirements.
 
 ## See also
 
-:::{admonition} Credit
-:class: warning
-
-FIXME
-
-Don't forget to check out additional course materials from ...
-
-:::
+These lessons were inspired from the excellent material developed by the Vienna scientific cluster (VSC) [here](https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers). Moreover, the Hugging Face people published a guidebook of sorts based on their experience training SmolLM, which can be found [here](https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook#beyond-base-modelspost-training-in-2025).
 
 ::::{admonition} License
 :class: attention
