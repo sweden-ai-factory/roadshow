@@ -29,8 +29,15 @@ quick-reference
 guide
 ```
 
-Large language models can be adapted to a task in several ways. We can change
-the instructions given to the model, provide external information at inference
+Large language models (LLMs) are now ubiquitous in many applications and a
+variety of both open- and closed-weight are available for many disparate tasks.
+However, it can be the case that an off-the-shelf model does not perform well
+in a specific task, or that we would like a smaller model focused on some
+specific use cases and avoid expensive, large general-purpose models. In these
+cases, we need to find a way to "tweak" the behaviour of a model to fit the
+requirements.
+A LLM can be adapted to a task in several ways: we can change the
+instructions given to the model, provide external information at inference
 time, or continue training the model on examples of the desired behaviour.
 
 These approaches form a progression:
@@ -41,7 +48,7 @@ Prompt engineering -> Retrieval-augmented generation -> Fine-tuning
 
 Moving from left to right gives us additional ways to influence the system. It
 also introduces more infrastructure, more data preparation, more evaluation
-work, and more opportunities for failure.
+work, and more chances for failure.
 
 The central principle of this lesson is:
 
@@ -59,16 +66,13 @@ external or changing information. Fine-tuning becomes useful when the
 remaining problem is a persistent pattern of behaviour that instructions and
 retrieved evidence do not solve adequately.
 
-```{figure} img/adaptation-ladder.png
-:alt: Prompt engineering, retrieval-augmented generation, and fine-tuning
-      arranged along a progression of increasing complexity and computational
-      cost.
+:::{figure} img/adaptation-ladder.png
 :width: 95%
-:class: img-responsive
+:alternative: Prompt engineering, retrieval-augmented generation, and fine-tuning arranged along a progression of increasing complexity and computational cost.
 
 Prompt engineering changes the instructions. RAG adds external evidence.
 Fine-tuning changes model parameters. Original figure created by VSC [here](https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers/-/tree/main/presentations?ref_type=heads).
-```
+:::
 
 ## Who is the lesson for?
 
@@ -85,7 +89,7 @@ be applied when planning an LLM-based application or a fine-tuning experiment.
 By the end of the lesson, learners should be able to:
 
 - explain how text becomes a sequence of contextual token representations;
-- describe the roles of tokenization, embeddings, attention, and feed-forward
+- describe the roles of tokenisation, embeddings, attention, and feed-forward
   layers;
 - distinguish a problem with instructions from a problem with evidence;
 - choose between prompting, RAG, and fine-tuning for a concrete use case;
@@ -121,11 +125,6 @@ A later hands-on fine-tuning lesson may use the Hugging Face ecosystem,
 including Transformers, Datasets, TRL, PEFT, and Accelerate. Those
 implementation details are deliberately kept separate from the conceptual
 material in this lesson.
-
-Instructors should also resist treating fine-tuning as the natural conclusion
-of the lesson. The progression from prompt engineering to RAG to fine-tuning
-is a decision process, not a maturity model. The simpler system is preferable
-when it meets the requirements.
 
 ## See also
 
