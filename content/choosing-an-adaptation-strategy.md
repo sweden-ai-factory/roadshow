@@ -6,9 +6,10 @@ exercises: 20
 
 # Choosing an adaptation strategy - aka when NOT to fine-tune
 
-When an LLM application performs poorly, fine-tuning is rarely the only
-possible response. The model may need clearer instructions, better context,
-access to external information, or a more suitable evaluation procedure.
+When an LLM application performs poorly, fine-tuning is rarely the first or
+only possible response. The model may need clearer instructions, better
+context, access to external information, or a more suitable evaluation
+procedure.
 
 Prompt engineering, retrieval-augmented generation, and fine-tuning address
 different sources of failure:
@@ -54,15 +55,12 @@ By the end of this episode, learners should be able to:
 
 :::
 
-## Three ways to influence a model
+## How can we influence a model?
 
 The progression from prompting to RAG to fine-tuning represents increasing
 system complexity.
 
-```{figure} figures/adaptation-ladder.png
-:alt: Prompt engineering, retrieval-augmented generation, and fine-tuning
-      arranged along a progression of increasing complexity and computational
-      cost.
+```{figure} img/adaptation-ladder.png
 :width: 95%
 :class: img-responsive
 
@@ -125,8 +123,10 @@ the supplied text".
 
 The second prompt reduces ambiguity. It defines the audience, structure,
 length, and handling of missing information.
+Breaking a task into different steps or giving examples of good and bad
+behaviour in the prompt can also be very useful in many cases.
 
-### Direction, format, and examples
+<!-- ### Direction, format, and examples
 
 A useful prompt normally establishes what the model is supposed to do before
 it attempts to control tone or style.
@@ -174,6 +174,7 @@ source text
 The steps may appear in a single structured prompt or in separate model calls.
 Separate calls make intermediate results easier to inspect, although they also
 increase latency and introduce additional failure points.
+-->
 
 ### When prompting is enough
 
@@ -186,11 +187,8 @@ a short document, producing a specified format, explaining supplied material,
 or generating a first draft that will be reviewed by a person.
 
 If a model produces good content under the wrong headings, the first response
-should be to specify the headings. Training a model to solve a problem that can
+should be to specify the headings: training a model to solve a problem that can
 be expressed in two lines of instructions is difficult to justify.
-
-:::{admonition} Do not confuse variation with incapability
-:class: note
 
 A generative model may produce different wording across repeated calls. If the
 application requires a rigid structure, first try explicit output constraints,
@@ -198,7 +196,6 @@ examples, schema validation, and deterministic or low-temperature decoding.
 
 Fine-tuning may improve consistency, but it should not be the first mechanism
 used to impose a simple format.
-:::
 
 ## Retrieval-augmented generation
 
@@ -254,6 +251,7 @@ This prompt does not by itself create a reliable RAG system. The documents
 must be indexed, the query must retrieve useful passages, and the selected
 context must preserve the information needed to answer the question.
 
+<!--
 ### Retrieval and generation are separate problems
 
 RAG systems can fail before the model begins to generate.
@@ -270,6 +268,7 @@ or produce a claim that is not supported by the retrieved material.
 
 These failures require different remedies. Fine-tuning the generator will not
 repair a missing document or a faulty metadata filter.
+-->
 
 ### When RAG is worth introducing
 
@@ -282,8 +281,8 @@ component. If the task is to convert a known input into a fixed schema, adding
 a vector database may introduce infrastructure without addressing the actual
 failure.
 
-:::{admonition} RAG does not eliminate hallucinations
-:class: caution
+:::{admonition} RAG does not eliminate hallucinations (but can help greatly!)
+:class: danger
 
 Retrieval can ground the response in external evidence, but the model can
 still misread, ignore, or go beyond that evidence.
@@ -295,125 +294,46 @@ tracking, and an evaluation that checks whether claims are supported.
 ## Fine-tuning
 
 Fine-tuning continues training a pretrained model on examples chosen for a
-particular objective. It changes some or all of the model parameters.
+particular objective. It changes some or all of the model parameters (or,
+sometimes, introduce a few new ones altogether).
 
-This makes fine-tuning fundamentally different from prompting and retrieval.
-A prompt or retrieved document can be replaced immediately. A parameter
-update is produced through a training process and is less directly
-inspectable.
+This makes fine-tuning fundamentally different from prompting and retrieval:
+a prompt or retrieved document can be replaced immediately, while a parameter
+update is produced through a training process and is less directly inspectable.
 
-Fine-tuning is most useful when the remaining problem is a repeated,
-measurable pattern of behaviour. Examples include using a specialized
-output representation, mapping recurring inputs to recurring outputs, or
-following domain conventions that are cumbersome to demonstrate in every
-prompt.
+Fine-tuning is most useful when the remaining problem is a repeated, measurable
+pattern of behaviour. Examples include using a specialized output
+representation, mapping recurring inputs to recurring outputs, or following
+domain/style conventions that are cumbersome to demonstrate in every prompt.
 
 Fine-tuning may also teach a model to use specialist vocabulary more
-consistently. It is not, however, a dependable mechanism for loading an
-organization's changing documents into the model.
+consistently.
 
 ## When not to fine-tune
 
 Fine-tuning is often proposed too early. Before training, it is worth checking
-whether the proposed use case matches any of the following situations.
+whether the proposed use case matches any of the following situations:
 
-### The model needs current information
-
-If the answer depends on policies, publications, prices, software versions, or
-other information that changes, the system needs access to a current source.
-
-Training examples are a poor update mechanism for such material. Updating the
-source collection is faster and easier to inspect than training another
-adapter. RAG is usually the better starting point.
-
-### The answer must be traceable to a source
-
-A model parameter cannot provide a reliable record of which document supports
-an answer. Even if a training example contained the relevant statement, the
-generated response may combine it with other learned associations.
-
-If users need citations or evidence, the evidence should be retrieved and
-passed to the model explicitly.
-
-### The problem is a vague prompt
-
-If the original instruction is:
-
-```text
-Analyze this.
-```
-
-the model has not been told what kind of analysis is required. Training should
-not be used as a substitute for defining the task.
-
-First specify the questions to answer, the audience, the output structure, and
-the criteria for a satisfactory result.
-
-### The problem is a simple output constraint
-
-A model that uses the wrong headings or returns prose instead of JSON may need
-clearer formatting instructions, examples, constrained decoding, or schema
-validation.
-
-Fine-tuning may eventually improve format adherence at scale, but a prompt
-baseline should be attempted and measured first.
-
-### There is no evaluation set
-
-Without a held-out evaluation set, there is no reliable way to tell whether
-fine-tuning improved the application.
-
-Training loss is not sufficient. A model may fit the training examples while
-failing on new inputs. It may also improve on the target task while losing
-useful general behaviour.
-
-If success has not been defined before training, the project is not ready for
-fine-tuning.
-
-### There are too few representative examples
-
-A small set of carefully selected examples can be useful, but examples that
-cover only easy or repetitive cases may teach an overly narrow pattern.
-
-Creating more examples is not enough if those examples are generated from the
-same template and contain the same blind spots. The data must represent the
-variation expected in real use.
-
-### The failure comes from retrieval
-
-If the relevant passage is not in the model's context, training the generator
-does not directly solve the missing-evidence problem.
-
-Retrieve and inspect the evidence first. Only after retrieval is working
-should the project ask whether the generator still behaves inadequately.
-
-### The objective is to eliminate all hallucinations
-
-Fine-tuning cannot guarantee that a generative model will never produce an
-unsupported statement.
-
-Risk must instead be managed through system design. Depending on the
-application, this may include retrieval, restricted outputs, validation,
-abstention, citations, human review, and limiting the model's authority.
-
-### The application is still exploratory
-
-Training adds a model artifact, training code, data versions, hyperparameters,
-evaluation, and deployment decisions. If the task is changing every few days,
-those artifacts can become obsolete before they are properly evaluated.
-
-Prompting is usually a faster way to explore the task and collect evidence
-about recurring failures.
-
-:::{admonition} A useful rule
-:class: important
-
-Do not fine-tune to discover what the application should do.
-
-Define the task through prompting and evaluation first. Fine-tune when the
-task is stable and the remaining shortcomings are repeated enough to learn
-from examples.
-:::
+- The model needs access to policies, publications, software documentation or
+other information that changes in time (not too fast, hopefully). In these
+cases, RAG is usually a better place to start: injecting a lot of new
+information by updating model weights is not an effective update mechanism.
+- Traceability and explainability are required: once more, RAG is the better
+route.
+- The model is prompted in a vague way (e.g. "Summarise this"). Since the model
+knows nothing about what the user actually want, the first (and often only)
+step is to improve (a lot) the prompt.
+- The problem is with constraints, e.g. we want the output to be JSON only. In
+these cases, prompt engineering (possibly with examples) is paramount. If
+performance is still unsatisfactory, fine-tuning can improve format adherence,
+especially at scale and with smaller models.
+- There is no evaluation set: the only way to judge whether the fine-tuned
+model behaves better than baseline is to test on a hold-out evaluation set, or
+with user A/B testing in production. Without metrics for success, fine-tuning
+becomes a useless exercise (and may even lead to loss of performance in other
+general tasks).
+- There are not enough representative examples, since repetitive examples can
+easily lead to overfitting.
 
 ## A practical decision process
 
@@ -438,7 +358,7 @@ desired mapping.
 Run the evaluation set and record the results. This baseline provides evidence
 against which retrieval or fine-tuning can be compared.
 
-### Add retrieval when evidence is missing
+### Add retrieval if evidence is missing
 
 Inspect failed examples. If the model could answer correctly when given the
 right document passage, the problem points toward retrieval.
@@ -469,28 +389,22 @@ define success
 
 RAG and fine-tuning are not mutually exclusive.
 
-A useful division of labour is:
-
-```text
-RAG:
-    supplies the current evidence
-
-Fine-tuning:
-    teaches the model how to use that evidence
-```
+A useful division of labour is that RAG supplies the evidence, whereas
+fine-tuning teaches the model how to use it.
 
 For example, a technical assistant may need retrieval to access the current
-software documentation. It may also benefit from fine-tuning if it
+software documentation, but may also benefit from fine-tuning if it
 systematically fails to express commands according to an organization's
 conventions.
 
-The combined system is more complex than either component alone. Its
-evaluation must determine whether a failure came from retrieval, prompting,
-the fine-tuned behaviour, or the interaction between them.
+It is worth noting that the combined system is more complex than either
+component alone. Thus, its evaluation must determine whether a failure came
+from retrieval, prompting, the fine-tuned behaviour, or the interaction between
+them.
 
 ## Evaluating the adaptation ladder
 
-Evaluation should precede an increase in complexity. Otherwise, there is no
+Evaluation should precede an increase in complexity: otherwise, there is no
 reliable way to tell whether the additional component helped.
 
 ### Evaluate more than fluency
@@ -533,17 +447,15 @@ best prompt developed during exploration.
 
 Depending on the application, the comparison may also include:
 
-```text
-base model with a simple prompt
-base model with the strongest prompt
-base model with prompt and retrieval
-fine-tuned model with the same retrieval
-```
+- base model with a simple prompt
+- base model with the strongest prompt
+- (if RAG is used) base model with prompt and retrieval
+- (if RAG is used) fine-tuned model with the same retrieval
 
 This prevents a training run from receiving credit for improvements that came
 from a better prompt, a changed dataset, or a different retrieval setup.
 
-Held-out evaluation is essential. Examples used during training cannot show
+**Held-out evaluation is essential**: examples used during training cannot show
 whether the model generalizes to new inputs.
 
 ### Automated and human evaluation
@@ -555,11 +467,10 @@ and retrieval recall are useful examples.
 Human evaluation is needed when quality depends on context, usefulness, or
 specialist judgment.
 
-Another language model can assist with evaluation, but its judgment is not
-objective. LLM-based evaluators can respond to superficial features such as
-verbosity, ordering, or writing style. Their results should be calibrated
-against human decisions and combined with deterministic checks where
-possible.
+Another language model can assist with evaluation (*LLM-as-a-judge*), but its
+judgement must be also tailored to human preference. However, it can be useful
+in cases when the objective function is somewhat subjective, such as verbosity,
+complexity or general style.
 
 ## Exercise: Choose the first intervention
 
@@ -650,47 +561,6 @@ for training and evaluation, or success has not been defined.
 The phrase "know our documentation" points primarily toward retrieval. The
 team may later fine-tune how the model responds to retrieved material, but
 retrieval and abstention should be addressed first.
-:::
-
-## Exercise: Design an evaluation
-
-:::{exercise} Design a comparison
-:label: exercise-evaluation-comparison
-
-Choose one scenario from the previous exercise.
-
-Define:
-
-1. a prompt baseline;
-2. a held-out test set;
-3. two quality measures;
-4. one operational measure;
-5. a criterion for introducing the next level of complexity.
-:::
-
-:::{solution} exercise-evaluation-comparison
-:class: dropdown
-
-For the policy-question scenario, a minimal plan could be:
-
-**Prompt baseline:** Ask the unchanged model to answer using policy text
-included directly in the prompt. Require citations and abstention when the
-text is insufficient.
-
-**Test set:** Use current, outdated, ambiguous, and unanswerable policy
-questions. Keep the test questions separate from prompt examples and any
-future training data.
-
-**Quality measures:** Measure whether each claim is supported by the supplied
-policy and whether citations identify the correct section.
-
-**Operational measure:** Record the median end-to-end response time.
-
-**Decision criterion:** Introduce retrieval if the model answers reliably when
-the correct passage is supplied but the full policy collection cannot be
-placed in every prompt. Consider fine-tuning only if retrieval supplies the
-correct evidence and a strong prompt still produces a repeated behavioural
-failure.
 :::
 
 ## Summary
