@@ -408,6 +408,37 @@ text format expected by that model.
 Using the correct template matters. A model trained with one conversation
 format may not interpret another model's role markers as intended.
 
+### What kind and how much data do I need?
+
+As it might be expected, there is no one-size-fits-all recipe for the type and
+quantity of data needed for fine-tuning, which can vary wildly based on task
+and base model size.
+
+A general indication is that data should be as *representative* as possible,
+covering the same variation found in real inputs. It should cover examples that
+are routine, difficult, ambiguous, or where the expected answer is "I do not
+know". Generally speaking, less good examples are better than many low-quality
+ones (e.g. duplicates, inconsistent formatting, incorrect answers, etc.). As
+stated many times, good segregation between training, validation and test data
+is paramount.
+
+When it comes to quantity, the answer varies based on task complexity, type of
+fine-tuning and base model size:
+
+- Full fine-tuning generally needs more data than LoRA, since all parameters
+can change and this can lead to a higher risk of overfitting or loss of useful
+pretrained behaviour. A good rule of thumb is that full fine-tuning should be
+attempted when the number of available examples is at least in the order of
+tens of thousands.
+- LoRA, on the other hand, can require just a few hundred well-curated examples
+if the task is narrow. More varied generative tasks would put us back in the
+thousands of needed examples.
+
+Generally speaking, if attempting LoRA, a larger model tends to need less
+examples for narrow tasks. This is because a large, capable model may already
+have the knowledge necessary to carry out the task, and just needs to be
+"nudged" to behave in a certain way.
+
 ### Representative data
 
 Representative data covers the variation expected in real inputs. It should
