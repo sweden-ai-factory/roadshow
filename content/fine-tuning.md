@@ -13,8 +13,8 @@ Unlike prompt engineering and retrieval-augmented generation, fine-tuning
 changes model parameters. The resulting behaviour is encoded in a new set of
 weights or in a smaller set of adapter parameters.
 
-Fine-tuning can be useful, but it introduces a complete training lifecycle.
-The project needs suitable data, an objective, a validation strategy,
+Fine-tuning can be useful, but it introduces a complete training lifecycle:
+the process needs suitable data, an objective, a validation strategy,
 hyperparameters, experiment tracking, model artifacts, and an evaluation that
 goes beyond training loss.
 
@@ -66,56 +66,19 @@ Desired response:
 }
 ```
 
-The model predicts tokens in the desired response. The training objective
-measures how much probability the model assigned to the expected tokens.
-Backpropagation computes parameter updates that make those tokens more likely
-for similar inputs.
-
-The training process does not insert a symbolic rule such as:
-
-```text
-if the report mentions GPU memory:
-    return resource_exhaustion
-```
-
-Instead, it adjusts a large number of numerical parameters. The resulting
-behaviour must therefore be tested empirically.
-
-### Behavioural adaptation
-
 Fine-tuning is well suited to stable patterns that occur repeatedly.
-
-A project might use fine-tuning to improve adherence to a specialized output
-format, apply domain-specific labels, produce a consistent response style, or
-map recurring inputs to recurring outputs.
-
-The justification becomes stronger when the application will process many
-examples. Including several demonstrations in every prompt consumes context
-and inference time. A trained adaptation may encode the same pattern more
-compactly.
-
-### Fine-tuning and knowledge
+Thus, a particular application might use fine-tuning to improve adherence to a
+specialized output format, apply domain-specific labels, produce a consistent
+response style, or map recurring inputs to recurring outputs.
 
 Fine-tuning can change the factual associations produced by a model, but this
-does not make it a suitable document database.
+does not make it a suitable document database like RAG; however,it may combine
+the new examples with associations learned during pretraining. Updating or
+removing a fact requires another model update, and the effect of that update
+may not be isolated.
 
-A fine-tuned model cannot reliably report which training document supports a
-statement. It may combine the new examples with associations learned during
-pretraining. Updating or removing a fact requires another model update, and
-the effect of that update may not be isolated.
-
-Changing and citable knowledge should normally remain in an external source
-that can be retrieved at inference time.
-
-A useful division of labour is:
-
-```text
-Fine-tuning:
-    teaches stable behaviour
-
-Retrieval:
-    supplies current evidence
-```
+Usually, two types of fine-tuning can be performed: full fine-tuning and
+parameter-efficient fine-tuning.
 
 ## Full fine-tuning
 
@@ -123,14 +86,13 @@ In full fine-tuning, every trainable parameter in the model is updated.
 
 For a model with billions of parameters, this creates substantial resource
 requirements. The device must hold the model weights, gradients, optimizer
-state, activations, and temporary buffers used by the training operations.
-
-The optimizer state can be particularly expensive. An optimizer may maintain
-multiple values for every trainable parameter. Training therefore requires
-considerably more memory than loading the same model for inference.
-
-Full fine-tuning also produces a complete new set of model weights. If several
-tasks require separate models, storage and deployment costs grow quickly.
+state, activations, and temporary buffers used by the training operations. In
+particular, the optimizer state can be particularly expensive, since an
+optimizer may maintain multiple values for every trainable parameter. The cost
+for full fine-tuning is comparable to that of pretraining, since all parameters
+need updating. Full fine-tuning also produces a complete new set of model
+weights. If several tasks require separate models, storage and deployment costs
+grow quickly.
 
 ### When full fine-tuning may be justified
 
@@ -156,7 +118,7 @@ update must be superior.
 
 ## Parameter-efficient fine-tuning
 
-Parameter-efficient fine-tuning, or PEFT, keeps most pretrained parameters
+Parameter-efficient fine-tuning (PEFT) keeps most pretrained parameters
 frozen and learns a much smaller set of task-specific parameters.
 
 The base model still participates in every forward pass. Freezing the base
@@ -164,9 +126,10 @@ model does not remove the need to load it or execute its layers. The main
 training savings come from not storing gradients and optimizer states for all
 base-model parameters.
 
-PEFT methods differ in where the trainable parameters are added and how they
-interact with the frozen model. Low-rank adaptation is one of the most widely
-used approaches.
+There are several PEFT methods, such as low-rank adapters (LoRA), adapter
+layers and Infused Adapter by Inhibiting and Amplifying Inner Activations
+(IA3), which differ in where the trainable parameters are added and how they
+interact with the frozen model. LoRA is one of the most widely used approaches.
 
 ## Low-rank adaptation
 
@@ -246,54 +209,24 @@ r(d_{\mathrm{in}} + d_{\mathrm{out}})
 For large projection matrices and a small rank, the difference can be
 substantial.
 
-### Rank
+### Tunables
 
-The LoRA rank controls the maximum rank of the learned update. A higher rank
-provides more adaptation capacity but adds trainable parameters and optimizer
-state.
+The following hyperparameters need to be estimated when performing a LoRA:
 
-There is no universally correct rank. A small and well-defined task may need
-little capacity. A broader adaptation may benefit from a larger rank or from
-adapters on more modules.
+- Rank `r`: maximum rank of the learned update. A higher rank can provide more
+adaptation capacity, but makes the process more expensive. Depending on model
+and dataset size, `r` usually ranges between 8 and 64. 16 is a good place to
+start for many experiments.
+- Scaling factor {math}`\alpha`: usually the adapter contribution is scaled by
+{math}`\alpha/r` to control the influence of the LoRA adapter compared to the
+base model. It can also range commonly from 8 to 64 or more, with 32 being a
+sweet spot based on the empirical rule of {math}`\alpha=2r`.
+- Dropout: same as "normal" neural network training, i.e. intentionally
+switching off part of the adapter to avoid overfitting, especially for small
+datasets. Common values range from 0 (no dropout, especially on large datasets)
+to 0.1 (very small). 0.05 is often a sweet spot.
 
-Rank should be treated as a hyperparameter and evaluated on held-out data.
-
-### Alpha
-
-LoRA commonly scales the adapter contribution by:
-
-```{math}
-\frac{\alpha}{r}
-```
-
-The parameter \(\alpha\) controls the scale of the learned update relative to
-the frozen base-layer output.
-
-Changing rank without considering the scaling changes the effective size of
-the adapter contribution. Libraries may offer different scaling conventions,
-so configurations should be interpreted together with the implementation
-used.
-
-### Dropout
-
-LoRA dropout applies dropout to the adapter path during training. It may reduce
-overfitting, particularly for small datasets, but it is not automatically
-beneficial.
-
-A configuration with no dropout can be a reasonable baseline. If training
-performance improves while validation performance does not, dropout is one
-possible regularization measure to evaluate.
-
-:::{admonition} Hyperparameters are empirical choices
-:class: important
-
-Rank, alpha, dropout, learning rate, batch size, sequence length, and training
-duration should not be copied from a tutorial without checking whether the
-tutorial uses a comparable model, dataset, and objective.
-
-Begin with a defensible baseline, record the configuration, and compare
-changes on held-out examples.
-:::
+These tunables tend to play a smaller role than most people assume, whereas dataset quality is the real knob that can dramatically change results.
 
 ## Where LoRA adapters are placed
 
@@ -345,41 +278,6 @@ Feed-forward layers also contain substantial capacity. Including their
 projections can improve adaptation for some tasks, although the additional
 parameters should be justified through evaluation.
 
-### Finding the correct module names
-
-The correct target names must be obtained from the model implementation.
-
-A reliable procedure is:
-
-1. inspect the printed model architecture;
-2. enumerate named modules;
-3. identify linear layers within repeated transformer blocks;
-4. check model-specific examples and documentation;
-5. create the adapter;
-6. verify which parameters are marked as trainable.
-
-A simplified inspection pattern is:
-
-```python
-for name, module in model.named_modules():
-    if isinstance(module, torch.nn.Linear):
-        print(name)
-```
-
-The output should be inspected before choosing target modules. Copying
-`q_proj` from another model is not sufficient if the current implementation
-uses different names or a combined query-key-value projection.
-
-:::{admonition} Verify the trainable parameters
-:class: caution
-
-After applying LoRA, inspect the model's trainable parameter count and names.
-
-An unexpectedly small count may indicate that important modules were omitted.
-An unexpectedly large count may indicate that the base model was not frozen
-or that more modules were targeted than intended.
-:::
-
 ## Preparing fine-tuning data
 
 A fine-tuning dataset should represent the behaviour expected in deployment.
@@ -430,9 +328,9 @@ can change and this can lead to a higher risk of overfitting or loss of useful
 pretrained behaviour. A good rule of thumb is that full fine-tuning should be
 attempted when the number of available examples is at least in the order of
 tens of thousands.
-- LoRA, on the other hand, can require just a few hundred well-curated examples
-if the task is narrow. More varied generative tasks would put us back in the
-thousands of needed examples.
+- LoRA, on the other hand, can require just a few hundreds/thousands of
+well-curated examples if the task is narrow. More varied generative tasks would
+put us back in the tens of thousands of needed examples.
 
 Generally speaking, if attempting LoRA, a larger model tends to need less
 examples for narrow tasks. This is because a large, capable model may already
@@ -452,21 +350,6 @@ without producing meaningful diversity.
 Quality is also more important than raw example count. Incorrect answers,
 inconsistent formatting, duplicated examples, and accidental sensitive data
 can all become part of the learned behaviour.
-
-### Training, validation, and test data
-
-Training examples are used to update model parameters. Validation examples are
-used during development to observe generalization and compare configurations.
-A final test set should remain separate until the main decisions have been
-made.
-
-The splits must avoid leakage. Near-duplicate examples or several records from
-the same original document can make validation results appear stronger than
-they are.
-
-For grouped data, split by the appropriate unit rather than by individual
-row. If several examples come from one incident or one source document, all
-of them may need to remain in the same split.
 
 ### What should contribute to the loss?
 
@@ -540,11 +423,6 @@ quadratic attention matrix.
 
 A batch size that works for short examples may fail when the batch contains
 long examples.
-
-Setting a maximum sequence length requires a data decision as well as a
-resource decision. Truncation can remove parts of the prompt or desired
-answer. Before choosing the limit, inspect the token-length distribution of
-the dataset and decide which portion of each example may be truncated.
 
 ### Packing
 
@@ -630,7 +508,9 @@ summarization or open-ended generation, combine human review with checks for
 required content, unsupported claims, format adherence, and omissions.
 
 Compare the fine-tuned model with the strongest non-fine-tuned baseline, not
-only with an unhelpfully vague prompt.
+only with an unhelpfully vague prompt. This part is nowadays outsourced to an
+LLM (*LLM as a judge*), provided that it is first aligned with a human
+evaluator.
 
 ### Regression evaluation
 
@@ -646,7 +526,7 @@ point is to decide what must not worsen before accepting the adapter.
 :::{admonition} Evaluation is part of fine-tuning
 :class: important
 
-A training run without held-out evaluation is an experiment in optimization,
+A training run without held-out evaluation is an experiment in optimisation,
 not evidence that the application improved.
 :::
 
@@ -673,20 +553,10 @@ For deployment, the adapter may be loaded alongside the base model. Some
 workflows also merge the adapter update into the base weights. Merging can
 simplify inference in environments that do not support adapters directly, but
 it produces another complete model artifact.
-
-The deployment record should identify:
-
-```text
-base-model name and revision
-tokenizer revision
-adapter artifact
-training-data version
-training configuration
-evaluation results
-software environment
-```
-
-Without these details, reproducing or auditing the model becomes difficult.
+Deploying a base model + a LoRA adapter is extremely common in image diffusion
+models, where a large backbone represent the baseline generation, and a
+swappable LoRA head is attached to tweak the style (very photorealistic, anime
+style, etc.).
 
 ## A minimal fine-tuning workflow
 
@@ -767,6 +637,7 @@ This calculation concerns one adapted matrix. A complete configuration may
 apply LoRA to many projections across all transformer blocks.
 :::
 
+<!--
 ## Exercise: Select LoRA targets
 
 :::{exercise} Inspect a model before configuring LoRA
@@ -814,96 +685,19 @@ parameters were created for the intended modules.
 
 Targeting the MLP projections gives the adapter more capacity to change the
 model, but increases trainable parameters, optimizer state, and computation.
-Whether that improves the task should be determined through held-out
-evaluation.
 :::
-
-## Exercise: Review a proposed experiment
-
-:::{exercise} Review a fine-tuning plan
-:label: exercise-review-finetuning
-
-A proposed experiment has the following design:
-
-```text
-Dataset:                 600 examples
-Training split:          all 600 examples
-Evaluation:              final training loss
-Epochs:                  20
-Base model:              selected because it is popular
-LoRA targets:            copied from an unrelated tutorial
-Prompt baseline:         none
-Regression tests:        none
-```
-
-Identify the weaknesses in the plan and propose an improved sequence of work.
-:::
-
-:::{solution} exercise-review-finetuning
-:class: dropdown
-
-The plan has no held-out examples, so it cannot measure generalization. Final
-training loss shows how well the model predicts examples on which it was
-trained, not whether the application improved.
-
-Twenty epochs may cause a small dataset to be memorized. The appropriate
-training duration should be selected using validation behaviour and
-task-level evaluation.
-
-The base model should be chosen according to the task, license, supported
-context length, language coverage, deployment environment, and baseline
-performance.
-
-LoRA targets must match the current model architecture. Named modules should
-be inspected and trainable parameters verified after adapter creation.
-
-The absence of a prompt baseline means there is no evidence that training is
-needed and no meaningful comparison for the result. The absence of regression
-tests means target-task improvement could conceal damage to other important
-behaviour.
-
-A better sequence is:
-
-```text
-define measurable success
-    -> construct held-out evaluation examples
-    -> evaluate a strong prompt baseline
-    -> inspect and clean the dataset
-    -> create leakage-resistant splits
-    -> choose the base model using baseline results and constraints
-    -> inspect module names and configure LoRA
-    -> train for a modest duration with validation
-    -> compare checkpoints on task and regression evaluations
-```
-
-:::
-
+-->
 ## Summary
 
-Fine-tuning changes model parameters by continuing training on examples of a
+- Fine-tuning changes model parameters by continuing training on examples of a
 target behaviour.
-
-Full fine-tuning updates the complete model. It provides substantial capacity
+- Full fine-tuning updates the complete model. It provides substantial capacity
 but has high memory, storage, and evaluation costs.
-
-Parameter-efficient fine-tuning keeps most pretrained parameters frozen.
-LoRA represents selected weight updates as the product of two small matrices.
-This greatly reduces the number of trainable parameters and the associated
-optimizer state.
-
-LoRA adapters are commonly applied to attention projections and may also be
-applied to feed-forward projections. The correct target-module names depend
-on the model implementation and must be inspected rather than copied
-uncritically from another architecture.
-
-The success of fine-tuning depends on more than the training configuration.
-The project needs representative data, leakage-resistant splits, an explicit
-loss objective, a strong prompt baseline, held-out task evaluation, and
-regression tests.
-
-The main principle is:
-
-```text
-Fine-tuning is justified by a measured behavioural improvement on new
-examples, not by a decreasing training loss.
-```
+- Parameter-efficient fine-tuning keeps most pretrained parameters frozen. LoRA
+represents selected weight updates as the product of two small matrices. This
+greatly reduces the number of trainable parameters and the associated optimizer
+state.
+- LoRA adapters are commonly applied to attention projections and may also be
+applied to feed-forward projections. The correct target-module names depend on
+the model implementation and must be inspected rather than copied uncritically
+from another architecture.

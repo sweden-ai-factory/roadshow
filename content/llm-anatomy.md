@@ -676,6 +676,26 @@ answers into the input and would not reproduce the autoregressive conditions
 used during generation.
 :::
 
+## Training pipeline
+
+When a LLM is first trained, three steps are usually involved:
+
+- Pretraining: the model is trained on large unstructured corpora of text, in
+an unsupervised manner, just trying to predict the next token. This is what
+gives origin to the base models, which understand language constructs and
+syntax.
+- Supervised fine-tuning (SFT): the model is trained on question-answer pairs,
+possibly with reasoning traces. This is when model are actually trained to
+perform a task (coding assistant, chat interface, etc.) and produces the
+so-called "instruct" models.
+- Reinforcement/alignment training: the model is trained using reinforcement
+learning techniques, like DPO and GRPO, to influence its alignment to human
+values and teach it how to reply in a way that better reflects human
+preferences. After this it is usually ready to ship.
+
+The fine-tuning that is the subject of this course is, essentially, a
+repetition of step 2.
+
 ## Summary
 
 A language model begins by dividing text into tokens. Token IDs are mapped to
