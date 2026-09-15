@@ -5,6 +5,8 @@
 - Basic familiarity with Python
 - Some familiarity with linear algebra
 - If you have used a LLM-based chat application it'd be beneficial
+- Some basic understanding of how a machine learning/deep learning model is
+trained at a general level
   :::
 
 ```{toctree}
