@@ -1,0 +1,3050 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="./">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
+        <link rel="prefetch" href="_static/SEAIF_favicon_black.png" as="image">
+        <link rel="prefetch" href="_static/SEAIF_favicon_white.png" as="image">
+
+    <link rel="shortcut icon" href="_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Fine tuning tutorial - SEAIF roadshow</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="_static/furo_ext_lesson.css?v=6c0cde2e" />
+    <link rel="stylesheet" type="text/css" href="_static/EN_Co-funded.css?v=bf081b0b" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/overrides.css?v=1c72d2de" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">Fine tuning tutorial - SEAIF roadshow</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="_static/SEAIF_favicon_black.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="_static/SEAIF_favicon_white.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Fine tuning tutorial - SEAIF roadshow</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-llm-anatomy">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-choosing-an-adaptation-strategy">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-fine-tuning">Fine-tuning large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-quantisation">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-quick-reference">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-guide">Instructor’s guide</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="adapting-large-language-models">
+<h1>Adapting large language models<a class="headerlink" href="#adapting-large-language-models" title="Link to this heading">¶</a></h1>
+<div class="admonition-prerequisites prerequisites admonition" id="prerequisites-0">
+<p class="admonition-title">Prerequisites</p>
+<ul class="simple">
+<li><p>Basic familiarity with Python</p></li>
+<li><p>Some familiarity with linear algebra</p></li>
+<li><p>If you have used a LLM-based chat application it’d be beneficial</p></li>
+<li><p>Some basic understanding of how a machine learning/deep learning model is
+trained at a general level</p></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<span id="document-llm-anatomy"></span><section id="anatomy-of-a-large-language-model">
+<h2>Anatomy of a Large Language Model<a class="headerlink" href="#anatomy-of-a-large-language-model" title="Link to this heading">¶</a></h2>
+<p>A language model does not read text as words and sentences: text must first be
+converted into numerical representations, then transformer layers update
+those representations using the surrounding context.</p>
+<p>A simplified forward pass looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>text
+  -&gt; tokens
+  -&gt; token IDs
+  -&gt; embeddings
+  -&gt; transformer blocks
+  -&gt; output logits
+  -&gt; next-token probabilities
+</pre></div>
+</div>
+<p>For a generative language model, the process is repeated one generated token
+at a time.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>How does text become input to a neural network?</p></li>
+<li><p>What information is contained in a token embedding?</p></li>
+<li><p>How does attention introduce context?</p></li>
+<li><p>What do queries, keys, and values represent?</p></li>
+<li><p>What is the role of the feed-forward layers?</p></li>
+<li><p>Why can decoder-only models not attend to future tokens?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>describe the path from text to tokens, embeddings, and output
+probabilities;</p></li>
+<li><p>explain why modern language models use subword tokenisation;</p></li>
+<li><p>distinguish an initial token embedding from a contextual representation;</p></li>
+<li><p>describe self-attention using queries, keys, and values;</p></li>
+<li><p>explain the purpose of causal masking;</p></li>
+<li><p>distinguish the role of attention from the role of a feed-forward network;</p></li>
+<li><p>recognize the main differences between encoder-only, decoder-only, and
+encoder-decoder models.</p></li>
+</ul>
+</div>
+<section id="from-text-to-tokens">
+<h3>From text to tokens<a class="headerlink" href="#from-text-to-tokens" title="Link to this heading">¶</a></h3>
+<p>The first step is tokenisation. A tokeniser divides the input into units
+called <strong>tokens</strong> and maps every token to an integer ID.</p>
+<p>Tokens do not necessarily correspond to words. Depending on the tokeniser, a
+token may represent a complete word, part of a word, punctuation, whitespace,
+or another frequently occurring character sequence.</p>
+<section id="why-not-use-one-token-per-word">
+<h4>Why not use one token per word?<a class="headerlink" href="#why-not-use-one-token-per-word" title="Link to this heading">¶</a></h4>
+<p>A word-level vocabulary is simple to imagine:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>"The"       -&gt; 104
+"model"     -&gt; 527
+"predicts"  -&gt; 8912
+"a"         -&gt; 37
+"token"     -&gt; 2841
+</pre></div>
+</div>
+<p>This approach soon becomes impractical. A vocabulary would need separate
+entries for plurals, conjugations, spelling variants, compound words,
+technical terms, names, and typographical errors. It would also handle
+languages with productive word formation poorly.</p>
+<p>At the other extreme, a model could process individual characters. This keeps
+the vocabulary small, but makes sequences considerably longer. The model must
+then learn how characters form common words before it can learn higher-level
+relationships.</p>
+<p>Modern language models usually use <em>subword tokenisation</em> as a compromise.
+Common words may remain as single tokens, while uncommon words are divided
+into reusable pieces.</p>
+<p>For example, a tokeniser might represent:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>supercomputing
+</pre></div>
+</div>
+<p>as something conceptually similar to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>super + comput + ing
+</pre></div>
+</div>
+<p>The actual split depends on the tokeniser and on the data from which its
+vocabulary was constructed.</p>
+<div class="important admonition">
+<p class="admonition-title">Tokenisation is part of the model</p>
+<p>A model must be used with the tokeniser with which it was trained.</p>
+<p>Token IDs have no universal meaning. Token ID <code class="docutils literal notranslate"><span class="pre">527</span></code> may represent one token
+for one model and an entirely different token for another.</p>
+</div>
+</section>
+<section id="why-tokenisation-matters">
+<h4>Why tokenisation matters<a class="headerlink" href="#why-tokenisation-matters" title="Link to this heading">¶</a></h4>
+<p>Tokenisation affects the length of the sequence seen by the model. This in
+turn affects memory use, computation, and the amount of text that fits within
+the context window.</p>
+<p>It can also affect performance across languages and specialist domains. A
+tokeniser may represent frequent English words efficiently while dividing a
+scientific term or a word from another language into many small fragments.
+The model can still process such text, but the representation uses more
+positions and may have been encountered less often during training.</p>
+<div class="admonition-think-like-a-tokenizer exercise important admonition" id="exercise-0">
+<p class="admonition-title">Think like a tokenizer</p>
+<p>Consider the following strings:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>train
+training
+pretraining
+retraining
+supercomputer
+supercomputing
+</pre></div>
+</div>
+</div>
+<p>Without using a real tokeniser, propose a possible subword vocabulary that
+could represent all six strings.</p>
+<p>There is no single correct answer. Discuss the trade-off between a larger
+vocabulary and longer token sequences.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+```{solution} exercise-tokenizer
+:class: dropdown
+
+One possible vocabulary contains:
+
+```text
+train
+ing
+pre
+re
+super
+computer
+comput
+</pre></div>
+</div>
+<p>This would allow:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>train          -&gt; train
+training       -&gt; train + ing
+pretraining    -&gt; pre + train + ing
+retraining     -&gt; re + train + ing
+supercomputer  -&gt; super + computer
+supercomputing -&gt; super + comput + ing
+</pre></div>
+</div>
+<p>A larger vocabulary could include every complete word, producing shorter
+sequences. A smaller vocabulary would reuse more pieces but produce longer
+sequences. Real tokenisers choose a compromise based on frequencies in their
+training corpus, often using an algorithm called byte-pair encoding (<a class="reference external" href="https://en.wikipedia.org/wiki/Byte-pair_encoding">BPE</a>).</p>
+</section>
+</section>
+<section id="from-token-ids-to-embeddings">
+<h3>From token IDs to embeddings<a class="headerlink" href="#from-token-ids-to-embeddings" title="Link to this heading">¶</a></h3>
+<p>A token ID is an integer label. The numerical distance between two token IDs
+has no semantic meaning. Token ID 100 is not inherently more similar to token
+ID 101 than it is to token ID 9000.</p>
+<p>Before the transformer can process the tokens, the model maps every token ID
+to a vector. This operation is performed by an embedding layer.</p>
+<p>If the vocabulary contains (V) tokens and the model uses an embedding
+dimension (d), the embedding layer can be represented as a matrix:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[E \in \mathbb{R}^{V \times d}\]</div>
+</div>
+<p>Looking up a token ID selects the corresponding row of this matrix.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>token ID
+   |
+   v
+embedding matrix lookup
+   |
+   v
+vector of length d
+</pre></div>
+</div>
+<p>The embedding matrix is learned during training. Tokens that are useful in
+similar contexts often acquire related representations.</p>
+<section id="initial-and-contextual-representations">
+<h4>Initial and contextual representations<a class="headerlink" href="#initial-and-contextual-representations" title="Link to this heading">¶</a></h4>
+<p>The embedding-layer output is only the initial representation of a token. It
+does not yet express what the token means in a particular sentence.</p>
+<p>Consider the word <code class="docutils literal notranslate"><span class="pre">mole</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A mole damaged the garden.
+The chemist measured one mole of the compound.
+She has a mole on her cheek.
+</pre></div>
+</div>
+<p>The tokeniser may assign the same token ID to <code class="docutils literal notranslate"><span class="pre">mole</span></code> in every sentence. The
+embedding lookup therefore produces the same initial vector.</p>
+<p>The surrounding context is different, however. Transformer layers use that
+context to produce a different representation of <code class="docutils literal notranslate"><span class="pre">mole</span></code> in each example.</p>
+<p>The same principle applies when an expression changes meaning as context is
+added:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>lion
+sea lion
+sea lion cuddly toy
+</pre></div>
+</div>
+<p>The initial vector associated with the token <code class="docutils literal notranslate"><span class="pre">lion</span></code> is unchanged. Its
+contextual representation changes because the words around it change.</p>
+<div class="note admonition">
+<p class="admonition-title">Embeddings vs contextual representations</p>
+<p>An <strong>embedding</strong> often refers to the initial vector produced by the embedding
+layer, whereas a contextual representation is the vector associated with a
+token after one or more transformer layers have processed the sequence.</p>
+<p>Sometimes the word embedding is used to refer to both, which can be confusing.</p>
+</div>
+</section>
+<section id="position-in-the-sequence">
+<h4>Position in the sequence<a class="headerlink" href="#position-in-the-sequence" title="Link to this heading">¶</a></h4>
+<p>Attention alone does not inherently know whether one token comes before or
+after another. The model must therefore include information about position.</p>
+<p>The original transformer added positional encodings to token embeddings.
+Modern architectures may use other methods, such as learned position
+embeddings or rotary position embeddings.</p>
+<p>The implementation differs, but the purpose is the same: token
+representations must contain enough positional information for the model to
+distinguish sequences such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>the dog chased the cat
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>the cat chased the dog
+</pre></div>
+</div>
+</section>
+</section>
+<section id="type-of-transformers">
+<h3>Type of transformers<a class="headerlink" href="#type-of-transformers" title="Link to this heading">¶</a></h3>
+<p>Transformer architectures are commonly grouped into three broad families.</p>
+<section id="encoder-only-models">
+<h4>Encoder-only models<a class="headerlink" href="#encoder-only-models" title="Link to this heading">¶</a></h4>
+<p>An encoder-only model builds contextual representations using information
+from both sides of a token. This is useful when the model must understand an
+entire input rather than generate a continuation.</p>
+<p>Encoder-only models are commonly associated with classification,
+named-entity recognition, semantic similarity, and extractive question
+answering.</p>
+</section>
+<section id="decoder-only-models">
+<h4>Decoder-only models<a class="headerlink" href="#decoder-only-models" title="Link to this heading">¶</a></h4>
+<p>A decoder-only model predicts the next token based on the tokens that precede
+it. Most contemporary general-purpose generative language models use this
+architecture.</p>
+<p>At each generation step, the model produces a probability distribution over
+the vocabulary. A decoding procedure selects a token, appends it to the
+sequence, and invokes the model again.</p>
+</section>
+<section id="encoder-decoder-models">
+<h4>Encoder-decoder models<a class="headerlink" href="#encoder-decoder-models" title="Link to this heading">¶</a></h4>
+<p>An encoder-decoder model first builds representations of the input with an
+encoder. A decoder then generates an output while attending to both the
+already generated output and the encoded input.</p>
+<p>This architecture is well suited to sequence-to-sequence tasks such as
+translation and summarization.</p>
+<div class="note admonition">
+<p class="admonition-title">Focus of this lesson</p>
+<p>The remainder of the episode concentrates on decoder-only models because they
+are the usual basis of instruction-tuned and chat-oriented language models.
+The main components also appear in other transformer families.</p>
+</div>
+</section>
+</section>
+<section id="inside-a-transformer-block">
+<h3>Inside a transformer block<a class="headerlink" href="#inside-a-transformer-block" title="Link to this heading">¶</a></h3>
+<p>A transformer contains a stack of repeated blocks. Although details differ
+between model families, each block contains two major computational
+components:</p>
+<ol class="arabic simple">
+<li><p>an attention sublayer;</p></li>
+<li><p>a position-wise feed-forward network, often called an MLP (multi-layer
+perceptron).</p></li>
+</ol>
+<p>Residual connections and normalization layers support the flow of information
+through the network.</p>
+<figure class="align-default" id="id1">
+<a class="img-responsive reference internal image-reference" href="_images/transformer-block.png"><img alt="_images/transformer-block.png" class="img-responsive" src="_images/transformer-block.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The original transformer architecture. Modern large language models often use
+decoder-only variants, but retain the repeated pattern of attention,
+feed-forward layers, residual connections, and normalization. <a class="reference external" href="https://en.wikipedia.org/wiki/Transformer_(deep_learning)#/media/File:Transformer,_full_architecture.png">Source</a></span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A concise conceptual distinction is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Attention moves information between token positions.
+
+The feed-forward network transforms the representation at each position.
+</pre></div>
+</div>
+<p>Both components contain learned parameters, and both are changed during
+training.</p>
+</section>
+<section id="self-attention">
+<h3>Self-attention<a class="headerlink" href="#self-attention" title="Link to this heading">¶</a></h3>
+<p>Self-attention allows the representation at one token position to incorporate
+information from other token positions in the same sequence.</p>
+<p>For every token, an attention head computes three vectors:</p>
+<ul class="simple">
+<li><p>the <strong>query</strong> describes what information the current position is looking
+for;</p></li>
+<li><p>the <strong>key</strong> describes information that a position can be matched on;</p></li>
+<li><p>the <strong>value</strong> carries information that can be passed to another position.</p></li>
+</ul>
+<p>The vectors are produced by learned linear projections of the current token
+representations:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[Q = XW_Q\]</div>
+</div>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[K = XW_K\]</div>
+</div>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V = XW_V\]</div>
+</div>
+<p>Here, <span class="math notranslate nohighlight">\(X\)</span> contains the input representations for all positions. The matrices
+<span class="math notranslate nohighlight">\(W_Q\)</span>, <span class="math notranslate nohighlight">\(W_K\)</span>, and <span class="math notranslate nohighlight">\(W_V\)</span> are learned model parameters.</p>
+<section id="comparing-queries-and-keys">
+<h4>Comparing queries and keys<a class="headerlink" href="#comparing-queries-and-keys" title="Link to this heading">¶</a></h4>
+<p>The model computes a dot product between each query and each key. A larger
+dot product means that the query and key are more strongly aligned in the
+learned representation space.</p>
+<p>The scaled dot-product attention operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{Attention}(Q,K,V)
+=
+\operatorname{softmax}
+\left(
+\frac{QK^\mathsf{T}}{\sqrt{d_k}}
+\right)V\]</div>
+</div>
+<p>The expression can be read in three stages.</p>
+<p>First, the model computes:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[QK^\mathsf{T}\]</div>
+</div>
+<p>This produces a matrix of attention scores. Every row corresponds to a query
+position, and every column corresponds to a key position.</p>
+<p>The scores are divided by the square root of the key dimension. Without this
+scaling, dot products tend to grow as the vector dimension increases, which
+can make the softmax operation difficult to optimize.</p>
+<p>Softmax then converts each row into normalized weights. The final matrix
+multiplication uses those weights to form a weighted combination of the value
+vectors.</p>
+</section>
+<section id="a-concrete-interpretation">
+<h4>A concrete interpretation<a class="headerlink" href="#a-concrete-interpretation" title="Link to this heading">¶</a></h4>
+<p>Suppose the model processes:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The researcher deposited the data because it was required.
+</pre></div>
+</div>
+<p>The representation at <code class="docutils literal notranslate"><span class="pre">it</span></code> needs information from the preceding context. One
+or more attention heads may assign useful weight to <code class="docutils literal notranslate"><span class="pre">data</span></code> or to words that
+help establish the relationship between <code class="docutils literal notranslate"><span class="pre">it</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<p>It is tempting to say that a particular head is a “pronoun head” or that
+another head always connects adjectives to nouns, but while it is a useful
+mental model, internal representations are a lot more opaque than this, which
+is one of the sources of the lack of interpretability of LLMs.</p>
+</section>
+</section>
+<section id="causal-masking">
+<h3>Causal masking<a class="headerlink" href="#causal-masking" title="Link to this heading">¶</a></h3>
+<p>During next-token training, a decoder-only model must not use future tokens to
+predict an earlier token.</p>
+<p>Consider:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The cat sat down
+</pre></div>
+</div>
+<p>When the model predicts <code class="docutils literal notranslate"><span class="pre">sat</span></code>, it may use <code class="docutils literal notranslate"><span class="pre">The</span></code> and <code class="docutils literal notranslate"><span class="pre">cat</span></code>. It must not use
+<code class="docutils literal notranslate"><span class="pre">sat</span></code> or <code class="docutils literal notranslate"><span class="pre">down</span></code> as input evidence for that prediction.</p>
+<p>The model applies a causal mask to the attention scores:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             key position
+             1  2  3  4
+query 1      x  -  -  -
+query 2      x  x  -  -
+query 3      x  x  x  -
+query 4      x  x  x  x
+</pre></div>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">x</span></code> marks an allowed attention connection. A <code class="docutils literal notranslate"><span class="pre">-</span></code> marks a connection that is
+masked before softmax.</p>
+<p>During inference this is not very important (the future tokens do not exist
+yet), but it is essential in the training phase to prevent “cheating”.</p>
+<section id="context-length-and-computational-cost">
+<h4>Context length and computational cost<a class="headerlink" href="#context-length-and-computational-cost" title="Link to this heading">¶</a></h4>
+<p>For standard dense attention, a sequence containing (n) tokens produces an
+attention-score matrix containing (n^2) entries for every head.</p>
+<p>Doubling the sequence length therefore produces approximately four times as
+many query-key comparisons. The total cost of a transformer also includes
+projection and feed-forward operations, so end-to-end scaling is more
+complicated than one formula suggests. Nevertheless, the quadratic attention
+matrix is an important reason why long contexts can be expensive. There are a
+few tricks to mitigate this, such as <a class="reference external" href="https://huggingface.co/blog/not-lain/kv-caching">KV
+caching</a>.</p>
+</section>
+</section>
+<section id="multi-head-attention">
+<h3>Multi-head attention<a class="headerlink" href="#multi-head-attention" title="Link to this heading">¶</a></h3>
+<p>A transformer does not compute a single attention pattern. It computes
+several attention heads in parallel.</p>
+<p>Each head has its own query, key, and value projections. This allows different
+heads to construct different patterns of information exchange. The outputs of
+the heads are concatenated and passed through another learned projection.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input representations
+       |
+       +-&gt; attention head 1 --+
+       +-&gt; attention head 2 --+
+       +-&gt; attention head 3 --+-&gt; concatenate -&gt; output projection
+       +-&gt;        ...         |
+       +-&gt; attention head h --+
+</pre></div>
+</div>
+<p>The number of heads is an architectural choice. More heads do not simply mean
+that the model has a corresponding number of human-interpretable rules.</p>
+</section>
+<section id="feed-forward-networks">
+<h3>Feed-forward networks<a class="headerlink" href="#feed-forward-networks" title="Link to this heading">¶</a></h3>
+<p>After attention has exchanged information between token positions, a
+feed-forward network transforms the representation at each position.</p>
+<p>A simplified feed-forward operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{FFN}(x)
+=
+W_2 \sigma(W_1x + b_1) + b_2\]</div>
+</div>
+<p>The first projection usually expands the hidden representation to a larger
+intermediate dimension. A nonlinear activation is applied, followed by a
+projection back to the model’s hidden dimension.</p>
+<p>The same feed-forward parameters are applied independently at each token
+position.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>token position 1 -&gt; same feed-forward network -&gt; updated position 1
+token position 2 -&gt; same feed-forward network -&gt; updated position 2
+token position 3 -&gt; same feed-forward network -&gt; updated position 3
+</pre></div>
+</div>
+<p>Attention and feed-forward layers therefore perform complementary work.
+Attention allows positions to exchange information. The feed-forward network
+then performs a richer transformation of each resulting representation.</p>
+<p>Feed-forward layers contain a large fraction of the parameters in many
+transformer architectures. This gives them substantial representational
+capacity.</p>
+<div class="caution admonition">
+<p class="admonition-title">Where is model knowledge stored?</p>
+<p>It is sometimes said that attention controls context while the feed-forward
+layers store knowledge. This can be a useful first approximation, but it is
+not a precise division.</p>
+<p>Learned associations are distributed across embeddings, attention
+projections, feed-forward parameters, normalization, and the interactions
+between layers.</p>
+</div>
+</section>
+<section id="residual-connections-and-normalization">
+<h3>Residual connections and normalization<a class="headerlink" href="#residual-connections-and-normalization" title="Link to this heading">¶</a></h3>
+<p>A transformer block does not replace its input representation outright.
+Residual connections allow a sublayer to contribute an update:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[x_{\mathrm{out}} = x_{\mathrm{in}} + f(x_{\mathrm{in}})\]</div>
+</div>
+<p>The original representation can therefore continue through the network while
+each sublayer adds new information.</p>
+<p>Normalization controls the scale of activations and makes deep networks
+easier to train. Different architectures place normalization before or after
+the attention and feed-forward operations, but its general purpose remains
+training stability.</p>
+</section>
+<section id="from-representations-to-token-probabilities">
+<h3>From representations to token probabilities<a class="headerlink" href="#from-representations-to-token-probabilities" title="Link to this heading">¶</a></h3>
+<p>After the final transformer block, the model converts the representation at
+the relevant sequence position into one score for every token in the
+vocabulary. These scores are called <strong>logits</strong>.</p>
+<p>Softmax turns the logits into a probability distribution:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>"the"        0.31
+"a"          0.14
+"this"       0.08
+"model"      0.03
+...          ...
+</pre></div>
+</div>
+<p>A decoding strategy then selects the next token. Always choosing the most
+probable token is called greedy decoding. Other strategies sample from the
+distribution, possibly after adjusting it through temperature, top-k, or
+top-p sampling.</p>
+<p>The selected token is appended to the input, and the process is repeated.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>prompt
+  -&gt; predict one token
+  -&gt; append token
+  -&gt; predict another token
+  -&gt; append token
+  -&gt; continue until stopping
+</pre></div>
+</div>
+<p>A fluent response is therefore constructed through repeated next-token
+prediction, not by producing a complete paragraph in a single operation.</p>
+</section>
+<section id="exercise-trace-information-through-the-model">
+<h3>Exercise: Trace information through the model<a class="headerlink" href="#exercise-trace-information-through-the-model" title="Link to this heading">¶</a></h3>
+<div class="admonition-trace-a-forward-pass exercise important admonition" id="exercise-1">
+<p class="admonition-title">Trace a forward pass</p>
+<p>Consider the prompt:</p>
+<blockquote>
+<div><p>The experiment failed because the input file was</p>
+</div></blockquote>
+<p>Describe what happens between receiving this text and producing a probability
+for the next token.</p>
+<p>Your explanation should include:</p>
+<ol class="arabic simple">
+<li><p>tokenisation;</p></li>
+<li><p>the embedding lookup;</p></li>
+<li><p>positional information;</p></li>
+<li><p>attention;</p></li>
+<li><p>the feed-forward layers;</p></li>
+<li><p>output logits and softmax.</p></li>
+</ol>
+<p>Do not try to predict the exact tokeniser output or the exact next token.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-forward-pass</p>
+<p>The tokenizer divides the text into tokens and maps those tokens to integer
+IDs. The embedding layer maps each ID to an initial vector, and the model
+incorporates positional information so that token order is represented.</p>
+<p>The vectors pass through a sequence of transformer blocks. Masked
+self-attention lets each position combine information from earlier positions
+but prevents access to future positions. Feed-forward layers transform each
+contextual representation independently. Residual connections and
+normalization support the flow of information through the blocks.</p>
+<p>After the final block, the representation at the last input position is
+projected to one logit for every vocabulary token. Softmax converts the logits
+into probabilities. A decoding strategy selects the next token from that
+distribution.</p>
+</div>
+</section>
+<section id="exercise-attention-and-masking">
+<h3>Exercise: Attention and masking<a class="headerlink" href="#exercise-attention-and-masking" title="Link to this heading">¶</a></h3>
+<div class="admonition-construct-a-causal-mask exercise important admonition" id="exercise-2">
+<p class="admonition-title">Construct a causal mask</p>
+<p>Write the causal attention mask for a sequence of five tokens.</p>
+<p>Then answer:</p>
+<ol class="arabic simple">
+<li><p>How many positions can token 1 attend to?</p></li>
+<li><p>How many positions can token 5 attend to?</p></li>
+<li><p>Why is the mask needed during training even though the complete training
+sentence is already available?</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-1">
+<p class="admonition-title">exercise-causal-mask</p>
+<p>The mask is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             key position
+             1  2  3  4  5
+query 1      x  -  -  -  -
+query 2      x  x  -  -  -
+query 3      x  x  x  -  -
+query 4      x  x  x  x  -
+query 5      x  x  x  x  x
+</pre></div>
+</div>
+<p>Token 1 can attend to one position. Token 5 can attend to all five positions,
+including itself.</p>
+<p>The complete sentence is available during training so that predictions for
+many positions can be computed efficiently in parallel. Without the mask,
+the model could inspect the tokens it is meant to predict. That would leak the
+answers into the input and would not reproduce the autoregressive conditions
+used during generation.</p>
+</div>
+</section>
+<section id="training-pipeline">
+<h3>Training pipeline<a class="headerlink" href="#training-pipeline" title="Link to this heading">¶</a></h3>
+<p>When a LLM is first trained, three steps are usually involved:</p>
+<ul class="simple">
+<li><p>Pretraining: the model is trained on large unstructured corpora of text, in
+an unsupervised manner, just trying to predict the next token. This is what
+gives origin to the base models, which understand language constructs and
+syntax.</p></li>
+<li><p>Supervised fine-tuning (SFT): the model is trained on question-answer pairs,
+possibly with reasoning traces. This is when model are actually trained to
+perform a task (coding assistant, chat interface, etc.) and produces the
+so-called “instruct” models.</p></li>
+<li><p>Reinforcement/alignment training: the model is trained using reinforcement
+learning techniques, like DPO and GRPO, to influence its alignment to human
+values and teach it how to reply in a way that better reflects human
+preferences. After this it is usually ready to ship.</p></li>
+</ul>
+<p>The fine-tuning that is the subject of this course is, essentially, a
+repetition of step 2.</p>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h3>
+<p>A language model begins by dividing text into tokens. Token IDs are mapped to
+initial vectors, and positional information records where those tokens occur
+in the sequence.</p>
+<p>Transformer blocks repeatedly update the representations. Attention exchanges
+information between token positions. Queries and keys determine which
+positions are relevant, while values contain the information that is
+combined. Causal masking prevents a decoder-only model from using future
+tokens.</p>
+<p>Feed-forward layers transform each contextual representation independently.
+Residual connections and normalization make it possible to train a deep stack
+of these operations.</p>
+<p>Finally, the model converts the last representation into logits and then into
+a probability distribution over the vocabulary. Text generation repeats this
+next-token prediction process until a stopping condition is reached.</p>
+</section>
+</section>
+<span id="document-choosing-an-adaptation-strategy"></span><section id="choosing-an-adaptation-strategy-aka-when-not-to-fine-tune">
+<h2>Choosing an adaptation strategy - aka when NOT to fine-tune<a class="headerlink" href="#choosing-an-adaptation-strategy-aka-when-not-to-fine-tune" title="Link to this heading">¶</a></h2>
+<p>When an LLM application performs poorly, fine-tuning is rarely the first or
+only possible response. The model may need clearer instructions, better
+context, access to external information, or a more suitable evaluation
+procedure.</p>
+<p>Prompt engineering, retrieval-augmented generation, and fine-tuning address
+different sources of failure:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering:
+    change the instructions and examples
+
+Retrieval-augmented generation:
+    supply external evidence at inference time
+
+Fine-tuning:
+    change model parameters through training
+</pre></div>
+</div>
+<p>These methods can be combined, but they should not be introduced
+indiscriminately. Every additional component has to be developed, evaluated,
+operated, and maintained.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>What can prompt engineering change?</p></li>
+<li><p>When does a model need retrieval rather than better instructions?</p></li>
+<li><p>What kinds of behaviour justify fine-tuning?</p></li>
+<li><p>Why is fine-tuning a poor substitute for a document store?</p></li>
+<li><p>How can we evaluate whether additional complexity is worthwhile?</p></li>
+<li><p>When should we decide not to fine-tune?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>distinguish a problem with instructions from a problem with evidence;</p></li>
+<li><p>explain what prompt engineering, RAG, and fine-tuning change;</p></li>
+<li><p>recognize applications for which fine-tuning is unnecessary or
+inappropriate;</p></li>
+<li><p>choose an initial adaptation strategy for a concrete use case;</p></li>
+<li><p>define a baseline against which a more complex system can be evaluated;</p></li>
+<li><p>separate retrieval failures from generation failures;</p></li>
+<li><p>describe when RAG and fine-tuning may usefully be combined.</p></li>
+</ul>
+</div>
+<section id="how-can-we-influence-a-model">
+<h3>How can we influence a model?<a class="headerlink" href="#how-can-we-influence-a-model" title="Link to this heading">¶</a></h3>
+<p>The progression from prompting to RAG to fine-tuning represents increasing
+system complexity.</p>
+<figure class="align-default" id="id1">
+<a class="img-responsive reference internal image-reference" href="_images/adaptation-ladder.png"><img alt="_images/adaptation-ladder.png" class="img-responsive" src="_images/adaptation-ladder.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Prompt engineering changes the instructions. RAG adds external evidence.
+Fine-tuning changes model parameters.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The progression should not be interpreted as a sequence that every project
+must complete. A prompt-only system is not an unfinished RAG system, and a RAG
+system is not an unfinished fine-tuning project.</p>
+<p>The objective is to find the least complex system that meets the application’s
+requirements.</p>
+<div class="important admonition">
+<p class="admonition-title">The central diagnostic question</p>
+<p>Is the model failing because it does not know what to do, because it lacks the
+necessary evidence, or because it cannot reliably perform the required
+behaviour?</p>
+</div>
+<p>Those three cases point toward prompting, retrieval, and fine-tuning
+respectively. Real systems may contain more than one kind of failure, but the
+distinction provides a useful starting point.</p>
+</section>
+<section id="prompt-engineering">
+<h3>Prompt engineering<a class="headerlink" href="#prompt-engineering" title="Link to this heading">¶</a></h3>
+<p>Prompt engineering changes the model’s input. It does not update the model
+parameters.</p>
+<p>A prompt can specify the task, the intended reader, the required structure,
+the available evidence, and what the model should do when it cannot answer.
+It can also contain examples of suitable inputs and outputs.</p>
+<p>Consider this prompt:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Summarize this paper.
+</pre></div>
+</div>
+<p>A more useful version might be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Summarize the supplied paper for research software engineers who understand
+machine learning but are not specialists in this application domain.
+
+Use the following headings:
+
+- Research question
+- Method
+- Main result
+- Limitations
+- Reproducibility
+
+Use at most 300 words. Do not invent information that is absent from the
+paper. If reproducibility information is not reported, write "not reported in
+the supplied text".
+</pre></div>
+</div>
+<p>The second prompt reduces ambiguity. It defines the audience, structure,
+length, and handling of missing information.
+Breaking a task into different steps or giving examples of good and bad
+behaviour in the prompt can also be very useful in many cases.</p>
+<!-- ### Direction, format, and examples
+
+A useful prompt normally establishes what the model is supposed to do before
+it attempts to control tone or style.
+
+The following elements are often enough to create a strong baseline:
+
+```text
+Task:
+What should the model do?
+
+Context:
+What information may it use?
+
+Constraints:
+What must it avoid?
+
+Output:
+What structure should it return?
+
+Examples:
+What does a good input-output pair look like?
+
+Abstention:
+What should happen when the evidence is insufficient?
+```
+
+Examples are particularly helpful when a desired format is difficult to
+describe precisely. If the task is to classify technical incidents, a few
+representative examples can establish distinctions that would otherwise
+require a long definition.
+
+### Breaking a task into stages
+
+A complicated task can sometimes be made more reliable by separating it into
+steps:
+
+```text
+source text
+    -> extract claims
+    -> identify supporting evidence
+    -> mark unsupported claims
+    -> produce a revised response
+```
+
+The steps may appear in a single structured prompt or in separate model calls.
+Separate calls make intermediate results easier to inspect, although they also
+increase latency and introduce additional failure points.
+-->
+<section id="when-prompting-is-enough">
+<h4>When prompting is enough<a class="headerlink" href="#when-prompting-is-enough" title="Link to this heading">¶</a></h4>
+<p>Prompt engineering is often sufficient when the base model already has the
+required capability and all necessary information can be included in the
+context.</p>
+<p>Examples include rewriting text for a known audience, extracting fields from
+a short document, producing a specified format, explaining supplied material,
+or generating a first draft that will be reviewed by a person.</p>
+<p>If a model produces good content under the wrong headings, the first response
+should be to specify the headings: training a model to solve a problem that can
+be expressed in two lines of instructions is difficult to justify.</p>
+<p>A generative model may produce different wording across repeated calls. If the
+application requires a rigid structure, first try explicit output constraints,
+examples, schema validation, and deterministic or low-temperature decoding.</p>
+<p>Fine-tuning may improve consistency, but it should not be the first mechanism
+used to impose a simple format.</p>
+</section>
+</section>
+<section id="retrieval-augmented-generation">
+<h3>Retrieval-augmented generation<a class="headerlink" href="#retrieval-augmented-generation" title="Link to this heading">¶</a></h3>
+<p>Retrieval-augmented generation (RAG) adds an external
+information-retrieval stage.</p>
+<p>A simplified RAG system looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>user question
+    -&gt; retrieval query
+    -&gt; relevant passages
+    -&gt; prompt containing question and passages
+    -&gt; generated answer
+</pre></div>
+</div>
+<p>The model parameters are not normally changed. The model receives additional
+evidence as part of its input.</p>
+<section id="what-problem-does-rag-solve">
+<h4>What problem does RAG solve?<a class="headerlink" href="#what-problem-does-rag-solve" title="Link to this heading">¶</a></h4>
+<p>RAG is appropriate when the model cannot answer reliably from its existing
+parameters and the required information exists in an external collection.</p>
+<p>Typical collections include internal documentation, scientific papers,
+technical manuals, organizational policies, support records, and databases
+whose contents change over time.</p>
+<p>Retrieval is also useful when an answer must be accompanied by inspectable
+sources. A model may have encountered a fact during pretraining, but its
+parameters do not provide a dependable citation mechanism. A RAG system can
+retain the identifiers of the retrieved passages and ask the model to cite
+them.</p>
+<p>A basic grounded-generation prompt could be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer the question using only the supplied sources.
+
+If the sources do not contain enough information, state that the available
+evidence is insufficient.
+
+Cite the source identifier after every factual claim.
+
+Question:
+{question}
+
+Sources:
+{retrieved_passages}
+</pre></div>
+</div>
+<p>This prompt does not by itself create a reliable RAG system. The documents
+must be indexed, the query must retrieve useful passages, and the selected
+context must preserve the information needed to answer the question.</p>
+<!--
+### Retrieval and generation are separate problems
+
+RAG systems can fail before the model begins to generate.
+
+The relevant document may be absent from the index. The query may use
+different terminology from the source. A relevant paragraph may have been
+split across chunk boundaries. Metadata filters may exclude the correct
+document. A ranking system may place old or irrelevant material above the
+current source.
+
+Generation can fail even when retrieval succeeds. The model may ignore the
+relevant passage, combine incompatible sources, choose an outdated statement,
+or produce a claim that is not supported by the retrieved material.
+
+These failures require different remedies. Fine-tuning the generator will not
+repair a missing document or a faulty metadata filter.
+-->
+</section>
+<section id="when-rag-is-worth-introducing">
+<h4>When RAG is worth introducing<a class="headerlink" href="#when-rag-is-worth-introducing" title="Link to this heading">¶</a></h4>
+<p>RAG is a strong candidate when the application depends on information that is
+private, frequently updated, too large to include in every prompt, or expected
+to be cited.</p>
+<p>It is less useful when the problem contains no substantial knowledge-retrieval
+component. If the task is to convert a known input into a fixed schema, adding
+a vector database may introduce infrastructure without addressing the actual
+failure.</p>
+<div class="danger admonition">
+<p class="admonition-title">RAG does not eliminate hallucinations (but can help greatly!)</p>
+<p>Retrieval can ground the response in external evidence, but the model can
+still misread, ignore, or go beyond that evidence.</p>
+<p>A grounded system needs explicit instructions, suitable retrieval, source
+tracking, and an evaluation that checks whether claims are supported.</p>
+</div>
+</section>
+</section>
+<section id="fine-tuning">
+<h3>Fine-tuning<a class="headerlink" href="#fine-tuning" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning continues training a pretrained model on examples chosen for a
+particular objective. It changes some or all of the model parameters (or,
+sometimes, introduce a few new ones altogether).</p>
+<p>This makes fine-tuning fundamentally different from prompting and retrieval:
+a prompt or retrieved document can be replaced immediately, while a parameter
+update is produced through a training process and is less directly inspectable.</p>
+<p>Fine-tuning is most useful when the remaining problem is a repeated, measurable
+pattern of behaviour. Examples include using a specialized output
+representation, mapping recurring inputs to recurring outputs, or following
+domain/style conventions that are cumbersome to demonstrate in every prompt.</p>
+<p>Fine-tuning may also teach a model to use specialist vocabulary more
+consistently.</p>
+</section>
+<section id="when-not-to-fine-tune">
+<h3>When not to fine-tune<a class="headerlink" href="#when-not-to-fine-tune" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning is often proposed too early. Before training, it is worth checking
+whether the proposed use case matches any of the following situations:</p>
+<ul class="simple">
+<li><p>The model needs access to policies, publications, software documentation or
+other information that changes in time (not too fast, hopefully). In these
+cases, RAG is usually a better place to start: injecting a lot of new
+information by updating model weights is not an effective update mechanism.</p></li>
+<li><p>Traceability and explainability are required: once more, RAG is the better
+route.</p></li>
+<li><p>The model is prompted in a vague way (e.g. “Summarise this”). Since the model
+knows nothing about what the user actually want, the first (and often only)
+step is to improve (a lot) the prompt.</p></li>
+<li><p>The problem is with constraints, e.g. we want the output to be JSON only. In
+these cases, prompt engineering (possibly with examples) is paramount. If
+performance is still unsatisfactory, fine-tuning can improve format adherence,
+especially at scale and with smaller models.</p></li>
+<li><p>There is no evaluation set: the only way to judge whether the fine-tuned
+model behaves better than baseline is to test on a hold-out evaluation set, or
+with user A/B testing in production. Without metrics for success, fine-tuning
+becomes a useless exercise (and may even lead to loss of performance in other
+general tasks).</p></li>
+<li><p>There are not enough representative examples, since repetitive examples can
+easily lead to overfitting.</p></li>
+</ul>
+</section>
+<section id="a-practical-decision-process">
+<h3>A practical decision process<a class="headerlink" href="#a-practical-decision-process" title="Link to this heading">¶</a></h3>
+<p>The adaptation decision begins with a failure analysis rather than a choice of
+technology.</p>
+<section id="establish-the-task-and-evaluation">
+<h4>Establish the task and evaluation<a class="headerlink" href="#establish-the-task-and-evaluation" title="Link to this heading">¶</a></h4>
+<p>Write down what a satisfactory output looks like. Assemble examples that
+cover ordinary cases, difficult cases, ambiguous cases, and cases where the
+system should decline to answer.</p>
+<p>The evaluation need not initially be large. It does need to be representative
+enough to expose whether a change solves the intended problem.</p>
+</section>
+<section id="build-a-prompt-baseline">
+<h4>Build a prompt baseline<a class="headerlink" href="#build-a-prompt-baseline" title="Link to this heading">¶</a></h4>
+<p>Create the simplest prompt that specifies the task, context, constraints,
+output, and abstention behaviour. Include examples where they clarify the
+desired mapping.</p>
+<p>Run the evaluation set and record the results. This baseline provides evidence
+against which retrieval or fine-tuning can be compared.</p>
+</section>
+<section id="add-retrieval-if-evidence-is-missing">
+<h4>Add retrieval if evidence is missing<a class="headerlink" href="#add-retrieval-if-evidence-is-missing" title="Link to this heading">¶</a></h4>
+<p>Inspect failed examples. If the model could answer correctly when given the
+right document passage, the problem points toward retrieval.</p>
+<p>Evaluate whether the retrieval stage finds that passage. Do not evaluate only
+the final prose.</p>
+</section>
+<section id="consider-fine-tuning-for-persistent-behaviour">
+<h4>Consider fine-tuning for persistent behaviour<a class="headerlink" href="#consider-fine-tuning-for-persistent-behaviour" title="Link to this heading">¶</a></h4>
+<p>Fine-tuning becomes reasonable when the system has appropriate instructions
+and evidence but still fails in a repeated, measurable way.</p>
+<p>At that point, the training examples can target a stable behaviour rather than
+compensating for an undefined prompt or missing source.</p>
+<p>The resulting process is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define success
+    -&gt; build a prompt baseline
+    -&gt; inspect failures
+    -&gt; add retrieval if evidence is missing
+    -&gt; inspect failures again
+    -&gt; fine-tune if behaviour remains inadequate
+</pre></div>
+</div>
+</section>
+</section>
+<section id="combining-rag-and-fine-tuning">
+<h3>Combining RAG and fine-tuning<a class="headerlink" href="#combining-rag-and-fine-tuning" title="Link to this heading">¶</a></h3>
+<p>RAG and fine-tuning are not mutually exclusive.</p>
+<p>A useful division of labour is that RAG supplies the evidence, whereas
+fine-tuning teaches the model how to use it.</p>
+<p>For example, a technical assistant may need retrieval to access the current
+software documentation, but may also benefit from fine-tuning if it
+systematically fails to express commands according to an organization’s
+conventions.</p>
+<p>It is worth noting that the combined system is more complex than either
+component alone. Thus, its evaluation must determine whether a failure came
+from retrieval, prompting, the fine-tuned behaviour, or the interaction between
+them.</p>
+</section>
+<section id="evaluating-the-adaptation-ladder">
+<h3>Evaluating the adaptation ladder<a class="headerlink" href="#evaluating-the-adaptation-ladder" title="Link to this heading">¶</a></h3>
+<p>Evaluation should precede an increase in complexity: otherwise, there is no
+reliable way to tell whether the additional component helped.</p>
+<section id="evaluate-more-than-fluency">
+<h4>Evaluate more than fluency<a class="headerlink" href="#evaluate-more-than-fluency" title="Link to this heading">¶</a></h4>
+<p>A response can sound better without becoming more correct. Evaluation should
+therefore separate dimensions that matter to the application.</p>
+<p>For a document question-answering system, useful dimensions might include
+factual support, citation correctness, completeness, appropriate abstention,
+latency, and cost.</p>
+<p>For a structured extraction task, useful dimensions might include field
+accuracy, schema validity, handling of missing values, and robustness to
+unusual inputs.</p>
+</section>
+<section id="evaluate-rag-in-parts">
+<h4>Evaluate RAG in parts<a class="headerlink" href="#evaluate-rag-in-parts" title="Link to this heading">¶</a></h4>
+<p>A RAG system has at least three evaluation targets:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Retrieval:
+Did the system retrieve the evidence required to answer?
+
+Generation:
+Did the model use the retrieved evidence correctly?
+
+End-to-end:
+Did the user receive a satisfactory answer?
+</pre></div>
+</div>
+<p>A good final answer does not prove that retrieval is robust. The model may
+already know the answer or may have guessed correctly. Conversely, a poor
+final answer does not prove that retrieval failed. The correct source may have
+been present but used incorrectly.</p>
+</section>
+<section id="evaluate-fine-tuning-against-meaningful-baselines">
+<h4>Evaluate fine-tuning against meaningful baselines<a class="headerlink" href="#evaluate-fine-tuning-against-meaningful-baselines" title="Link to this heading">¶</a></h4>
+<p>A fine-tuned model should be compared with the unchanged base model using the
+best prompt developed during exploration.</p>
+<p>Depending on the application, the comparison may also include:</p>
+<ul class="simple">
+<li><p>base model with a simple prompt</p></li>
+<li><p>base model with the strongest prompt</p></li>
+<li><p>(if RAG is used) base model with prompt and retrieval</p></li>
+<li><p>(if RAG is used) fine-tuned model with the same retrieval</p></li>
+</ul>
+<p>This prevents a training run from receiving credit for improvements that came
+from a better prompt, a changed dataset, or a different retrieval setup.</p>
+<p><strong>Held-out evaluation is essential</strong>: examples used during training cannot show
+whether the model generalizes to new inputs.</p>
+</section>
+<section id="automated-and-human-evaluation">
+<h4>Automated and human evaluation<a class="headerlink" href="#automated-and-human-evaluation" title="Link to this heading">¶</a></h4>
+<p>Automated checks work well when correctness can be defined precisely. Schema
+validation, exact field comparison, classification scores, citation matching,
+and retrieval recall are useful examples.</p>
+<p>Human evaluation is needed when quality depends on context, usefulness, or
+specialist judgment.</p>
+<p>Another language model can assist with evaluation (<em>LLM-as-a-judge</em>), but its
+judgement must be also tailored to human preference. However, it can be useful
+in cases when the objective function is somewhat subjective, such as verbosity,
+complexity or general style.</p>
+</section>
+</section>
+<section id="exercise-choose-the-first-intervention">
+<h3>Exercise: Choose the first intervention<a class="headerlink" href="#exercise-choose-the-first-intervention" title="Link to this heading">¶</a></h3>
+<div class="admonition-choose-an-adaptation-strategy exercise important admonition" id="exercise-0">
+<p class="admonition-title">Choose an adaptation strategy</p>
+<p>For each scenario, decide what you would try first:</p>
+<ul class="simple">
+<li><p>prompt engineering;</p></li>
+<li><p>prompt engineering with RAG;</p></li>
+<li><p>fine-tuning after establishing a prompt baseline;</p></li>
+<li><p>RAG followed, if necessary, by fine-tuning.</p></li>
+</ul>
+<p>Explain what kind of failure you expect the chosen approach to address.</p>
+<ol class="arabic simple">
+<li><p>A model must answer questions about policies that change every month and
+cite the relevant section.</p></li>
+<li><p>A model writes useful summaries but uses the wrong headings.</p></li>
+<li><p>A model must convert thousands of recurring incident reports into a strict
+internal representation.</p></li>
+<li><p>A support assistant must use the current documentation and express commands
+according to an organization’s conventions.</p></li>
+<li><p>A model must answer questions about a collection of papers that is updated
+every week.</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-adaptation-strategy</p>
+<p>For the monthly policies, start with prompt engineering and RAG. The dominant
+problem is access to changing, citable evidence.</p>
+<p>For the incorrect headings, start with prompt engineering. The desired change
+is simple to specify and should not initially require training.</p>
+<p>For recurring incident reports, establish a prompt baseline first.
+Fine-tuning may become worthwhile if the mapping is stable, the volume is
+high, representative examples are available, and prompt-based output remains
+insufficiently reliable.</p>
+<p>For the support assistant, use RAG to provide current documentation. If a
+strong prompt does not produce the required command style consistently,
+fine-tuning may then be justified for the behavioural part of the task.</p>
+<p>For the changing paper collection, start with prompt engineering and RAG. The
+collection should be updateable independently of the model parameters.</p>
+</div>
+</section>
+<section id="exercise-decide-whether-to-fine-tune">
+<h3>Exercise: Decide whether to fine-tune<a class="headerlink" href="#exercise-decide-whether-to-fine-tune" title="Link to this heading">¶</a></h3>
+<div class="admonition-fine-tuning-readiness-review exercise important admonition" id="exercise-1">
+<p class="admonition-title">Fine-tuning readiness review</p>
+<p>A team proposes fine-tuning a model on 200 internal question-answer pairs.</p>
+<p>The stated goal is:</p>
+<blockquote>
+<div><p>We want the model to know our documentation and stop hallucinating.</p>
+</div></blockquote>
+<p>Before approving the training work, write at least five questions that the
+team should answer.</p>
+<p>Identify which answers would suggest that fine-tuning is premature.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-1">
+<p class="admonition-title">exercise-finetuning-readiness</p>
+<p>Useful questions include:</p>
+<ol class="arabic simple">
+<li><p>How often does the documentation change?</p></li>
+<li><p>Must answers cite a document or section?</p></li>
+<li><p>Has the team evaluated a prompt-only baseline?</p></li>
+<li><p>Has the team evaluated a retrieval-based baseline?</p></li>
+<li><p>Are the 200 examples representative of real questions?</p></li>
+<li><p>Is there a held-out evaluation set?</p></li>
+<li><p>What does “stop hallucinating” mean in measurable terms?</p></li>
+<li><p>Do failures occur because evidence is missing, or because the model uses
+available evidence incorrectly?</p></li>
+<li><p>What should the system do when the documentation does not contain an
+answer?</p></li>
+<li><p>Who will maintain and evaluate the model when documentation changes?</p></li>
+</ol>
+<p>Fine-tuning is premature if the documentation changes regularly, citations
+are required, retrieval has not been tested, the same examples will be used
+for training and evaluation, or success has not been defined.</p>
+<p>The phrase “know our documentation” points primarily toward retrieval. The
+team may later fine-tune how the model responds to retrieved material, but
+retrieval and abstention should be addressed first.</p>
+</div>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h3>
+<p>Prompt engineering, RAG, and fine-tuning change different parts of an LLM
+application.</p>
+<p>Prompt engineering changes the instructions and examples. It is the correct
+starting point when the model already has the necessary capability and
+evidence.</p>
+<p>RAG retrieves external information and includes it in the model’s context. It
+is the usual choice for private, changing, extensive, or citable knowledge.</p>
+<p>Fine-tuning changes model parameters. It is best suited to stable and repeated
+behavioural patterns that remain inadequate after a strong prompt baseline
+and, where necessary, reliable retrieval.</p>
+<p>The progression is therefore not:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>start simple -&gt; eventually fine-tune
+</pre></div>
+</div>
+<p>It is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>start simple
+    -&gt; evaluate
+    -&gt; diagnose the remaining failure
+    -&gt; introduce only the component that addresses that failure
+</pre></div>
+</div>
+<p>Fine-tuning is usually the wrong response when the model needs current
+documents, citations, clearer instructions, a simple output constraint, or a
+working retrieval system. It is also premature when there is no representative
+training data or held-out evaluation set.</p>
+</section>
+</section>
+<span id="document-fine-tuning"></span><section id="fine-tuning-large-language-models">
+<h2>Fine-tuning large language models<a class="headerlink" href="#fine-tuning-large-language-models" title="Link to this heading">¶</a></h2>
+<p>Fine-tuning continues the training of a pretrained model using examples
+selected for a particular task or behaviour.</p>
+<p>Unlike prompt engineering and retrieval-augmented generation, fine-tuning
+changes model parameters. The resulting behaviour is encoded in a new set of
+weights or in a smaller set of adapter parameters.</p>
+<p>Fine-tuning can be useful, but it introduces a complete training lifecycle:
+the process needs suitable data, an objective, a validation strategy,
+hyperparameters, experiment tracking, model artifacts, and an evaluation that
+goes beyond training loss.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>What changes during fine-tuning?</p></li>
+<li><p>What kinds of behaviour can fine-tuning teach?</p></li>
+<li><p>How does full fine-tuning differ from parameter-efficient fine-tuning?</p></li>
+<li><p>What is low-rank adaptation?</p></li>
+<li><p>Which transformer layers can receive LoRA adapters?</p></li>
+<li><p>What must be prepared before training begins?</p></li>
+<li><p>How do we determine whether fine-tuning improved the application?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>explain how fine-tuning differs from prompting and retrieval;</p></li>
+<li><p>identify tasks for which fine-tuning is a reasonable intervention;</p></li>
+<li><p>describe the practical costs of full fine-tuning;</p></li>
+<li><p>explain the idea behind parameter-efficient fine-tuning;</p></li>
+<li><p>describe LoRA as a low-rank update to frozen model weights;</p></li>
+<li><p>explain why LoRA target modules depend on model architecture;</p></li>
+<li><p>identify the data and evaluation requirements for a fine-tuning project;</p></li>
+<li><p>distinguish training progress from evidence of generalization.</p></li>
+</ul>
+</div>
+<section id="what-fine-tuning-changes">
+<h3>What fine-tuning changes<a class="headerlink" href="#what-fine-tuning-changes" title="Link to this heading">¶</a></h3>
+<p>A pretrained language model contains parameters learned from a large
+collection of training data. During fine-tuning, the model processes examples
+that represent a more specific objective. Gradients computed from those
+examples update some or all of the model parameters.</p>
+<p>For supervised fine-tuning, an example commonly contains an input and a
+desired response:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input:
+Summarize the incident report using the required internal schema.
+
+Desired response:
+{
+  "category": "resource_exhaustion",
+  "component": "gpu",
+  "action": "reduce_batch_size"
+}
+</pre></div>
+</div>
+<p>Fine-tuning is well suited to stable patterns that occur repeatedly.
+Thus, a particular application might use fine-tuning to improve adherence to a
+specialized output format, apply domain-specific labels, produce a consistent
+response style, or map recurring inputs to recurring outputs.</p>
+<p>Fine-tuning can change the factual associations produced by a model, but this
+does not make it a suitable document database like RAG; however,it may combine
+the new examples with associations learned during pretraining. Updating or
+removing a fact requires another model update, and the effect of that update
+may not be isolated.</p>
+<p>Usually, two types of fine-tuning can be performed: full fine-tuning and
+parameter-efficient fine-tuning.</p>
+</section>
+<section id="full-fine-tuning">
+<h3>Full fine-tuning<a class="headerlink" href="#full-fine-tuning" title="Link to this heading">¶</a></h3>
+<p>In full fine-tuning, every trainable parameter in the model is updated.</p>
+<p>For a model with billions of parameters, this creates substantial resource
+requirements. The device must hold the model weights, gradients, optimizer
+state, activations, and temporary buffers used by the training operations. In
+particular, the optimizer state can be particularly expensive, since an
+optimizer may maintain multiple values for every trainable parameter. The cost
+for full fine-tuning is comparable to that of pretraining, since all parameters
+need updating. Full fine-tuning also produces a complete new set of model
+weights. If several tasks require separate models, storage and deployment costs
+grow quickly.</p>
+<section id="when-full-fine-tuning-may-be-justified">
+<h4>When full fine-tuning may be justified<a class="headerlink" href="#when-full-fine-tuning-may-be-justified" title="Link to this heading">¶</a></h4>
+<p>Full fine-tuning offers the greatest flexibility because updates are not
+restricted to selected components. It may be appropriate when the task
+requires broad changes, the training dataset is sufficiently large, and the
+project has the compute and evaluation capacity to manage the resulting
+model.</p>
+<p>These conditions are demanding. For many organizational and workshop use
+cases, parameter-efficient fine-tuning is the more practical starting point.</p>
+<div class="caution admonition">
+<p class="admonition-title">More trainable parameters are not automatically better</p>
+<p>Updating the whole model increases capacity, but it also increases memory use,
+storage, and the risk of changing useful existing behaviour.</p>
+<p>The choice between full and parameter-efficient fine-tuning should be based
+on measured task performance rather than on the assumption that a larger
+update must be superior.</p>
+</div>
+</section>
+</section>
+<section id="parameter-efficient-fine-tuning">
+<h3>Parameter-efficient fine-tuning<a class="headerlink" href="#parameter-efficient-fine-tuning" title="Link to this heading">¶</a></h3>
+<p>Parameter-efficient fine-tuning (PEFT) keeps most pretrained parameters
+frozen and learns a much smaller set of task-specific parameters.</p>
+<p>The base model still participates in every forward pass. Freezing the base
+model does not remove the need to load it or execute its layers. The main
+training savings come from not storing gradients and optimizer states for all
+base-model parameters.</p>
+<p>There are several PEFT methods, such as low-rank adapters (LoRA), adapter
+layers and Infused Adapter by Inhibiting and Amplifying Inner Activations
+(IA3), which differ in where the trainable parameters are added and how they
+interact with the frozen model. LoRA is one of the most widely used approaches.</p>
+</section>
+<section id="low-rank-adaptation">
+<h3>Low-rank adaptation<a class="headerlink" href="#low-rank-adaptation" title="Link to this heading">¶</a></h3>
+<p>Suppose a pretrained layer contains a weight matrix:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[W \in \mathbb{R}^{d_{\mathrm{out}} \times d_{\mathrm{in}}}\]</div>
+</div>
+<p>Full fine-tuning would learn an unrestricted update of the same shape:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[W' = W + \Delta W\]</div>
+</div>
+<p>LoRA represents the update as the product of two smaller matrices:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\Delta W = BA\]</div>
+</div>
+<p>where:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[A \in \mathbb{R}^{r \times d_{\mathrm{in}}}\]</div>
+</div>
+<p>and:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[B \in \mathbb{R}^{d_{\mathrm{out}} \times r}\]</div>
+</div>
+<p>The rank (r) is chosen to be much smaller than the input and output
+dimensions.</p>
+<p>The adapted computation can be written as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[y = Wx + \frac{\alpha}{r}BAx\]</div>
+</div>
+<p>The original matrix (W) remains frozen. Only (A) and (B) are trained.</p>
+<p>Conceptually:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>large frozen weight matrix
+           +
+small trainable low-rank update
+           =
+adapted layer
+</pre></div>
+</div>
+<section id="why-does-a-low-rank-update-help">
+<h4>Why does a low-rank update help?<a class="headerlink" href="#why-does-a-low-rank-update-help" title="Link to this heading">¶</a></h4>
+<p>Fine-tuning does not necessarily require an independent change in every
+direction of a large weight matrix. For many adaptation tasks, a lower
+dimensional update can provide enough capacity to shift the model’s
+behaviour.</p>
+<p>LoRA makes this assumption explicit by restricting the update to a matrix
+whose rank is at most (r).</p>
+<p>This reduces the number of trainable parameters from:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[d_{\mathrm{out}}d_{\mathrm{in}}\]</div>
+</div>
+<p>to:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(d_{\mathrm{in}} + d_{\mathrm{out}})\]</div>
+</div>
+<p>For large projection matrices and a small rank, the difference can be
+substantial.</p>
+</section>
+<section id="tunables">
+<h4>Tunables<a class="headerlink" href="#tunables" title="Link to this heading">¶</a></h4>
+<p>The following hyperparameters need to be estimated when performing a LoRA:</p>
+<ul class="simple">
+<li><p>Rank <code class="docutils literal notranslate"><span class="pre">r</span></code>: maximum rank of the learned update. A higher rank can provide more
+adaptation capacity, but makes the process more expensive. Depending on model
+and dataset size, <code class="docutils literal notranslate"><span class="pre">r</span></code> usually ranges between 8 and 64. 16 is a good place to
+start for many experiments.</p></li>
+<li><p>Scaling factor <span class="math notranslate nohighlight">\(\alpha\)</span>: usually the adapter contribution is scaled by
+<span class="math notranslate nohighlight">\(\alpha/r\)</span> to control the influence of the LoRA adapter compared to the
+base model. It can also range commonly from 8 to 64 or more, with 32 being a
+sweet spot based on the empirical rule of <span class="math notranslate nohighlight">\(\alpha=2r\)</span>.</p></li>
+<li><p>Dropout: same as “normal” neural network training, i.e. intentionally
+switching off part of the adapter to avoid overfitting, especially for small
+datasets. Common values range from 0 (no dropout, especially on large datasets)
+to 0.1 (very small). 0.05 is often a sweet spot.</p></li>
+</ul>
+<p>These tunables tend to play a smaller role than most people assume, whereas dataset quality is the real knob that can dramatically change results.</p>
+</section>
+</section>
+<section id="where-lora-adapters-are-placed">
+<h3>Where LoRA adapters are placed<a class="headerlink" href="#where-lora-adapters-are-placed" title="Link to this heading">¶</a></h3>
+<p>LoRA is applied to linear transformations in the model. Attention projections
+are common targets:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>query projection
+key projection
+value projection
+attention output projection
+</pre></div>
+</div>
+<p>Many implementations name these modules using forms such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>q_proj
+k_proj
+v_proj
+o_proj
+</pre></div>
+</div>
+<p>The names are conventions, not a universal interface.</p>
+<p>Adapters may also be placed on feed-forward projections. A gated
+feed-forward network may contain modules with names resembling:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>gate_proj
+up_proj
+down_proj
+</pre></div>
+</div>
+<p>Targeting more modules gives the adapter more ways to modify the model. It
+also increases the number of trainable parameters and the computational cost
+of the adapter path.</p>
+<section id="why-attention-projections-are-common-targets">
+<h4>Why attention projections are common targets<a class="headerlink" href="#why-attention-projections-are-common-targets" title="Link to this heading">¶</a></h4>
+<p>Attention projections determine how token representations are converted into
+queries, keys, values, and attention outputs. Adapting those projections can
+change which contextual relationships the model emphasizes and how
+information is exchanged between positions.</p>
+<p>This makes attention projections a natural target for tasks that require a
+change in how the model responds to context.</p>
+<p>Feed-forward layers also contain substantial capacity. Including their
+projections can improve adaptation for some tasks, although the additional
+parameters should be justified through evaluation.</p>
+</section>
+</section>
+<section id="preparing-fine-tuning-data">
+<h3>Preparing fine-tuning data<a class="headerlink" href="#preparing-fine-tuning-data" title="Link to this heading">¶</a></h3>
+<p>A fine-tuning dataset should represent the behaviour expected in deployment.</p>
+<p>For an instruction-tuned chat model, examples are often represented as
+messages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Explain why this training run failed."</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"The run exhausted device memory while allocating..."</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The model’s chat template converts the messages into the control tokens and
+text format expected by that model.</p>
+<p>Using the correct template matters. A model trained with one conversation
+format may not interpret another model’s role markers as intended.</p>
+<section id="what-kind-and-how-much-data-do-i-need">
+<h4>What kind and how much data do I need?<a class="headerlink" href="#what-kind-and-how-much-data-do-i-need" title="Link to this heading">¶</a></h4>
+<p>As it might be expected, there is no one-size-fits-all recipe for the type and
+quantity of data needed for fine-tuning, which can vary wildly based on task
+and base model size.</p>
+<p>A general indication is that data should be as <em>representative</em> as possible,
+covering the same variation found in real inputs. It should cover examples that
+are routine, difficult, ambiguous, or where the expected answer is “I do not
+know”. Generally speaking, less good examples are better than many low-quality
+ones (e.g. duplicates, inconsistent formatting, incorrect answers, etc.). As
+stated many times, good segregation between training, validation and test data
+is paramount.</p>
+<p>When it comes to quantity, the answer varies based on task complexity, type of
+fine-tuning and base model size:</p>
+<ul class="simple">
+<li><p>Full fine-tuning generally needs more data than LoRA, since all parameters
+can change and this can lead to a higher risk of overfitting or loss of useful
+pretrained behaviour. A good rule of thumb is that full fine-tuning should be
+attempted when the number of available examples is at least in the order of
+tens of thousands.</p></li>
+<li><p>LoRA, on the other hand, can require just a few hundreds/thousands of
+well-curated examples if the task is narrow. More varied generative tasks would
+put us back in the tens of thousands of needed examples.</p></li>
+</ul>
+<p>Generally speaking, if attempting LoRA, a larger model tends to need less
+examples for narrow tasks. This is because a large, capable model may already
+have the knowledge necessary to carry out the task, and just needs to be
+“nudged” to behave in a certain way.</p>
+</section>
+<section id="representative-data">
+<h4>Representative data<a class="headerlink" href="#representative-data" title="Link to this heading">¶</a></h4>
+<p>Representative data covers the variation expected in real inputs. It should
+include routine examples, difficult cases, ambiguous cases, long and short
+inputs, and examples where the correct response is to refuse or state that
+information is missing.</p>
+<p>Repeatedly generating examples from one template may produce a large dataset
+without producing meaningful diversity.</p>
+<p>Quality is also more important than raw example count. Incorrect answers,
+inconsistent formatting, duplicated examples, and accidental sensitive data
+can all become part of the learned behaviour.</p>
+</section>
+<section id="what-should-contribute-to-the-loss">
+<h4>What should contribute to the loss?<a class="headerlink" href="#what-should-contribute-to-the-loss" title="Link to this heading">¶</a></h4>
+<p>For assistant-response training, the input conversation provides context while
+the desired assistant response provides the prediction target.</p>
+<p>A common approach masks user and system tokens in the labels:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>system message       -&gt; context, ignored by loss
+user message         -&gt; context, ignored by loss
+assistant response   -&gt; context and prediction target
+</pre></div>
+</div>
+<p>The input is still needed because the assistant response must be conditioned
+on the request. Masking a token from the loss does not remove it from the
+model input.</p>
+<p>Different objectives may use different masking strategies. The important
+point is to decide explicitly which tokens the model is being trained to
+predict.</p>
+</section>
+</section>
+<section id="training-configuration">
+<h3>Training configuration<a class="headerlink" href="#training-configuration" title="Link to this heading">¶</a></h3>
+<p>A training configuration controls both optimization and resource use.</p>
+<p>The most visible parameters include learning rate, number of epochs, batch
+size, gradient accumulation, maximum sequence length, evaluation frequency,
+and checkpoint frequency.</p>
+<p>These quantities interact. Changing one may alter memory use, runtime, or the
+number of parameter updates.</p>
+<section id="batch-size-and-gradient-accumulation">
+<h4>Batch size and gradient accumulation<a class="headerlink" href="#batch-size-and-gradient-accumulation" title="Link to this heading">¶</a></h4>
+<p>The per-device batch size is the number of examples processed by one device
+in one forward and backward pass.</p>
+<p>Gradient accumulation performs several such passes before applying an
+optimizer step. With data-parallel training, the effective batch size is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[B_{\mathrm{effective}}
+=
+B_{\mathrm{device}}
+\times
+N_{\mathrm{devices}}
+\times
+N_{\mathrm{accumulation}}\]</div>
+</div>
+<p>For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>per-device batch size       4
+number of devices           2
+gradient accumulation       8
+effective batch size       64
+</pre></div>
+</div>
+<p>Gradient accumulation can produce a larger effective batch without storing
+all examples’ activations simultaneously. It does not avoid their
+computation. Eight accumulation passes still require eight forward and
+backward passes.</p>
+</section>
+<section id="sequence-length">
+<h4>Sequence length<a class="headerlink" href="#sequence-length" title="Link to this heading">¶</a></h4>
+<p>Sequence length has a strong effect on memory and runtime. Longer sequences
+require more activation memory, and standard dense attention forms a
+quadratic attention matrix.</p>
+<p>A batch size that works for short examples may fail when the batch contains
+long examples.</p>
+</section>
+<section id="packing">
+<h4>Packing<a class="headerlink" href="#packing" title="Link to this heading">¶</a></h4>
+<p>Packing places several short examples into one fixed-length training
+sequence. This reduces computation wasted on padding.</p>
+<p>Without packing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example 1 + padding + padding + padding
+example 2 + padding + padding + padding
+</pre></div>
+</div>
+<p>With packing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example 1 + example 2 + example 3 + remaining padding
+</pre></div>
+</div>
+<p>The dataloader batch size still refers to packed sequences, not to the number
+of original examples contained inside them. One packed sequence may contain
+several short examples.</p>
+<p>Packing can improve throughput for datasets with many short records. It does
+not increase the configured context length, and examples must remain properly
+separated so that labels and attention behaviour follow the intended training
+objective.</p>
+</section>
+<section id="learning-rate-and-warmup">
+<h4>Learning rate and warmup<a class="headerlink" href="#learning-rate-and-warmup" title="Link to this heading">¶</a></h4>
+<p>The learning rate controls the scale of optimizer updates. An excessively
+large learning rate may destabilize training or damage useful pretrained
+behaviour. An excessively small learning rate may produce little adaptation
+within the available training time.</p>
+<p>Warmup starts with a smaller learning rate and increases it during the early
+part of training. This can reduce instability before the optimizer has
+established useful parameter statistics.</p>
+<p>The appropriate values depend on the optimizer, effective batch size, model,
+adapter configuration, and dataset. Training loss and validation behaviour
+should be observed together.</p>
+</section>
+<section id="training-duration">
+<h4>Training duration<a class="headerlink" href="#training-duration" title="Link to this heading">¶</a></h4>
+<p>More epochs expose the model to the training examples more times. This may
+improve learning initially, but eventually increases the risk of overfitting.</p>
+<p>A small dataset can be memorized quickly. The best checkpoint is not
+necessarily the final checkpoint.</p>
+<p>Evaluate at useful intervals and retain enough checkpoint information to
+compare validation results rather than relying only on the last training
+step.</p>
+</section>
+</section>
+<section id="evaluation-during-fine-tuning">
+<h3>Evaluation during fine-tuning<a class="headerlink" href="#evaluation-during-fine-tuning" title="Link to this heading">¶</a></h3>
+<p>Training loss answers a narrow question: how well does the current model
+predict the training targets?</p>
+<p>It does not show whether the model generalizes to new examples, whether the
+application has improved, or whether unrelated capabilities have degraded.</p>
+<section id="validation-loss">
+<h4>Validation loss<a class="headerlink" href="#validation-loss" title="Link to this heading">¶</a></h4>
+<p>Validation loss applies the same token-prediction objective to examples that
+were not used for parameter updates.</p>
+<p>If training loss continues to fall while validation loss stops improving or
+begins to rise, overfitting is a possible explanation.</p>
+<p>Validation loss is useful, but application-level evaluation remains necessary.
+A small change in language-model loss may not correspond to a meaningful
+change in task quality.</p>
+</section>
+<section id="task-evaluation">
+<h4>Task evaluation<a class="headerlink" href="#task-evaluation" title="Link to this heading">¶</a></h4>
+<p>The evaluation should match the intended behaviour.</p>
+<p>For structured output, measure whether the response parses and whether the
+fields are correct. For classification, use suitable class-level metrics. For
+summarization or open-ended generation, combine human review with checks for
+required content, unsupported claims, format adherence, and omissions.</p>
+<p>Compare the fine-tuned model with the strongest non-fine-tuned baseline, not
+only with an unhelpfully vague prompt. This part is nowadays outsourced to an
+LLM (<em>LLM as a judge</em>), provided that it is first aligned with a human
+evaluator.</p>
+</section>
+<section id="regression-evaluation">
+<h4>Regression evaluation<a class="headerlink" href="#regression-evaluation" title="Link to this heading">¶</a></h4>
+<p>Fine-tuning may improve the target task while changing other behaviour.</p>
+<p>A regression set should cover important capabilities that the adapted model
+must retain. This may include general instruction following, multilingual
+inputs, code formatting, safety constraints, or appropriate abstention.</p>
+<p>The contents of the regression set depend on the application. The important
+point is to decide what must not worsen before accepting the adapter.</p>
+<div class="important admonition">
+<p class="admonition-title">Evaluation is part of fine-tuning</p>
+<p>A training run without held-out evaluation is an experiment in optimisation,
+not evidence that the application improved.</p>
+</div>
+</section>
+</section>
+<section id="saving-and-deploying-adapters">
+<h3>Saving and deploying adapters<a class="headerlink" href="#saving-and-deploying-adapters" title="Link to this heading">¶</a></h3>
+<p>One advantage of LoRA is that the adapter is much smaller than the full base
+model.</p>
+<p>The base model and adapter can be stored separately:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>base model
+    +
+task-specific adapter
+    =
+adapted model
+</pre></div>
+</div>
+<p>Several adapters can share the same base model artifact. This simplifies
+storage and makes the distinction between the original model and the
+task-specific update explicit.</p>
+<p>For deployment, the adapter may be loaded alongside the base model. Some
+workflows also merge the adapter update into the base weights. Merging can
+simplify inference in environments that do not support adapters directly, but
+it produces another complete model artifact.
+Deploying a base model + a LoRA adapter is extremely common in image diffusion
+models, where a large backbone represent the baseline generation, and a
+swappable LoRA head is attached to tweak the style (very photorealistic, anime
+style, etc.).</p>
+</section>
+<section id="a-minimal-fine-tuning-workflow">
+<h3>A minimal fine-tuning workflow<a class="headerlink" href="#a-minimal-fine-tuning-workflow" title="Link to this heading">¶</a></h3>
+<p>A fine-tuning project can be organized as the following sequence:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define the target behaviour
+    -&gt; build and evaluate a prompt baseline
+    -&gt; collect representative examples
+    -&gt; create train, validation, and test splits
+    -&gt; select the base model and chat template
+    -&gt; select full fine-tuning or PEFT
+    -&gt; configure and run training
+    -&gt; inspect validation and checkpoints
+    -&gt; evaluate task performance and regressions
+    -&gt; package the model or adapter
+    -&gt; monitor behaviour after deployment
+</pre></div>
+</div>
+<p>The training command occupies only one part of this sequence. Data definition
+and evaluation usually determine whether the result is useful.</p>
+</section>
+<section id="exercise-count-lora-parameters">
+<h3>Exercise: Count LoRA parameters<a class="headerlink" href="#exercise-count-lora-parameters" title="Link to this heading">¶</a></h3>
+<div class="admonition-count-the-adapter-parameters exercise important admonition" id="exercise-0">
+<p class="admonition-title">Count the adapter parameters</p>
+<p>A linear layer has:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input dimension:   4096
+output dimension:  4096
+LoRA rank:            8
+</pre></div>
+</div>
+<p>Calculate:</p>
+<ol class="arabic simple">
+<li><p>the number of parameters in the original weight matrix;</p></li>
+<li><p>the number of trainable parameters in the two LoRA matrices;</p></li>
+<li><p>the fraction of the original parameter count represented by the adapter.</p></li>
+</ol>
+<p>Ignore biases.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-lora-parameters</p>
+<p>The original matrix contains:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[4096 \times 4096 = 16{,}777{,}216\]</div>
+</div>
+<p>parameters.</p>
+<p>The two LoRA matrices contain:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[8 \times 4096 + 4096 \times 8
+=
+65{,}536\]</div>
+</div>
+<p>parameters.</p>
+<p>The ratio is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{65{,}536}{16{,}777{,}216}
+=
+0.00390625\]</div>
+</div>
+<p>The adapter therefore contains approximately (0.39%) as many parameters as
+the original matrix.</p>
+<p>This calculation concerns one adapted matrix. A complete configuration may
+apply LoRA to many projections across all transformer blocks.</p>
+</div>
+<!--
+## Exercise: Select LoRA targets
+
+:::{exercise} Inspect a model before configuring LoRA
+:label: exercise-lora-targets
+
+Suppose a model contains repeated blocks with the following linear modules:
+
+```text
+self_attn.query_key_value
+self_attn.dense
+mlp.dense_h_to_4h
+mlp.dense_4h_to_h
+```
+
+A tutorial for another model recommends:
+
+```python
+target_modules=["q_proj", "v_proj"]
+```
+
+Answer the following questions:
+
+1. Why is the tutorial configuration unlikely to work as intended?
+2. Which modules in the current model might correspond to attention
+   projections?
+3. What should be verified after applying the adapter?
+4. What is the trade-off involved in also targeting the MLP projections?
+:::
+
+:::{solution} exercise-lora-targets
+:class: dropdown
+
+The tutorial uses module names from a different model implementation. The
+current model has no modules named `q_proj` or `v_proj`, so the adapter library
+may match nothing or raise an error.
+
+The combined `self_attn.query_key_value` module appears to contain the query,
+key, and value projections. The `self_attn.dense` module is likely the
+attention output projection. The exact interpretation should be checked
+against the model implementation.
+
+After applying the adapter, inspect the names and number of trainable
+parameters. Confirm that the base-model parameters are frozen and that LoRA
+parameters were created for the intended modules.
+
+Targeting the MLP projections gives the adapter more capacity to change the
+model, but increases trainable parameters, optimizer state, and computation.
+:::
+-->
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Fine-tuning changes model parameters by continuing training on examples of a
+target behaviour.</p></li>
+<li><p>Full fine-tuning updates the complete model. It provides substantial capacity
+but has high memory, storage, and evaluation costs.</p></li>
+<li><p>Parameter-efficient fine-tuning keeps most pretrained parameters frozen. LoRA
+represents selected weight updates as the product of two small matrices. This
+greatly reduces the number of trainable parameters and the associated optimizer
+state.</p></li>
+<li><p>LoRA adapters are commonly applied to attention projections and may also be
+applied to feed-forward projections. The correct target-module names depend on
+the model implementation and must be inspected rather than copied uncritically
+from another architecture.</p></li>
+</ul>
+</section>
+</section>
+</div>
+<div class="toctree-wrapper compound">
+<span id="document-quantisation"></span><section id="quantisation">
+<h2>Quantisation<a class="headerlink" href="#quantisation" title="Link to this heading">¶</a></h2>
+<p>Large language models require substantial memory because they contain many
+parameters. Reducing the numerical precision used to represent those
+parameters can make a model easier to load, serve, and sometimes fine-tune.</p>
+<p>This process is called <strong>quantisation</strong>.</p>
+<p>A simple approximation of the memory needed to store model parameters is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\text{parameter memory}
+=
+\text{number of parameters}
+\times
+\text{bits per parameter}\]</div>
+</div>
+<p>For example, storing one billion parameters requires approximately:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>FP32:  4 GB
+FP16:  2 GB
+BF16:  2 GB
+INT8:  1 GB
+4-bit: 0.5 GB
+</pre></div>
+</div>
+<p>These values describe parameter storage only. A working model also needs
+memory for temporary computation, runtime buffers, cached attention states,
+and framework overhead. Training introduces further requirements for
+activations, gradients, and optimizer state.</p>
+<p>Quantisation is related to resource-efficient fine-tuning, but it does not
+solve the same problem as prompting, retrieval, or fine-tuning:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering, RAG, and fine-tuning:
+    change the information or behaviour of the system
+
+Quantisation:
+    changes how numerical values are represented and computed
+</pre></div>
+</div>
+<p>A prompt-only model can be quantised. A model in a RAG pipeline can be
+quantised. A fine-tuned model can also be quantised.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>Why do numerical formats affect model memory?</p></li>
+<li><p>How do floating-point and integer representations differ?</p></li>
+<li><p>What information is lost during quantisation?</p></li>
+<li><p>Does using fewer bits always make a model faster?</p></li>
+<li><p>What is the difference between inference quantisation and QLoRA?</p></li>
+<li><p>Which parts of training memory are reduced by a quantised base model?</p></li>
+<li><p>How should a quantised model be evaluated?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>estimate the memory needed to store model parameters at several
+precisions;</p></li>
+<li><p>explain quantisation as a mapping from a high-precision range to a smaller
+set of representable values;</p></li>
+<li><p>distinguish storage precision from computation precision;</p></li>
+<li><p>explain why lower bit width does not guarantee higher performance;</p></li>
+<li><p>distinguish post-training quantisation from quantisation-aware training;</p></li>
+<li><p>describe the main idea behind QLoRA;</p></li>
+<li><p>identify memory that is not removed by quantising the base model;</p></li>
+<li><p>design a comparison between a quantised model and its higher-precision
+baseline.</p></li>
+</ul>
+</div>
+<section id="why-numerical-precision-matters">
+<h3>Why numerical precision matters<a class="headerlink" href="#why-numerical-precision-matters" title="Link to this heading">¶</a></h3>
+<p>Neural-network parameters are numerical values. A numerical format determines
+which values can be represented and how much memory is required to store each
+one.</p>
+<p>A model containing seven billion parameters requires approximately 28 GB to
+store its weights in 32-bit precision:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 4\ \text{bytes}
+\approx
+28\ \text{GB}\]</div>
+</div>
+<p>The same parameter count requires approximately 14 GB when each parameter
+occupies 16 bits:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 2\ \text{bytes}
+\approx
+14\ \text{GB}\]</div>
+</div>
+<p>An idealized 4-bit representation reduces the raw parameter storage to
+approximately 3.5 GB:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 0.5\ \text{bytes}
+\approx
+3.5\ \text{GB}\]</div>
+</div>
+<p>Actual memory use will be higher. Quantised representations often require
+additional scaling information, and the runtime allocates memory for other
+purposes.</p>
+<div class="important admonition">
+<p class="admonition-title">Parameter size is not total memory use</p>
+<p>The number of parameters multiplied by the number of bytes per parameter is a
+useful first estimate. It is not a complete estimate of the memory required to
+run or train the model.</p>
+<p>Inference may also require:</p>
+<ul class="simple">
+<li><p>key-value caches;</p></li>
+<li><p>temporary activations;</p></li>
+<li><p>dequantisation buffers;</p></li>
+<li><p>attention workspaces;</p></li>
+<li><p>runtime and framework overhead.</p></li>
+</ul>
+<p>Training may additionally require:</p>
+<ul class="simple">
+<li><p>saved activations;</p></li>
+<li><p>gradients;</p></li>
+<li><p>optimizer states;</p></li>
+<li><p>trainable adapter parameters;</p></li>
+<li><p>communication buffers in distributed training.</p></li>
+</ul>
+</div>
+</section>
+<section id="numerical-formats">
+<h3>Numerical formats<a class="headerlink" href="#numerical-formats" title="Link to this heading">¶</a></h3>
+<p>The names FP32, FP16, BF16, INT8, and 4-bit describe families of numerical
+representations.</p>
+<section id="fp32">
+<h4>FP32<a class="headerlink" href="#fp32" title="Link to this heading">¶</a></h4>
+<p>FP32 is a 32-bit floating-point format. It provides a wide range and relatively
+high precision, but requires four bytes per value.</p>
+<p>FP32 was historically common for neural-network training. Modern accelerators
+often achieve substantially higher throughput with 16-bit formats while still
+retaining selected operations in FP32 where necessary for numerical
+stability.</p>
+</section>
+<section id="fp16">
+<h4>FP16<a class="headerlink" href="#fp16" title="Link to this heading">¶</a></h4>
+<p>FP16 uses 16 bits per value. Compared with FP32, FP16 reduces both numerical
+range and precision.</p>
+<p>The reduced range can cause overflow or underflow during training. Mixed
+precision training may therefore use loss scaling and retain some values or
+operations in FP32.</p>
+</section>
+<section id="bf16">
+<h4>BF16<a class="headerlink" href="#bf16" title="Link to this heading">¶</a></h4>
+<p>BF16 also uses 16 bits, but allocates its bits differently from FP16. BF16 has
+approximately the same numerical range as FP32 but less precision within that
+range.</p>
+<p>This makes BF16 attractive for training on supported accelerators. Its broad
+range reduces some of the numerical difficulties associated with FP16.</p>
+<p>FP16 and BF16 require the same number of bits, but they are not interchangeable
+in terms of hardware support, numerical behaviour, or performance.</p>
+</section>
+<section id="integer-and-low-bit-representations">
+<h4>Integer and low-bit representations<a class="headerlink" href="#integer-and-low-bit-representations" title="Link to this heading">¶</a></h4>
+<p>An 8-bit or 4-bit quantised representation provides far fewer possible bit
+patterns than a 16-bit floating-point representation.</p>
+<p>The model therefore cannot retain every original value exactly. Quantisation
+maps a set of high-precision values onto a smaller set of representable
+values.</p>
+<p>For illustration, suppose a group of weights spans a range from (-1) to
+(1). A high-precision representation can distinguish many values within this
+range. A simple low-bit representation might approximate those values using a
+small set of levels:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>original:   -0.91  -0.24   0.08   0.39   0.87
+quantised:  -1.00  -0.33   0.00   0.33   1.00
+</pre></div>
+</div>
+<p>The difference between an original value and the value used to represent it
+is the quantisation error.</p>
+<p>Real model-quantisation methods use more sophisticated mappings than this
+example. The central trade-off remains the same:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fewer representable values
+    -&gt; lower storage requirements
+    -&gt; some approximation error
+</pre></div>
+</div>
+</section>
+</section>
+<section id="scale-and-zero-point">
+<h3>Scale and zero point<a class="headerlink" href="#scale-and-zero-point" title="Link to this heading">¶</a></h3>
+<p>A common integer quantisation scheme maps a real-valued tensor (x) to an
+integer tensor (q).</p>
+<p>A simplified mapping is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[q =
+\operatorname{round}
+\left(
+\frac{x}{s}
+\right)
++ z\]</div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p>(s) is the scale;</p></li>
+<li><p>(z) is the zero point;</p></li>
+<li><p>rounding selects the nearest representable integer.</p></li>
+</ul>
+<p>An approximate real value can be reconstructed using:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\hat{x} = s(q-z)\]</div>
+</div>
+<p>The quantised value (q) requires fewer bits than the original floating-point
+value. The scale and zero point provide information needed to interpret it.</p>
+<p>The reconstructed value (\hat{x}) is generally not exactly equal to (x).
+The representation has deliberately traded numerical fidelity for lower
+storage cost.</p>
+<section id="symmetric-and-asymmetric-quantisation">
+<h4>Symmetric and asymmetric quantisation<a class="headerlink" href="#symmetric-and-asymmetric-quantisation" title="Link to this heading">¶</a></h4>
+<p>In symmetric quantisation, the representable range is centered around zero.
+The zero point is therefore zero or fixed by the representation.</p>
+<p>In asymmetric quantisation, both a scale and a non-zero offset may be used.
+This can represent distributions that are not centered around zero more
+efficiently, at the cost of additional complexity.</p>
+<p>Weights and activations do not necessarily use the same scheme. A method may
+quantise weights symmetrically while treating activations differently.</p>
+</section>
+</section>
+<section id="quantisation-granularity">
+<h3>Quantisation granularity<a class="headerlink" href="#quantisation-granularity" title="Link to this heading">¶</a></h3>
+<p>A tensor does not need to share one scale across all of its values. The scale
+can be calculated at different levels of granularity.</p>
+<section id="per-tensor-quantisation">
+<h4>Per-tensor quantisation<a class="headerlink" href="#per-tensor-quantisation" title="Link to this heading">¶</a></h4>
+<p>Per-tensor quantisation uses one scale for the complete tensor.</p>
+<p>This keeps the representation simple, but a few unusually large or small
+values can determine the range for every other value. The available levels may
+then be used inefficiently for most of the tensor.</p>
+</section>
+<section id="per-channel-quantisation">
+<h4>Per-channel quantisation<a class="headerlink" href="#per-channel-quantisation" title="Link to this heading">¶</a></h4>
+<p>Per-channel quantisation uses a separate scale for each output channel or
+another selected dimension.</p>
+<p>This can better represent channels whose weights have different
+distributions, at the cost of storing more scaling information and using a
+more complicated kernel.</p>
+</section>
+<section id="group-wise-quantisation">
+<h4>Group-wise quantisation<a class="headerlink" href="#group-wise-quantisation" title="Link to this heading">¶</a></h4>
+<p>Group-wise quantisation divides weights into smaller groups and calculates a
+scale for each group.</p>
+<p>This is a common compromise for low-bit model weights. Smaller groups usually
+reduce approximation error because each scale describes a more local range of
+values. They also require more metadata and may affect kernel efficiency.</p>
+<p>The term “4-bit model” therefore does not fully describe a quantised model.
+The result also depends on the quantisation scheme, group size, scaling
+method, treatment of outliers, and computation format.</p>
+</section>
+</section>
+<section id="weight-and-activation-quantisation">
+<h3>Weight and activation quantisation<a class="headerlink" href="#weight-and-activation-quantisation" title="Link to this heading">¶</a></h3>
+<p>A quantisation method may target different parts of the computation.</p>
+<section id="weight-only-quantisation">
+<h4>Weight-only quantisation<a class="headerlink" href="#weight-only-quantisation" title="Link to this heading">¶</a></h4>
+<p>Weight-only quantisation stores model weights in a lower-bit format.
+Activations may remain in FP16, BF16, or another floating-point format.</p>
+<p>This can reduce the memory needed to load the model and the memory bandwidth
+needed to read its parameters. During computation, a kernel may dequantise
+weight blocks into a computation format or incorporate the scaling directly
+into the matrix multiplication.</p>
+<p>Weight-only quantisation is common for large language model inference because
+the model weights account for a substantial part of the memory footprint.</p>
+</section>
+<section id="id1">
+<h4>Weight and activation quantisation<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<p>Other methods quantise both weights and activations.</p>
+<p>This can enable lower-precision arithmetic throughout more of the computation,
+but activation distributions vary with the input and can contain outliers.
+Maintaining model quality can therefore be more difficult than for
+weight-only quantisation.</p>
+</section>
+<section id="the-key-value-cache">
+<h4>The key-value cache<a class="headerlink" href="#the-key-value-cache" title="Link to this heading">¶</a></h4>
+<p>Autoregressive generation stores keys and values from previous tokens so that
+the model does not recompute the complete sequence at every generation step.
+This storage is called the <strong>key-value cache</strong>, or KV cache.</p>
+<p>The KV cache grows with sequence length, batch size, number of layers, and the
+relevant attention dimensions. For long contexts or large batches, it may
+consume a substantial fraction of inference memory.</p>
+<p>Quantising model weights does not automatically quantise the KV cache. Some
+inference systems support lower-precision KV caches as a separate
+optimization.</p>
+<div class="note admonition">
+<p class="admonition-title">Identify what has been quantised</p>
+<p>When a library describes a model as “8-bit” or “4-bit”, check whether the
+description refers to:</p>
+<ul class="simple">
+<li><p>model weights;</p></li>
+<li><p>activations;</p></li>
+<li><p>the key-value cache;</p></li>
+<li><p>selected layers only;</p></li>
+<li><p>storage on disk;</p></li>
+<li><p>storage in accelerator memory;</p></li>
+<li><p>arithmetic performed by the accelerator.</p></li>
+</ul>
+<p>These are related but distinct choices.</p>
+</div>
+</section>
+</section>
+<section id="post-training-quantisation">
+<h3>Post-training quantisation<a class="headerlink" href="#post-training-quantisation" title="Link to this heading">¶</a></h3>
+<p>Post-training quantisation starts from an already trained model and converts
+some of its values into a lower-precision representation.</p>
+<p>No further task-specific training is necessarily required.</p>
+<p>A simplified workflow is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>higher-precision trained model
+    -&gt; inspect or calibrate numerical distributions
+    -&gt; choose scales and quantisation parameters
+    -&gt; store quantised model
+    -&gt; evaluate quality and performance
+</pre></div>
+</div>
+<p>Some post-training methods use a calibration dataset to observe representative
+activations or estimate which weights are most sensitive to approximation.
+The calibration data does not need to be as large as the original training
+corpus, but it should reflect expected use.</p>
+<p>Other methods can quantise weights without an explicit calibration dataset.
+The resulting quality depends on the method, model architecture, and target
+bit width.</p>
+<p>Post-training quantisation is attractive because it does not require full
+retraining. It is frequently considered when a model already behaves
+satisfactorily but is too large or expensive to deploy in its original
+precision.</p>
+</section>
+<section id="quantisation-aware-training">
+<h3>Quantisation-aware training<a class="headerlink" href="#quantisation-aware-training" title="Link to this heading">¶</a></h3>
+<p>Quantisation-aware training simulates low-precision effects during training.
+The optimization process can then adjust the model parameters to compensate
+for some of the approximation introduced by quantisation.</p>
+<p>A simplified view is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>forward pass:
+    simulate quantised values
+
+backward pass:
+    update higher-precision trainable parameters
+
+deployment:
+    convert to the intended low-precision representation
+</pre></div>
+</div>
+<p>Quantisation-aware training generally involves more work than post-training
+quantisation, but it can preserve quality better for demanding low-bit
+configurations.</p>
+<p>This should not be confused with QLoRA. Quantisation-aware training prepares a
+model to operate after quantisation. QLoRA uses a quantised frozen base model
+to reduce the memory required for parameter-efficient fine-tuning.</p>
+</section>
+<section id="does-quantisation-make-a-model-faster">
+<h3>Does quantisation make a model faster?<a class="headerlink" href="#does-quantisation-make-a-model-faster" title="Link to this heading">¶</a></h3>
+<p>Not necessarily.</p>
+<p>Fewer bits reduce the storage occupied by each value and may reduce the amount
+of memory transferred when reading weights. This can improve performance when
+inference is limited by memory bandwidth.</p>
+<p>The accelerator still needs a suitable execution path. Performance depends
+on whether optimized kernels exist for the numerical format, quantisation
+scheme, group size, model architecture, and hardware.</p>
+<p>A quantised operation may need to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>read low-bit weights
+    -&gt; unpack values
+    -&gt; apply scales
+    -&gt; convert or dequantise values
+    -&gt; perform matrix multiplication
+</pre></div>
+</div>
+<p>If the software does not implement these steps efficiently, a smaller model
+may run no faster and can sometimes run more slowly than a higher-precision
+model.</p>
+<p>Small batches, short prompts, tokenizer overhead, CPU-to-device transfer, and
+framework overhead may also dominate the total runtime. Quantising the weights
+does not remove those costs.</p>
+<div class="important admonition">
+<p class="admonition-title">Measure on the intended system</p>
+<p>Do not infer speed from model size alone.</p>
+<p>Benchmark the complete application on the intended hardware and software
+stack. Measure at least:</p>
+<ul class="simple">
+<li><p>peak memory use;</p></li>
+<li><p>prompt-processing throughput;</p></li>
+<li><p>generation throughput;</p></li>
+<li><p>latency at realistic batch sizes;</p></li>
+<li><p>output quality on representative examples.</p></li>
+</ul>
+</div>
+</section>
+<section id="quantisation-and-model-quality">
+<h3>Quantisation and model quality<a class="headerlink" href="#quantisation-and-model-quality" title="Link to this heading">¶</a></h3>
+<p>Quantisation replaces some parameter values with approximations. It can
+therefore affect model output.</p>
+<p>The effect is not uniform across models or tasks. A method that preserves
+quality for common conversational prompts may affect numerical reasoning,
+code generation, multilingual text, or specialist terminology differently.</p>
+<p>The effect may also be hidden by open-ended evaluation. Two responses can use
+different wording while both appearing plausible. A structured evaluation is
+needed to determine whether the quantised model remains suitable.</p>
+<p>A useful comparison keeps everything except precision constant:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>same model revision
+same tokenizer
+same prompt
+same decoding configuration
+same evaluation examples
+different numerical representation
+</pre></div>
+</div>
+<p>For deterministic comparisons, greedy decoding or a fixed random seed can
+reduce variation. Application-level evaluation remains more important than
+token-for-token equality.</p>
+</section>
+<section id="quantisation-during-fine-tuning">
+<h3>Quantisation during fine-tuning<a class="headerlink" href="#quantisation-during-fine-tuning" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning requires much more memory than inference because training needs
+additional state.</p>
+<p>A rough decomposition is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>frozen or trainable model weights
+trainable adapter weights
+gradients
+optimizer states
+saved activations
+temporary buffers
+</pre></div>
+</div>
+<p>Full fine-tuning in a low-bit integer representation is not as simple as
+storing every trainable parameter in four bits. Gradient-based optimization
+requires sufficient numerical precision to accumulate useful updates.</p>
+<p>Resource-efficient fine-tuning therefore often combines different numerical
+formats rather than using one format for everything.</p>
+</section>
+<section id="qlora">
+<h3>QLoRA<a class="headerlink" href="#qlora" title="Link to this heading">¶</a></h3>
+<p>QLoRA combines a quantised frozen base model with trainable LoRA adapters.</p>
+<p>The base model is stored in a low-bit representation. The LoRA parameters,
+gradients, optimizer state, and selected computations use higher precision
+where required.</p>
+<p>Conceptually:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>quantised frozen base model
+             +
+higher-precision trainable LoRA adapters
+             =
+memory-efficient parameter adaptation
+</pre></div>
+</div>
+<p>The base weights do not need gradients because they are frozen. Quantising
+those weights can therefore substantially reduce the memory needed to keep the
+base model on the accelerator.</p>
+<p>During a forward pass, the model computes both the frozen base-layer
+contribution and the trainable adapter contribution:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[y = W_qx + \frac{\alpha}{r}BAx\]</div>
+</div>
+<p>Here, (W_q) denotes the quantised representation of the frozen base weight.
+The matrices (A) and (B) are the trainable LoRA parameters.</p>
+<p>The implementation may dequantise blocks of (W_q) as part of a specialized
+matrix-multiplication kernel. Quantised storage does not imply that every
+arithmetic operation is performed directly in the same low-bit format.</p>
+<section id="what-qlora-saves">
+<h4>What QLoRA saves<a class="headerlink" href="#what-qlora-saves" title="Link to this heading">¶</a></h4>
+<p>QLoRA primarily reduces the memory occupied by the frozen base-model weights.</p>
+<p>LoRA already avoids storing gradients and optimizer states for those frozen
+weights. Quantisation further reduces their storage.</p>
+<p>This can make it possible to fine-tune a model on a device that cannot hold
+the base model in FP16 or BF16 together with the rest of the training state.</p>
+</section>
+<section id="what-qlora-does-not-save">
+<h4>What QLoRA does not save<a class="headerlink" href="#what-qlora-does-not-save" title="Link to this heading">¶</a></h4>
+<p>QLoRA does not remove activation memory. The forward pass must still process
+the hidden states through every model layer.</p>
+<p>Long sequences and large per-device batches can therefore exhaust memory even
+when the base weights occupy relatively little space.</p>
+<p>QLoRA also retains:</p>
+<ul class="simple">
+<li><p>adapter parameters;</p></li>
+<li><p>adapter gradients;</p></li>
+<li><p>adapter optimizer states;</p></li>
+<li><p>temporary dequantisation or computation buffers;</p></li>
+<li><p>framework and communication overhead.</p></li>
+</ul>
+<p>If a training run uses little memory for the weights but substantial memory
+for activations, reducing the weight precision further may have limited
+effect. Activation checkpointing, shorter sequences, smaller batches, and
+memory-efficient attention may then be more relevant.</p>
+<div class="caution admonition">
+<p class="admonition-title">QLoRA is not ordinary full-model 4-bit training</p>
+<p>The base model is quantised and frozen. The adapter is trained using
+higher-precision computation where needed.</p>
+<p>Describing QLoRA simply as “training the model in 4-bit” hides this important
+division.</p>
+</div>
+</section>
+</section>
+<section id="compute-dtype-and-storage-dtype">
+<h3>Compute dtype and storage dtype<a class="headerlink" href="#compute-dtype-and-storage-dtype" title="Link to this heading">¶</a></h3>
+<p>A QLoRA configuration commonly distinguishes between the format used to store
+the quantised weights and the format used for computation.</p>
+<p>For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>base-weight storage:    4-bit quantised values
+matrix computation:     BF16
+LoRA parameters:        BF16 or FP32
+optimizer state:        optimizer-dependent
+</pre></div>
+</div>
+<p>The precise combination depends on the library and hardware.</p>
+<p>A low-bit storage format reduces memory, while a supported compute dtype allows
+the matrix operations to run efficiently and with adequate numerical range.</p>
+<p>Choosing BF16 as a compute dtype does not turn the quantised base weights back
+into permanently stored BF16 weights. Blocks can be converted as part of the
+operation and discarded when no longer needed.</p>
+</section>
+<section id="hardware-and-software-support">
+<h3>Hardware and software support<a class="headerlink" href="#hardware-and-software-support" title="Link to this heading">¶</a></h3>
+<p>Quantisation support is not determined only by the accelerator’s ability to
+represent integers.</p>
+<p>An end-to-end workflow depends on several components:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>model architecture
+    -&gt; quantisation library
+    -&gt; framework integration
+    -&gt; low-level kernels
+    -&gt; accelerator runtime
+    -&gt; physical hardware
+</pre></div>
+</div>
+<p>A configuration may be supported on one accelerator family but unavailable or
+slow on another because the required kernels have not been implemented or
+optimized.</p>
+<p>Support can also differ between inference and training. A runtime may load a
+quantised model for inference without supporting backward propagation through
+the operations required by QLoRA.</p>
+<p>Before selecting a quantisation method, verify:</p>
+<ul class="simple">
+<li><p>that the required library supports the accelerator;</p></li>
+<li><p>that the selected model layers can be quantised;</p></li>
+<li><p>that suitable kernels exist for the bit width and group size;</p></li>
+<li><p>that the intended compute dtype is supported;</p></li>
+<li><p>that backward propagation works if training is required;</p></li>
+<li><p>that distributed execution is supported if multiple devices will be used.</p></li>
+</ul>
+<p>A successful model load is not sufficient evidence of an efficient
+configuration. The application should be profiled under a realistic workload.</p>
+</section>
+<section id="choosing-whether-to-quantise">
+<h3>Choosing whether to quantise<a class="headerlink" href="#choosing-whether-to-quantise" title="Link to this heading">¶</a></h3>
+<p>Quantisation is useful when model-weight memory is a meaningful constraint.</p>
+<p>For inference, this may be the case when the model does not fit on the
+available accelerator, when several model replicas are needed, or when memory
+bandwidth limits throughput.</p>
+<p>For fine-tuning, quantising a frozen base model can create enough memory for
+LoRA training. This is particularly useful when the model is too large to load
+in 16-bit precision together with activations and adapter training state.</p>
+<p>Quantisation may not be the first optimization when the bottleneck lies
+elsewhere. If the workload is dominated by long-sequence activations, KV-cache
+growth, data loading, communication, or inefficient batching, lowering the
+weight precision may not address the main problem.</p>
+<p>A practical process is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>measure the baseline
+    -&gt; identify the largest memory and runtime costs
+    -&gt; choose a supported quantisation scheme
+    -&gt; measure memory and performance
+    -&gt; evaluate output quality
+    -&gt; retain the quantised model only if the trade-off is acceptable
+</pre></div>
+</div>
+</section>
+<section id="exercise-estimate-parameter-memory">
+<h3>Exercise: Estimate parameter memory<a class="headerlink" href="#exercise-estimate-parameter-memory" title="Link to this heading">¶</a></h3>
+<div class="admonition-estimate-model-weight-storage exercise important admonition" id="exercise-0">
+<p class="admonition-title">Estimate model-weight storage</p>
+<p>Estimate the raw memory required to store the weights of a model containing
+seven billion parameters using:</p>
+<ol class="arabic simple">
+<li><p>FP32;</p></li>
+<li><p>FP16 or BF16;</p></li>
+<li><p>INT8;</p></li>
+<li><p>an idealized 4-bit representation.</p></li>
+</ol>
+<p>Use decimal gigabytes, where one gigabyte is (10^9) bytes.</p>
+<p>Why will the observed device memory be higher than these estimates?</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-quantisation-memory</p>
+<p>FP32 uses four bytes per parameter:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 4
+=
+28 \times 10^9\ \text{bytes}
+=
+28\ \text{GB}\]</div>
+</div>
+<p>FP16 and BF16 use two bytes per parameter:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 2
+=
+14\ \text{GB}\]</div>
+</div>
+<p>INT8 uses one byte per parameter:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 1
+=
+7\ \text{GB}\]</div>
+</div>
+<p>An idealized 4-bit representation uses half a byte per parameter:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[7 \times 10^9 \times 0.5
+=
+3.5\ \text{GB}\]</div>
+</div>
+<p>Observed memory will be higher because the runtime also stores quantisation
+metadata, temporary buffers, activations, the KV cache during generation, and
+framework state. Allocators may reserve additional device memory that is not
+currently occupied by live tensors.</p>
+</div>
+</section>
+<section id="exercise-quantise-a-small-set-of-values">
+<h3>Exercise: Quantise a small set of values<a class="headerlink" href="#exercise-quantise-a-small-set-of-values" title="Link to this heading">¶</a></h3>
+<div class="admonition-apply-a-simple-symmetric-quantiser exercise important admonition" id="exercise-1">
+<p class="admonition-title">Apply a simple symmetric quantiser</p>
+<p>Suppose a simplified signed quantiser can represent the integer values:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-3, -2, -1, 0, 1, 2, 3
+</pre></div>
+</div>
+<p>Use a scale of:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>s = 0.25
+</pre></div>
+</div>
+<p>Quantise the following values using:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[q = \operatorname{round}\left(\frac{x}{s}\right)\]</div>
+</div>
+<p>Clamp results to the representable integer range, then reconstruct the
+approximations using:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\hat{x} = sq\]</div>
+</div>
+<p>The original values are:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-0.90, -0.38, 0.06, 0.44, 1.10
+</pre></div>
+</div>
+<p>Which value has the largest absolute quantisation error?</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-1">
+<p class="admonition-title">exercise-simple-quantiser</p>
+<p>For (-0.90):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-0.90 / 0.25 = -3.6
+round and clamp -&gt; -3
+reconstructed -&gt; -0.75
+absolute error -&gt; 0.15
+</pre></div>
+</div>
+<p>For (-0.38):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>-0.38 / 0.25 = -1.52
+round -&gt; -2
+reconstructed -&gt; -0.50
+absolute error -&gt; 0.12
+</pre></div>
+</div>
+<p>For (0.06):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0.06 / 0.25 = 0.24
+round -&gt; 0
+reconstructed -&gt; 0.00
+absolute error -&gt; 0.06
+</pre></div>
+</div>
+<p>For (0.44):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0.44 / 0.25 = 1.76
+round -&gt; 2
+reconstructed -&gt; 0.50
+absolute error -&gt; 0.06
+</pre></div>
+</div>
+<p>For (1.10):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1.10 / 0.25 = 4.4
+round -&gt; 4
+clamp -&gt; 3
+reconstructed -&gt; 0.75
+absolute error -&gt; 0.35
+</pre></div>
+</div>
+<p>The value (1.10) has the largest absolute error because it lies outside the
+range represented by the selected scale and integer limits. This illustrates
+the effect of outliers: expanding the range to include them may reduce
+clipping but leave fewer useful levels for values near zero.</p>
+</div>
+</section>
+<section id="exercise-diagnose-a-memory-bottleneck">
+<h3>Exercise: Diagnose a memory bottleneck<a class="headerlink" href="#exercise-diagnose-a-memory-bottleneck" title="Link to this heading">¶</a></h3>
+<div class="admonition-will-qlora-solve-the-problem exercise important admonition" id="exercise-2">
+<p class="admonition-title">Will QLoRA solve the problem?</p>
+<p>A LoRA training run loads its frozen base model in a 4-bit representation.
+Device memory use remains high and the run fails when the maximum sequence
+length is increased from 1024 to 8192 tokens.</p>
+<p>The per-device batch size is unchanged.</p>
+<p>Answer the following questions:</p>
+<ol class="arabic simple">
+<li><p>Why does quantising the base model not prevent this failure?</p></li>
+<li><p>Which category of memory is likely to have grown?</p></li>
+<li><p>What changes could reduce memory use?</p></li>
+<li><p>Which changes alter the effective training data or optimization behaviour?</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-2">
+<p class="admonition-title">exercise-qlora-bottleneck</p>
+<p>Quantising the base model reduces weight storage, but the forward pass still
+creates and saves activations needed for backpropagation. Increasing the
+sequence length greatly increases activation memory. Standard dense attention
+also constructs objects whose dimensions depend quadratically on sequence
+length.</p>
+<p>Likely remedies include reducing the per-device batch size, using shorter
+sequences, enabling activation checkpointing, using a memory-efficient
+attention implementation, or changing how long examples are sampled and
+packed.</p>
+<p>Reducing sequence length may truncate training examples and therefore changes
+the information available to the model. Reducing batch size changes the
+microbatch and may require different gradient accumulation to maintain the
+same effective batch size. Activation checkpointing primarily trades
+additional computation for lower memory. Changing packing affects how
+efficiently short examples use the available sequence length and must preserve
+the intended example boundaries and labels.</p>
+</div>
+</section>
+<section id="exercise-design-a-quantisation-benchmark">
+<h3>Exercise: Design a quantisation benchmark<a class="headerlink" href="#exercise-design-a-quantisation-benchmark" title="Link to this heading">¶</a></h3>
+<div class="admonition-compare-two-model-representations exercise important admonition" id="exercise-3">
+<p class="admonition-title">Compare two model representations</p>
+<p>A team wants to replace a BF16 model with a 4-bit weight-quantised version.</p>
+<p>Design a minimal comparison that determines whether the replacement is
+worthwhile. Include memory, performance, and quality measurements.</p>
+<p>Explain why testing one short prompt is insufficient.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-3">
+<p class="admonition-title">exercise-quantisation-benchmark</p>
+<p>The comparison should keep the model revision, tokenizer, prompt templates,
+decoding settings, and hardware fixed.</p>
+<p>Memory measurements should include peak device memory for realistic prompt
+lengths, output lengths, and batch sizes. The team should distinguish loaded
+weight memory from memory consumed by the KV cache and temporary buffers.</p>
+<p>Performance measurements should include prompt-processing throughput,
+generation throughput, and end-to-end latency. Measurements should be
+repeated for representative batch sizes and context lengths because the
+bottleneck may change with the workload.</p>
+<p>Quality should be evaluated on held-out examples from the intended
+application. The evaluation should include any especially sensitive
+capabilities, such as structured output, numerical reasoning, code,
+multilingual input, or specialist vocabulary.</p>
+<p>One short prompt cannot represent the range of sequence lengths, input types,
+or model capabilities used by the application. Timing one request is also
+sensitive to initial compilation, cache warm-up, and random system variation.</p>
+</div>
+</section>
+<section id="summary">
+<h3>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h3>
+<p>Quantisation reduces the number of bits used to represent model values. This
+can substantially reduce parameter storage and may improve inference
+performance when suitable kernels and hardware support are available.</p>
+<p>Lower precision introduces approximation error. The effect depends on more
+than the nominal bit width. Scaling method, group size, treatment of outliers,
+quantised components, computation dtype, model architecture, and runtime
+implementation all matter.</p>
+<p>Weight-only quantisation reduces model-weight memory but does not
+automatically reduce activation or KV-cache memory. Quantised models are not
+automatically faster because unpacking, scaling, and dequantisation can add
+work.</p>
+<p>QLoRA combines a quantised frozen base model with trainable LoRA adapters. It
+reduces the storage required for the base weights but retains activation
+memory, adapter gradients, optimizer state, and temporary computation
+buffers.</p>
+<p>Quantisation should be introduced in response to a measured resource
+constraint:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>measure
+    -&gt; identify the bottleneck
+    -&gt; quantise using a supported method
+    -&gt; benchmark again
+    -&gt; evaluate quality
+</pre></div>
+</div>
+<p>The main principle is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A smaller numerical representation is useful only when it improves the
+resource trade-off without making the model unsuitable for its task.
+</pre></div>
+</div>
+</section>
+</section>
+</div>
+<div class="toctree-wrapper compound">
+<span id="document-quick-reference"></span><section id="quick-reference">
+<h2>Quick Reference<a class="headerlink" href="#quick-reference" title="Link to this heading">¶</a></h2>
+</section>
+<span id="document-guide"></span><section id="instructor-s-guide">
+<h2>Instructor’s guide<a class="headerlink" href="#instructor-s-guide" title="Link to this heading">¶</a></h2>
+<section id="why-we-teach-this-lesson">
+<h3>Why we teach this lesson<a class="headerlink" href="#why-we-teach-this-lesson" title="Link to this heading">¶</a></h3>
+</section>
+<section id="intended-learning-outcomes">
+<h3>Intended learning outcomes<a class="headerlink" href="#intended-learning-outcomes" title="Link to this heading">¶</a></h3>
+</section>
+<section id="timing">
+<h3>Timing<a class="headerlink" href="#timing" title="Link to this heading">¶</a></h3>
+</section>
+<section id="preparing-exercises">
+<h3>Preparing exercises<a class="headerlink" href="#preparing-exercises" title="Link to this heading">¶</a></h3>
+<p>e.g. what to do the day before to set up common repositories.</p>
+</section>
+<section id="other-practical-aspects">
+<h3>Other practical aspects<a class="headerlink" href="#other-practical-aspects" title="Link to this heading">¶</a></h3>
+<p>Before teaching the lesson, instructors should decide how far to go into the
+attention calculation. The important distinction is between:</p>
+<ul class="simple">
+<li><p>attention, which exchanges information between token positions;</p></li>
+<li><p>feed-forward layers, which transform each token representation;</p></li>
+<li><p>the training objective, which adjusts both components through examples.</p></li>
+</ul>
+<p>The lesson should avoid presenting attention heads as hand-designed
+linguistic rules. Examples involving nouns, adjectives, or pronouns are useful
+illustrations, but the actual features learned by a model are distributed and
+often difficult to interpret directly.</p>
+</section>
+<section id="interesting-questions-you-might-get">
+<h3>Interesting questions you might get<a class="headerlink" href="#interesting-questions-you-might-get" title="Link to this heading">¶</a></h3>
+</section>
+<section id="typical-pitfalls">
+<h3>Typical pitfalls<a class="headerlink" href="#typical-pitfalls" title="Link to this heading">¶</a></h3>
+</section>
+</section>
+</div>
+<p>Large language models (LLMs) are now ubiquitous in many applications and a
+variety of both open- and closed-weight are available for many disparate tasks.
+However, it can be the case that an off-the-shelf model does not perform well
+in a specific task, or that we would like a smaller model focused on some
+specific use cases and avoid expensive, large general-purpose models. In these
+cases, we need to find a way to “tweak” the behaviour of a model to fit the
+requirements.
+A LLM can be adapted to a task in several ways: we can change the
+instructions given to the model, provide external information at inference
+time, or continue training the model on examples of the desired behaviour.</p>
+<p>These approaches form a progression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering -&gt; Retrieval-augmented generation -&gt; Fine-tuning
+</pre></div>
+</div>
+<p>Moving from left to right gives us additional ways to influence the system. It
+also introduces more infrastructure, more data preparation, more evaluation
+work, and more chances for failure.</p>
+<p>The central principle of this lesson is:</p>
+<div class="important admonition">
+<p class="admonition-title">Start with the simplest intervention</p>
+<p>Use the least complex approach that can be shown, through evaluation, to meet
+the requirements of the application.</p>
+</div>
+<p>Prompt engineering is therefore not merely a preliminary step before
+fine-tuning. For many applications, it is the appropriate final solution.
+Retrieval-augmented generation is useful when the model needs access to
+external or changing information. Fine-tuning becomes useful when the
+remaining problem is a persistent pattern of behaviour that instructions and
+retrieved evidence do not solve adequately.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="_images/adaptation-ladder.png"><img alt="_images/adaptation-ladder.png" src="_images/adaptation-ladder.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Prompt engineering changes the instructions. RAG adds external evidence.
+Fine-tuning changes model parameters. Original figure created by VSC <a class="reference external" href="https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers/-/tree/main/presentations?ref_type=heads">here</a>.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<section id="who-is-the-lesson-for">
+<h2>Who is the lesson for?<a class="headerlink" href="#who-is-the-lesson-for" title="Link to this heading">¶</a></h2>
+<p>The lesson is intended for researchers, research software engineers, and
+technical staff who want to understand how large language models can be
+adapted to specialist tasks.</p>
+<p>The main focus is not on any particular model or software library (our example
+will be, though). Instead, the lesson develops a conceptual framework that can
+be applied when planning an LLM-based application or a fine-tuning experiment.</p>
+</section>
+<section id="learning-objectives">
+<h2>Learning objectives<a class="headerlink" href="#learning-objectives" title="Link to this heading">¶</a></h2>
+<p>By the end of the lesson, learners should be able to:</p>
+<ul class="simple">
+<li><p>explain how text becomes a sequence of contextual token representations;</p></li>
+<li><p>describe the roles of tokenisation, embeddings, attention, and feed-forward
+layers;</p></li>
+<li><p>distinguish a problem with instructions from a problem with evidence;</p></li>
+<li><p>choose between prompting, RAG, and fine-tuning for a concrete use case;</p></li>
+<li><p>explain why fine-tuning is not a reliable substitute for document retrieval;</p></li>
+<li><p>describe the difference between full fine-tuning and parameter-efficient
+fine-tuning;</p></li>
+<li><p>explain the central idea behind low-rank adaptation;</p></li>
+<li><p>design a baseline and evaluation before introducing additional complexity.</p></li>
+</ul>
+</section>
+<section id="lesson-schedule">
+<h2>Lesson schedule<a class="headerlink" href="#lesson-schedule" title="Link to this heading">¶</a></h2>
+<p>A possible schedule for a three-hour lesson is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Introduction                              10 minutes
+How an LLM processes text                 20 minutes
+Break                                     10 minutes
+Choosing an adaptation strategy           40 minutes
+Fine-tuning large language models         40 minutes
+Discussion and conclusions                15 minutes
+</pre></div>
+</div>
+<p>The episodes can also be taught separately. The adaptation-strategy episode
+does not require a detailed mathematical understanding of attention, although
+the anatomy episode provides useful context.</p>
+</section>
+<section id="software-and-infrastructure">
+<h2>Software and infrastructure<a class="headerlink" href="#software-and-infrastructure" title="Link to this heading">¶</a></h2>
+<p>The conceptual parts of the lesson do not require a GPU. Exercises can be
+completed through discussion or using an existing model interface.</p>
+<p>A later hands-on fine-tuning lesson may use the Hugging Face ecosystem,
+including Transformers, Datasets, TRL, PEFT, and Accelerate. Those
+implementation details are deliberately kept separate from the conceptual
+material in this lesson.</p>
+</section>
+<section id="see-also">
+<h2>See also<a class="headerlink" href="#see-also" title="Link to this heading">¶</a></h2>
+<p>These lessons were inspired from the excellent material developed by the Vienna scientific cluster (VSC) <a class="reference external" href="https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers">here</a>. Moreover, the Hugging Face people published a guidebook of sorts based on their experience training SmolLM, which can be found <a class="reference external" href="https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook#beyond-base-modelspost-training-in-2025">here</a>.</p>
+<div class="attention admonition">
+<p class="admonition-title">License</p>
+<div class="attention dropdown admonition">
+<p class="admonition-title">CC BY-SA for media and pedagogical material</p>
+<p>Copyright © 2026 Sweden AI Factory. This material is released by Sweden AI Factory under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0).</p>
+<p><strong>Canonical URL</strong>: <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/">https://creativecommons.org/licenses/by-sa/4.0/</a></p>
+<p><a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/legalcode.en">See the legal code</a></p>
+<p class="rubric" id="you-are-free-to">You are free to</p>
+<ol class="arabic simple">
+<li><p><strong>Share</strong> — copy and redistribute the material in any medium or format for any purpose, even commercially.</p></li>
+<li><p><strong>Adapt</strong> — remix, transform, and build upon the material for any purpose, even commercially.</p></li>
+<li><p>The licensor cannot revoke these freedoms as long as you follow the license terms.</p></li>
+</ol>
+<p class="rubric" id="under-the-following-terms">Under the following terms</p>
+<ol class="arabic simple">
+<li><p><strong>Attribution</strong> — You must give <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/#ref-appropriate-credit">appropriate credit</a> , provide a link to the license, and <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/#ref-indicate-changes">indicate if changes were made</a> . You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.</p></li>
+<li><p><strong>ShareAlike</strong> — If you remix, transform, or build upon the material, you must distribute your contributions under the <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/#ref-same-license">same license</a> as the original.</p></li>
+<li><p><strong>No additional restrictions</strong> — You may not apply legal terms or <a class="reference external" href="https://creativecommons.org/licenses/by-sa/4.0/#ref-technological-measures">technological measures</a> that legally restrict others from doing anything the license permits.</p></li>
+</ol>
+<p class="rubric" id="notices">Notices</p>
+<p>You do not have to comply with the license for elements of the material in the public domain or where your use is permitted by an applicable <a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en#ref-exception-or-limitation">exception or limitation</a> .</p>
+<p>No warranties are given. The license may not give you all of the permissions necessary for your intended use. For example, other rights such as <a class="reference external" href="https://creativecommons.org/licenses/by/4.0/deed.en#ref-publicity-privacy-or-moral-rights">publicity, privacy, or moral rights</a> may limit how you use the material.</p>
+<p>This deed highlights only some of the key features and terms of the actual license. It is not a license and has no legal value. You should carefully review all of the terms and conditions of the actual license before using the licensed material.</p>
+</div>
+<div class="attention dropdown admonition">
+<p class="admonition-title">MIT for source code and code snippets</p>
+<p>MIT License</p>
+<p>Copyright (c) 2026, Sweden AI Factory project, The contributors</p>
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the “Software”), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+</div>
+</div>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Sweden AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sweden-ai-factory/roadshow" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-llm-anatomy">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-choosing-an-adaptation-strategy">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-fine-tuning">Fine-tuning large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-quantisation">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="#document-quick-reference">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#document-guide">Instructor’s guide</a></li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="_static/documentation_options.js?v=d6d90d09"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=35a8b989"></script>
+    <script src="_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script data-domain="learn.swedenaifactory.se/roadshow" defer="defer" src="https://plausible.io/js/script.js"></script>
+    </body>
+</html>

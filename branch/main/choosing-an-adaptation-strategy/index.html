@@ -1,0 +1,905 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/"><link rel="search" title="Search" href="../search/"><link rel="next" title="Fine-tuning large language models" href="../fine-tuning/"><link rel="prev" title="Anatomy of a Large Language Model" href="../llm-anatomy/">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_black.png" as="image">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_white.png" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Choosing an adaptation strategy - aka when NOT to fine-tune - Fine tuning tutorial - SEAIF roadshow</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="../_static/furo_ext_lesson.css?v=6c0cde2e" />
+    <link rel="stylesheet" type="text/css" href="../_static/EN_Co-funded.css?v=bf081b0b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/overrides.css?v=1c72d2de" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Fine tuning tutorial - SEAIF roadshow</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/SEAIF_favicon_black.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/SEAIF_favicon_white.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Fine tuning tutorial - SEAIF roadshow</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../llm-anatomy/">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fine-tuning/">Fine-tuning large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quantisation/">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/blob/main//content/choosing-an-adaptation-strategy.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/edit/main//content/choosing-an-adaptation-strategy.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="choosing-an-adaptation-strategy-aka-when-not-to-fine-tune">
+<h1>Choosing an adaptation strategy - aka when NOT to fine-tune<a class="headerlink" href="#choosing-an-adaptation-strategy-aka-when-not-to-fine-tune" title="Link to this heading">¶</a></h1>
+<p>When an LLM application performs poorly, fine-tuning is rarely the first or
+only possible response. The model may need clearer instructions, better
+context, access to external information, or a more suitable evaluation
+procedure.</p>
+<p>Prompt engineering, retrieval-augmented generation, and fine-tuning address
+different sources of failure:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering:
+    change the instructions and examples
+
+Retrieval-augmented generation:
+    supply external evidence at inference time
+
+Fine-tuning:
+    change model parameters through training
+</pre></div>
+</div>
+<p>These methods can be combined, but they should not be introduced
+indiscriminately. Every additional component has to be developed, evaluated,
+operated, and maintained.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>What can prompt engineering change?</p></li>
+<li><p>When does a model need retrieval rather than better instructions?</p></li>
+<li><p>What kinds of behaviour justify fine-tuning?</p></li>
+<li><p>Why is fine-tuning a poor substitute for a document store?</p></li>
+<li><p>How can we evaluate whether additional complexity is worthwhile?</p></li>
+<li><p>When should we decide not to fine-tune?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>distinguish a problem with instructions from a problem with evidence;</p></li>
+<li><p>explain what prompt engineering, RAG, and fine-tuning change;</p></li>
+<li><p>recognize applications for which fine-tuning is unnecessary or
+inappropriate;</p></li>
+<li><p>choose an initial adaptation strategy for a concrete use case;</p></li>
+<li><p>define a baseline against which a more complex system can be evaluated;</p></li>
+<li><p>separate retrieval failures from generation failures;</p></li>
+<li><p>describe when RAG and fine-tuning may usefully be combined.</p></li>
+</ul>
+</div>
+<section id="how-can-we-influence-a-model">
+<h2>How can we influence a model?<a class="headerlink" href="#how-can-we-influence-a-model" title="Link to this heading">¶</a></h2>
+<p>The progression from prompting to RAG to fine-tuning represents increasing
+system complexity.</p>
+<figure class="align-default" id="id1">
+<a class="img-responsive reference internal image-reference" href="../_images/adaptation-ladder.png"><img alt="../_images/adaptation-ladder.png" class="img-responsive" src="../_images/adaptation-ladder.png" style="width: 95%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Prompt engineering changes the instructions. RAG adds external evidence.
+Fine-tuning changes model parameters.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>The progression should not be interpreted as a sequence that every project
+must complete. A prompt-only system is not an unfinished RAG system, and a RAG
+system is not an unfinished fine-tuning project.</p>
+<p>The objective is to find the least complex system that meets the application’s
+requirements.</p>
+<div class="important admonition">
+<p class="admonition-title">The central diagnostic question</p>
+<p>Is the model failing because it does not know what to do, because it lacks the
+necessary evidence, or because it cannot reliably perform the required
+behaviour?</p>
+</div>
+<p>Those three cases point toward prompting, retrieval, and fine-tuning
+respectively. Real systems may contain more than one kind of failure, but the
+distinction provides a useful starting point.</p>
+</section>
+<section id="prompt-engineering">
+<h2>Prompt engineering<a class="headerlink" href="#prompt-engineering" title="Link to this heading">¶</a></h2>
+<p>Prompt engineering changes the model’s input. It does not update the model
+parameters.</p>
+<p>A prompt can specify the task, the intended reader, the required structure,
+the available evidence, and what the model should do when it cannot answer.
+It can also contain examples of suitable inputs and outputs.</p>
+<p>Consider this prompt:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Summarize this paper.
+</pre></div>
+</div>
+<p>A more useful version might be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Summarize the supplied paper for research software engineers who understand
+machine learning but are not specialists in this application domain.
+
+Use the following headings:
+
+- Research question
+- Method
+- Main result
+- Limitations
+- Reproducibility
+
+Use at most 300 words. Do not invent information that is absent from the
+paper. If reproducibility information is not reported, write "not reported in
+the supplied text".
+</pre></div>
+</div>
+<p>The second prompt reduces ambiguity. It defines the audience, structure,
+length, and handling of missing information.
+Breaking a task into different steps or giving examples of good and bad
+behaviour in the prompt can also be very useful in many cases.</p>
+<!-- ### Direction, format, and examples
+
+A useful prompt normally establishes what the model is supposed to do before
+it attempts to control tone or style.
+
+The following elements are often enough to create a strong baseline:
+
+```text
+Task:
+What should the model do?
+
+Context:
+What information may it use?
+
+Constraints:
+What must it avoid?
+
+Output:
+What structure should it return?
+
+Examples:
+What does a good input-output pair look like?
+
+Abstention:
+What should happen when the evidence is insufficient?
+```
+
+Examples are particularly helpful when a desired format is difficult to
+describe precisely. If the task is to classify technical incidents, a few
+representative examples can establish distinctions that would otherwise
+require a long definition.
+
+### Breaking a task into stages
+
+A complicated task can sometimes be made more reliable by separating it into
+steps:
+
+```text
+source text
+    -> extract claims
+    -> identify supporting evidence
+    -> mark unsupported claims
+    -> produce a revised response
+```
+
+The steps may appear in a single structured prompt or in separate model calls.
+Separate calls make intermediate results easier to inspect, although they also
+increase latency and introduce additional failure points.
+-->
+<section id="when-prompting-is-enough">
+<h3>When prompting is enough<a class="headerlink" href="#when-prompting-is-enough" title="Link to this heading">¶</a></h3>
+<p>Prompt engineering is often sufficient when the base model already has the
+required capability and all necessary information can be included in the
+context.</p>
+<p>Examples include rewriting text for a known audience, extracting fields from
+a short document, producing a specified format, explaining supplied material,
+or generating a first draft that will be reviewed by a person.</p>
+<p>If a model produces good content under the wrong headings, the first response
+should be to specify the headings: training a model to solve a problem that can
+be expressed in two lines of instructions is difficult to justify.</p>
+<p>A generative model may produce different wording across repeated calls. If the
+application requires a rigid structure, first try explicit output constraints,
+examples, schema validation, and deterministic or low-temperature decoding.</p>
+<p>Fine-tuning may improve consistency, but it should not be the first mechanism
+used to impose a simple format.</p>
+</section>
+</section>
+<section id="retrieval-augmented-generation">
+<h2>Retrieval-augmented generation<a class="headerlink" href="#retrieval-augmented-generation" title="Link to this heading">¶</a></h2>
+<p>Retrieval-augmented generation (RAG) adds an external
+information-retrieval stage.</p>
+<p>A simplified RAG system looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>user question
+    -&gt; retrieval query
+    -&gt; relevant passages
+    -&gt; prompt containing question and passages
+    -&gt; generated answer
+</pre></div>
+</div>
+<p>The model parameters are not normally changed. The model receives additional
+evidence as part of its input.</p>
+<section id="what-problem-does-rag-solve">
+<h3>What problem does RAG solve?<a class="headerlink" href="#what-problem-does-rag-solve" title="Link to this heading">¶</a></h3>
+<p>RAG is appropriate when the model cannot answer reliably from its existing
+parameters and the required information exists in an external collection.</p>
+<p>Typical collections include internal documentation, scientific papers,
+technical manuals, organizational policies, support records, and databases
+whose contents change over time.</p>
+<p>Retrieval is also useful when an answer must be accompanied by inspectable
+sources. A model may have encountered a fact during pretraining, but its
+parameters do not provide a dependable citation mechanism. A RAG system can
+retain the identifiers of the retrieved passages and ask the model to cite
+them.</p>
+<p>A basic grounded-generation prompt could be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer the question using only the supplied sources.
+
+If the sources do not contain enough information, state that the available
+evidence is insufficient.
+
+Cite the source identifier after every factual claim.
+
+Question:
+{question}
+
+Sources:
+{retrieved_passages}
+</pre></div>
+</div>
+<p>This prompt does not by itself create a reliable RAG system. The documents
+must be indexed, the query must retrieve useful passages, and the selected
+context must preserve the information needed to answer the question.</p>
+<!--
+### Retrieval and generation are separate problems
+
+RAG systems can fail before the model begins to generate.
+
+The relevant document may be absent from the index. The query may use
+different terminology from the source. A relevant paragraph may have been
+split across chunk boundaries. Metadata filters may exclude the correct
+document. A ranking system may place old or irrelevant material above the
+current source.
+
+Generation can fail even when retrieval succeeds. The model may ignore the
+relevant passage, combine incompatible sources, choose an outdated statement,
+or produce a claim that is not supported by the retrieved material.
+
+These failures require different remedies. Fine-tuning the generator will not
+repair a missing document or a faulty metadata filter.
+-->
+</section>
+<section id="when-rag-is-worth-introducing">
+<h3>When RAG is worth introducing<a class="headerlink" href="#when-rag-is-worth-introducing" title="Link to this heading">¶</a></h3>
+<p>RAG is a strong candidate when the application depends on information that is
+private, frequently updated, too large to include in every prompt, or expected
+to be cited.</p>
+<p>It is less useful when the problem contains no substantial knowledge-retrieval
+component. If the task is to convert a known input into a fixed schema, adding
+a vector database may introduce infrastructure without addressing the actual
+failure.</p>
+<div class="danger admonition">
+<p class="admonition-title">RAG does not eliminate hallucinations (but can help greatly!)</p>
+<p>Retrieval can ground the response in external evidence, but the model can
+still misread, ignore, or go beyond that evidence.</p>
+<p>A grounded system needs explicit instructions, suitable retrieval, source
+tracking, and an evaluation that checks whether claims are supported.</p>
+</div>
+</section>
+</section>
+<section id="fine-tuning">
+<h2>Fine-tuning<a class="headerlink" href="#fine-tuning" title="Link to this heading">¶</a></h2>
+<p>Fine-tuning continues training a pretrained model on examples chosen for a
+particular objective. It changes some or all of the model parameters (or,
+sometimes, introduce a few new ones altogether).</p>
+<p>This makes fine-tuning fundamentally different from prompting and retrieval:
+a prompt or retrieved document can be replaced immediately, while a parameter
+update is produced through a training process and is less directly inspectable.</p>
+<p>Fine-tuning is most useful when the remaining problem is a repeated, measurable
+pattern of behaviour. Examples include using a specialized output
+representation, mapping recurring inputs to recurring outputs, or following
+domain/style conventions that are cumbersome to demonstrate in every prompt.</p>
+<p>Fine-tuning may also teach a model to use specialist vocabulary more
+consistently.</p>
+</section>
+<section id="when-not-to-fine-tune">
+<h2>When not to fine-tune<a class="headerlink" href="#when-not-to-fine-tune" title="Link to this heading">¶</a></h2>
+<p>Fine-tuning is often proposed too early. Before training, it is worth checking
+whether the proposed use case matches any of the following situations:</p>
+<ul class="simple">
+<li><p>The model needs access to policies, publications, software documentation or
+other information that changes in time (not too fast, hopefully). In these
+cases, RAG is usually a better place to start: injecting a lot of new
+information by updating model weights is not an effective update mechanism.</p></li>
+<li><p>Traceability and explainability are required: once more, RAG is the better
+route.</p></li>
+<li><p>The model is prompted in a vague way (e.g. “Summarise this”). Since the model
+knows nothing about what the user actually want, the first (and often only)
+step is to improve (a lot) the prompt.</p></li>
+<li><p>The problem is with constraints, e.g. we want the output to be JSON only. In
+these cases, prompt engineering (possibly with examples) is paramount. If
+performance is still unsatisfactory, fine-tuning can improve format adherence,
+especially at scale and with smaller models.</p></li>
+<li><p>There is no evaluation set: the only way to judge whether the fine-tuned
+model behaves better than baseline is to test on a hold-out evaluation set, or
+with user A/B testing in production. Without metrics for success, fine-tuning
+becomes a useless exercise (and may even lead to loss of performance in other
+general tasks).</p></li>
+<li><p>There are not enough representative examples, since repetitive examples can
+easily lead to overfitting.</p></li>
+</ul>
+</section>
+<section id="a-practical-decision-process">
+<h2>A practical decision process<a class="headerlink" href="#a-practical-decision-process" title="Link to this heading">¶</a></h2>
+<p>The adaptation decision begins with a failure analysis rather than a choice of
+technology.</p>
+<section id="establish-the-task-and-evaluation">
+<h3>Establish the task and evaluation<a class="headerlink" href="#establish-the-task-and-evaluation" title="Link to this heading">¶</a></h3>
+<p>Write down what a satisfactory output looks like. Assemble examples that
+cover ordinary cases, difficult cases, ambiguous cases, and cases where the
+system should decline to answer.</p>
+<p>The evaluation need not initially be large. It does need to be representative
+enough to expose whether a change solves the intended problem.</p>
+</section>
+<section id="build-a-prompt-baseline">
+<h3>Build a prompt baseline<a class="headerlink" href="#build-a-prompt-baseline" title="Link to this heading">¶</a></h3>
+<p>Create the simplest prompt that specifies the task, context, constraints,
+output, and abstention behaviour. Include examples where they clarify the
+desired mapping.</p>
+<p>Run the evaluation set and record the results. This baseline provides evidence
+against which retrieval or fine-tuning can be compared.</p>
+</section>
+<section id="add-retrieval-if-evidence-is-missing">
+<h3>Add retrieval if evidence is missing<a class="headerlink" href="#add-retrieval-if-evidence-is-missing" title="Link to this heading">¶</a></h3>
+<p>Inspect failed examples. If the model could answer correctly when given the
+right document passage, the problem points toward retrieval.</p>
+<p>Evaluate whether the retrieval stage finds that passage. Do not evaluate only
+the final prose.</p>
+</section>
+<section id="consider-fine-tuning-for-persistent-behaviour">
+<h3>Consider fine-tuning for persistent behaviour<a class="headerlink" href="#consider-fine-tuning-for-persistent-behaviour" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning becomes reasonable when the system has appropriate instructions
+and evidence but still fails in a repeated, measurable way.</p>
+<p>At that point, the training examples can target a stable behaviour rather than
+compensating for an undefined prompt or missing source.</p>
+<p>The resulting process is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define success
+    -&gt; build a prompt baseline
+    -&gt; inspect failures
+    -&gt; add retrieval if evidence is missing
+    -&gt; inspect failures again
+    -&gt; fine-tune if behaviour remains inadequate
+</pre></div>
+</div>
+</section>
+</section>
+<section id="combining-rag-and-fine-tuning">
+<h2>Combining RAG and fine-tuning<a class="headerlink" href="#combining-rag-and-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>RAG and fine-tuning are not mutually exclusive.</p>
+<p>A useful division of labour is that RAG supplies the evidence, whereas
+fine-tuning teaches the model how to use it.</p>
+<p>For example, a technical assistant may need retrieval to access the current
+software documentation, but may also benefit from fine-tuning if it
+systematically fails to express commands according to an organization’s
+conventions.</p>
+<p>It is worth noting that the combined system is more complex than either
+component alone. Thus, its evaluation must determine whether a failure came
+from retrieval, prompting, the fine-tuned behaviour, or the interaction between
+them.</p>
+</section>
+<section id="evaluating-the-adaptation-ladder">
+<h2>Evaluating the adaptation ladder<a class="headerlink" href="#evaluating-the-adaptation-ladder" title="Link to this heading">¶</a></h2>
+<p>Evaluation should precede an increase in complexity: otherwise, there is no
+reliable way to tell whether the additional component helped.</p>
+<section id="evaluate-more-than-fluency">
+<h3>Evaluate more than fluency<a class="headerlink" href="#evaluate-more-than-fluency" title="Link to this heading">¶</a></h3>
+<p>A response can sound better without becoming more correct. Evaluation should
+therefore separate dimensions that matter to the application.</p>
+<p>For a document question-answering system, useful dimensions might include
+factual support, citation correctness, completeness, appropriate abstention,
+latency, and cost.</p>
+<p>For a structured extraction task, useful dimensions might include field
+accuracy, schema validity, handling of missing values, and robustness to
+unusual inputs.</p>
+</section>
+<section id="evaluate-rag-in-parts">
+<h3>Evaluate RAG in parts<a class="headerlink" href="#evaluate-rag-in-parts" title="Link to this heading">¶</a></h3>
+<p>A RAG system has at least three evaluation targets:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Retrieval:
+Did the system retrieve the evidence required to answer?
+
+Generation:
+Did the model use the retrieved evidence correctly?
+
+End-to-end:
+Did the user receive a satisfactory answer?
+</pre></div>
+</div>
+<p>A good final answer does not prove that retrieval is robust. The model may
+already know the answer or may have guessed correctly. Conversely, a poor
+final answer does not prove that retrieval failed. The correct source may have
+been present but used incorrectly.</p>
+</section>
+<section id="evaluate-fine-tuning-against-meaningful-baselines">
+<h3>Evaluate fine-tuning against meaningful baselines<a class="headerlink" href="#evaluate-fine-tuning-against-meaningful-baselines" title="Link to this heading">¶</a></h3>
+<p>A fine-tuned model should be compared with the unchanged base model using the
+best prompt developed during exploration.</p>
+<p>Depending on the application, the comparison may also include:</p>
+<ul class="simple">
+<li><p>base model with a simple prompt</p></li>
+<li><p>base model with the strongest prompt</p></li>
+<li><p>(if RAG is used) base model with prompt and retrieval</p></li>
+<li><p>(if RAG is used) fine-tuned model with the same retrieval</p></li>
+</ul>
+<p>This prevents a training run from receiving credit for improvements that came
+from a better prompt, a changed dataset, or a different retrieval setup.</p>
+<p><strong>Held-out evaluation is essential</strong>: examples used during training cannot show
+whether the model generalizes to new inputs.</p>
+</section>
+<section id="automated-and-human-evaluation">
+<h3>Automated and human evaluation<a class="headerlink" href="#automated-and-human-evaluation" title="Link to this heading">¶</a></h3>
+<p>Automated checks work well when correctness can be defined precisely. Schema
+validation, exact field comparison, classification scores, citation matching,
+and retrieval recall are useful examples.</p>
+<p>Human evaluation is needed when quality depends on context, usefulness, or
+specialist judgment.</p>
+<p>Another language model can assist with evaluation (<em>LLM-as-a-judge</em>), but its
+judgement must be also tailored to human preference. However, it can be useful
+in cases when the objective function is somewhat subjective, such as verbosity,
+complexity or general style.</p>
+</section>
+</section>
+<section id="exercise-choose-the-first-intervention">
+<h2>Exercise: Choose the first intervention<a class="headerlink" href="#exercise-choose-the-first-intervention" title="Link to this heading">¶</a></h2>
+<div class="admonition-choose-an-adaptation-strategy exercise important admonition" id="exercise-0">
+<p class="admonition-title">Choose an adaptation strategy</p>
+<p>For each scenario, decide what you would try first:</p>
+<ul class="simple">
+<li><p>prompt engineering;</p></li>
+<li><p>prompt engineering with RAG;</p></li>
+<li><p>fine-tuning after establishing a prompt baseline;</p></li>
+<li><p>RAG followed, if necessary, by fine-tuning.</p></li>
+</ul>
+<p>Explain what kind of failure you expect the chosen approach to address.</p>
+<ol class="arabic simple">
+<li><p>A model must answer questions about policies that change every month and
+cite the relevant section.</p></li>
+<li><p>A model writes useful summaries but uses the wrong headings.</p></li>
+<li><p>A model must convert thousands of recurring incident reports into a strict
+internal representation.</p></li>
+<li><p>A support assistant must use the current documentation and express commands
+according to an organization’s conventions.</p></li>
+<li><p>A model must answer questions about a collection of papers that is updated
+every week.</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-adaptation-strategy</p>
+<p>For the monthly policies, start with prompt engineering and RAG. The dominant
+problem is access to changing, citable evidence.</p>
+<p>For the incorrect headings, start with prompt engineering. The desired change
+is simple to specify and should not initially require training.</p>
+<p>For recurring incident reports, establish a prompt baseline first.
+Fine-tuning may become worthwhile if the mapping is stable, the volume is
+high, representative examples are available, and prompt-based output remains
+insufficiently reliable.</p>
+<p>For the support assistant, use RAG to provide current documentation. If a
+strong prompt does not produce the required command style consistently,
+fine-tuning may then be justified for the behavioural part of the task.</p>
+<p>For the changing paper collection, start with prompt engineering and RAG. The
+collection should be updateable independently of the model parameters.</p>
+</div>
+</section>
+<section id="exercise-decide-whether-to-fine-tune">
+<h2>Exercise: Decide whether to fine-tune<a class="headerlink" href="#exercise-decide-whether-to-fine-tune" title="Link to this heading">¶</a></h2>
+<div class="admonition-fine-tuning-readiness-review exercise important admonition" id="exercise-1">
+<p class="admonition-title">Fine-tuning readiness review</p>
+<p>A team proposes fine-tuning a model on 200 internal question-answer pairs.</p>
+<p>The stated goal is:</p>
+<blockquote>
+<div><p>We want the model to know our documentation and stop hallucinating.</p>
+</div></blockquote>
+<p>Before approving the training work, write at least five questions that the
+team should answer.</p>
+<p>Identify which answers would suggest that fine-tuning is premature.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-1">
+<p class="admonition-title">exercise-finetuning-readiness</p>
+<p>Useful questions include:</p>
+<ol class="arabic simple">
+<li><p>How often does the documentation change?</p></li>
+<li><p>Must answers cite a document or section?</p></li>
+<li><p>Has the team evaluated a prompt-only baseline?</p></li>
+<li><p>Has the team evaluated a retrieval-based baseline?</p></li>
+<li><p>Are the 200 examples representative of real questions?</p></li>
+<li><p>Is there a held-out evaluation set?</p></li>
+<li><p>What does “stop hallucinating” mean in measurable terms?</p></li>
+<li><p>Do failures occur because evidence is missing, or because the model uses
+available evidence incorrectly?</p></li>
+<li><p>What should the system do when the documentation does not contain an
+answer?</p></li>
+<li><p>Who will maintain and evaluate the model when documentation changes?</p></li>
+</ol>
+<p>Fine-tuning is premature if the documentation changes regularly, citations
+are required, retrieval has not been tested, the same examples will be used
+for training and evaluation, or success has not been defined.</p>
+<p>The phrase “know our documentation” points primarily toward retrieval. The
+team may later fine-tune how the model responds to retrieved material, but
+retrieval and abstention should be addressed first.</p>
+</div>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<p>Prompt engineering, RAG, and fine-tuning change different parts of an LLM
+application.</p>
+<p>Prompt engineering changes the instructions and examples. It is the correct
+starting point when the model already has the necessary capability and
+evidence.</p>
+<p>RAG retrieves external information and includes it in the model’s context. It
+is the usual choice for private, changing, extensive, or citable knowledge.</p>
+<p>Fine-tuning changes model parameters. It is best suited to stable and repeated
+behavioural patterns that remain inadequate after a strong prompt baseline
+and, where necessary, reliable retrieval.</p>
+<p>The progression is therefore not:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>start simple -&gt; eventually fine-tune
+</pre></div>
+</div>
+<p>It is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>start simple
+    -&gt; evaluate
+    -&gt; diagnose the remaining failure
+    -&gt; introduce only the component that addresses that failure
+</pre></div>
+</div>
+<p>Fine-tuning is usually the wrong response when the model needs current
+documents, citations, clearer instructions, a simple output constraint, or a
+working retrieval system. It is also premature when there is no representative
+training data or held-out evaluation set.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../fine-tuning/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Fine-tuning large language models</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../llm-anatomy/">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Anatomy of a Large Language Model</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Sweden AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sweden-ai-factory/roadshow" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Choosing an adaptation strategy - aka when NOT to fine-tune</a><ul>
+<li><a class="reference internal" href="#how-can-we-influence-a-model">How can we influence a model?</a></li>
+<li><a class="reference internal" href="#prompt-engineering">Prompt engineering</a><ul>
+<li><a class="reference internal" href="#when-prompting-is-enough">When prompting is enough</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#retrieval-augmented-generation">Retrieval-augmented generation</a><ul>
+<li><a class="reference internal" href="#what-problem-does-rag-solve">What problem does RAG solve?</a></li>
+<li><a class="reference internal" href="#when-rag-is-worth-introducing">When RAG is worth introducing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fine-tuning">Fine-tuning</a></li>
+<li><a class="reference internal" href="#when-not-to-fine-tune">When not to fine-tune</a></li>
+<li><a class="reference internal" href="#a-practical-decision-process">A practical decision process</a><ul>
+<li><a class="reference internal" href="#establish-the-task-and-evaluation">Establish the task and evaluation</a></li>
+<li><a class="reference internal" href="#build-a-prompt-baseline">Build a prompt baseline</a></li>
+<li><a class="reference internal" href="#add-retrieval-if-evidence-is-missing">Add retrieval if evidence is missing</a></li>
+<li><a class="reference internal" href="#consider-fine-tuning-for-persistent-behaviour">Consider fine-tuning for persistent behaviour</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#combining-rag-and-fine-tuning">Combining RAG and fine-tuning</a></li>
+<li><a class="reference internal" href="#evaluating-the-adaptation-ladder">Evaluating the adaptation ladder</a><ul>
+<li><a class="reference internal" href="#evaluate-more-than-fluency">Evaluate more than fluency</a></li>
+<li><a class="reference internal" href="#evaluate-rag-in-parts">Evaluate RAG in parts</a></li>
+<li><a class="reference internal" href="#evaluate-fine-tuning-against-meaningful-baselines">Evaluate fine-tuning against meaningful baselines</a></li>
+<li><a class="reference internal" href="#automated-and-human-evaluation">Automated and human evaluation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exercise-choose-the-first-intervention">Exercise: Choose the first intervention</a></li>
+<li><a class="reference internal" href="#exercise-decide-whether-to-fine-tune">Exercise: Decide whether to fine-tune</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=187304be"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=35a8b989"></script>
+    <script src="../_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script data-domain="learn.swedenaifactory.se/roadshow" defer="defer" src="https://plausible.io/js/script.js"></script>
+    </body>
+</html>
