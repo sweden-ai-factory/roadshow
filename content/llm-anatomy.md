@@ -123,7 +123,7 @@ scientific term or a word from another language into many small fragments.
 The model can still process such text, but the representation uses more
 positions and may have been encountered less often during training.
 
-```{exercise} Think like a tokenizer
+::::{exercise} Think like a tokenizer
 :label: exercise-tokenizer
 
 Consider the following strings:
@@ -143,10 +143,9 @@ could represent all six strings.
 There is no single correct answer. Discuss the trade-off between a larger
 vocabulary and longer token sequences.
 
-```
 
-```{solution} exercise-tokenizer
-:class: dropdown
+
+:::{solution}
 
 One possible vocabulary contains:
 
@@ -170,6 +169,8 @@ retraining     -> re + train + ing
 supercomputer  -> super + computer
 supercomputing -> super + comput + ing
 ```
+:::
+::::
 
 A larger vocabulary could include every complete word, producing shorter
 sequences. A smaller vocabulary would reuse more pieces but produce longer
