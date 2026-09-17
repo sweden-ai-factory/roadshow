@@ -490,7 +490,23 @@ another head always connects adjectives to nouns, but while it is a useful
 mental model, internal representations are a lot more opaque than this, which
 is one of the sources of the lack of interpretability of LLMs.
 
-## Causal masking
+**Another example:**
+
+```text
+The fat ginger cat sat on a mat
+```
+
+![](./img/attn-cat.png)
+
+It the context contains adjectives (`fat`, `ginger`) which describes the appearance of `cat`
+and also the verb `sat` and object `mat` which describes the position of the `cat`.
+
+![](./img/query-key-cat.png)
+
+If we imagine that there exists a particular **attention head** which focussing on nouns. The query vector is like looking for labels with "adjective" on them to better understand the noun.
+In reality, this is much more abstract.
+
+### Causal masking
 
 During next-token training, a decoder-only model must not use future tokens to
 predict an earlier token.
@@ -518,10 +534,34 @@ query 4      x  x  x  x
 An `x` marks an allowed attention connection. A `-` marks a connection that is
 masked before softmax.
 
+### Query-Key dot product
+
+![](./img/query-key-fat-ginger.png)
+
+Compute the dot product with each query-key pair, to determine how well the key matches the query.
+Where the queries and keys align, the dot product is larger.
+Lower left dot products are masked, as we want the model to predict every next word during training. To prevent data leakage, future words should not influence previous ones.
+
 During inference this is not very important (the future tokens do not exist
 yet), but it is essential in the training phase to prevent "cheating".
 
-### Context length and computational cost
+
+### From values to attention
+
+![](./img/value-fat-ginger.png)
+
+Value matrix multiplied by the embedding of the previous word results in the value vector
+
+
+![](./img/garfield.png)
+
+Each value vector is the multiplied by the corresponding weight and summed up to form the attention vector.
+This attention vector represents a "change" in the embedding to get an updated, richer meaning.
+Since this happens to every word in the sequences we end up with a set of more refined embeddings.
+
+
+
+#### Sidenote: Context length and computational cost
 
 For standard dense attention, a sequence containing \(n\) tokens produces an
 attention-score matrix containing \(n^2\) entries for every head.
