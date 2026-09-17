@@ -15,6 +15,7 @@ trained at a general level
 llm-anatomy
 choosing-an-adaptation-strategy
 fine-tuning
+evaluating-llms
 ```
 
 ```{toctree}
@@ -99,7 +100,10 @@ By the end of the lesson, learners should be able to:
 - describe the difference between full fine-tuning and parameter-efficient
   fine-tuning;
 - explain the central idea behind low-rank adaptation;
-- design a baseline and evaluation before introducing additional complexity.
+- design a baseline and evaluation before introducing additional complexity;
+- describe the main ways of evaluating a trained LLM and the limitations of
+  each;
+- interpret benchmark results with appropriate caution.
 
 ## Lesson schedule
 
@@ -111,6 +115,7 @@ How an LLM processes text                 20 minutes
 Break                                     10 minutes
 Choosing an adaptation strategy           40 minutes
 Fine-tuning large language models         40 minutes
+Evaluating large language models          30 minutes
 Discussion and conclusions                15 minutes
 ```
 
