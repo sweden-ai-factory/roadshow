@@ -470,7 +470,9 @@ specialist judgment.
 Another language model can assist with evaluation (*LLM-as-a-judge*), but its
 judgement must be also tailored to human preference. However, it can be useful
 in cases when the objective function is somewhat subjective, such as verbosity,
-complexity or general style.
+complexity or general style. The section on
+[evaluating large language models](evaluating-llms.md) describes these
+approaches and their limitations in more detail.
 
 ## Exercise: Choose the first intervention
 

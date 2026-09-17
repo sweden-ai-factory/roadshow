@@ -510,7 +510,8 @@ required content, unsupported claims, format adherence, and omissions.
 Compare the fine-tuned model with the strongest non-fine-tuned baseline, not
 only with an unhelpfully vague prompt. This part is nowadays outsourced to an
 LLM (*LLM as a judge*), provided that it is first aligned with a human
-evaluator.
+evaluator. See [evaluating large language models](evaluating-llms.md) for how
+this works and where it can fail.
 
 ### Regression evaluation
 
