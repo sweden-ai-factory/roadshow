@@ -220,8 +220,11 @@ used to impose a simple format.
 
 ### Retrieval-augmented generation
 
+
 Retrieval-augmented generation (RAG) adds an external
 information-retrieval stage.
+
+![](./img/use-rag.png)
 
 A simplified RAG system looks like this:
 
@@ -314,9 +317,12 @@ tracking, and an evaluation that checks whether claims are supported.
 
 ## Fine-tuning
 
+
 Fine-tuning continues training a pretrained model on examples chosen for a
 particular objective. It changes some or all of the model parameters (or,
 sometimes, introduce a few new ones altogether).
+
+![](./img/use-finetuning.png)
 
 This makes fine-tuning fundamentally different from prompting and retrieval:
 a prompt or retrieved document can be replaced immediately, while a parameter
