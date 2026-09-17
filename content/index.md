@@ -12,6 +12,8 @@ trained at a general level
 ```{toctree}
 :caption: The lesson
 :maxdepth: 1
+
+llm-intro
 llm-anatomy
 choosing-an-adaptation-strategy
 fine-tuning
