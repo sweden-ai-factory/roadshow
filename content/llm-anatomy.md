@@ -243,11 +243,19 @@ does not yet express what the token means in a particular sentence.
 
 Consider the word `mole`:
 
+::::{figure} ./img/context-mole.png
+::::
+
+:::{admonition} Another example for the word mole
+:class: note, dropdown
+
 ```text
 A mole damaged the garden.
 The chemist measured one mole of the compound.
 She has a mole on her cheek.
 ```
+:::
+
 
 The tokeniser may assign the same token ID to `mole` in every sentence. The
 embedding lookup therefore produces the same initial vector.
@@ -264,6 +272,11 @@ sea lion
 sea lion cuddly toy
 ```
 
+::::{figure} ./img/context-sea-lion-toy.png
+
+::::
+
+
 The initial vector associated with the token `lion` is unchanged. Its
 contextual representation changes because the words around it change.
 
@@ -278,28 +291,14 @@ Sometimes the word embedding is used to refer to both, which can be confusing.
 
 :::
 
-### Position in the sequence
+:::{important}
 
-Attention alone does not inherently know whether one token comes before or
-after another. The model must therefore include information about position.
+We need a mechanism with which to encode the position, context, and the semantic
+meaning of each (sub-)word/token/embedding in the text. This is what the **transformer** architecture solves.
 
-The original transformer added positional encodings to token embeddings.
-Modern architectures may use other methods, such as learned position
-embeddings or rotary position embeddings.
+:::
 
-The implementation differs, but the purpose is the same: token
-representations must contain enough positional information for the model to
-distinguish sequences such as:
 
-```text
-the dog chased the cat
-```
-
-and:
-
-```text
-the cat chased the dog
-```
 
 ## Type of transformers
 
@@ -385,7 +384,30 @@ The feed-forward network transforms the representation at each position.
 Both components contain learned parameters, and both are changed during
 training.
 
-## Self-attention
+### Position in the sequence
+
+Attention alone does not inherently know whether one token comes before or
+after another. The model must therefore include information about position.
+
+The original transformer added positional encodings to token embeddings.
+Modern architectures may use other methods, such as learned position
+embeddings or rotary position embeddings.
+
+The implementation differs, but the purpose is the same: token
+representations must contain enough positional information for the model to
+distinguish sequences such as:
+
+```text
+the dog chased the cat
+```
+
+and:
+
+```text
+the cat chased the dog
+```
+
+### Self-attention
 
 Self-attention allows the representation at one token position to incorporate
 information from other token positions in the same sequence.
