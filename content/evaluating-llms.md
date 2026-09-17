@@ -113,9 +113,9 @@ automatically.
 
 - **Exact match** checks whether the output is identical to the reference,
   usually after normalising case and punctuation.
-- **BLEU** counts how many short word sequences (n-grams) in the output also
+- [**BLEU**](https://en.wikipedia.org/wiki/BLEU) counts how many short word sequences (n-grams) in the output also
   appear in the reference. It was developed for machine translation.
-- **ROUGE** measures how much of the reference is covered by the output. It is
+- [**ROUGE**](https://en.wikipedia.org/wiki/ROUGE_(metric)) measures how much of the reference is covered by the output. It is
   commonly used for summarisation.
 
 **Useful for:** tasks with short, well-defined answers, and translation or
@@ -289,6 +289,27 @@ ranking is harder to memorise.
 In practice, these methods are combined. Cheap automatic checks run often and
 cover the parts of the task that can be verified. Human evaluation, or an LLM
 judge validated against humans, covers the rest.
+
+:::{admonition} Automatic vs Human evaluation
+:class: seealso, dropdown
+
+![](./img/eval-strategies.png)
+
+> Roitman, Haggai. "The Hitchhiker's Guide to Agentic AI: From Foundations to Systems." arXiv preprint [arXiv:2606.24937](https://arxiv.org/abs/2606.24937) (2026).
+
+:::
+
+
+:::{keypoints}
+
+Simply speaking, the evaluation methods fall into either of these kinds:
+
+- **Reference-based evaluation** has some gold standard to compare to. Here the space of agreeable answers is typically small (e.g., yes/no answers, distance metrics etc.)
+- **Reference-free evaluation** doesn’t have a reference data-point, instead relies on something giving a judgement like human raters or LLM-as-a-judge. 
+
+> If you can formulate your problem as reference-based, it will often make development easier, but with certain trade-offs.
+
+:::
 
 ## Benchmarks
 
