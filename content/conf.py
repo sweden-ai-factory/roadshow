@@ -38,6 +38,7 @@ extensions = [
     "myst_nb",
     "sphinx.ext.todo",
     "sphinx.ext.intersphinx",
+    "sphinx_tippy",
 ]
 
 # FIXME: add bibtex files for references if any

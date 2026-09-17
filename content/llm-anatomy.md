@@ -212,7 +212,7 @@ draw some conclusions.
 
 ::::{exercise} Embedding vectors and semantic similarity
 
-Visualizing the Word2Vec
+Visualizing [Word2Vec](https://en.wikipedia.org/wiki/Word2Vec) embeddings.
 
 - Go to [this 3D visualization of Word2Vec](https://anvaka.github.io/pm/#/galaxy/word2vec-wiki?cx=-3746&cy=-8113&cz=3257&lx=0.1196&ly=0.4967&lz=-0.1078&lw=0.8529&ml=150&s=1.75&l=1&v=d50_clean)
 - Search for the word "woman", "boy", "girl", "husband"
