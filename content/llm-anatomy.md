@@ -205,7 +205,36 @@ vector of length d
 ```
 
 The embedding matrix is learned during training. Tokens that are useful in
-similar contexts often acquire related representations.
+similar contexts often acquire related representations. The number `d` determines
+the number of dimensions in the embedding space, and since it is often large, it
+can be hard to visualize. We can however project the vectors into a 2D or 3D and
+draw some conclusions.
+
+::::{exercise} Embedding vectors and semantic similarity
+
+Visualizing the Word2Vec
+
+- Go to [this 3D visualization of Word2Vec](https://anvaka.github.io/pm/#/galaxy/word2vec-wiki?cx=-3746&cy=-8113&cz=3257&lx=0.1196&ly=0.4967&lz=-0.1078&lw=0.8529&ml=150&s=1.75&l=1&v=d50_clean)
+- Search for the word "woman", "boy", "girl", "husband"
+
+Do you notice any patterns?
+
+:::{solution}
+
+Woman and husband has approximately the same "distance" as boy and girl.
+We can see that the Word2Vec model has learned that gender is a meaningful
+dimension in the embedding space.
+
+![](./img/embed-gender.png)
+
+:::
+::::
+
+:::{exercise} More Word2Vec
+
+Go to <https://projector.tensorflow.org/> and explore the embeddings. Click on any random word (depicted as blob), and observe and reflect on the "neighbouring" words.
+
+:::
 
 ### Initial and contextual representations
 
