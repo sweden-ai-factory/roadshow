@@ -1,4 +1,4 @@
-# Fine tuning tutorial - Adapting large language models
+# Fine tuning tutorial
 
 :::{prereq}
 
@@ -31,6 +31,10 @@ quantisation
 quick-reference
 guide
 ```
+
+## Overview
+
+**Adapting large language models**
 
 Large language models (LLMs) are now ubiquitous in many applications and a
 variety of both open- and closed-weight are available for many disparate tasks.
