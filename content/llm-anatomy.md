@@ -609,6 +609,8 @@ A simplified feed-forward operation is:
 W_2 \sigma(W_1x + b_1) + b_2
 ```
 
+![](./img/ffn-mlp.png){w=400px align=center}
+
 The first projection usually expands the hidden representation to a larger
 intermediate dimension. A nonlinear activation is applied, followed by a
 projection back to the model's hidden dimension.
