@@ -87,8 +87,20 @@ Those three cases point toward prompting, retrieval, and fine-tuning
 respectively. Real systems may contain more than one kind of failure, but the
 distinction provides a useful starting point.
 
-## Prompt engineering
+## In-context learning
 
+{attribution="J. Varughese, IBM"}
+>In-context learning (ICL) is an advanced AI capability introduced in the seminal research paper [*Language Models are Few-Shot Learners* (2020)](https://arxiv.org/abs/2005.14165) which unveiled GPT-3. Unlike supervised learning (or, in other words fine-tuning], where a model undergoes a training phase with backpropagation to alter its parameters, ICL relies entirely on pretrained language models and keeps their parameters unchanged.
+> ...
+> At its core, in-context learning works by conditioning a [large language model](https://www.ibm.com/think/topics/large-language-models) (LLM) on a prompt that includes a set of examples (input/output pairs or in-context examples) typically written in natural language as part of the input sequence. These examples, often drawn from a dataset, are not used to retrain the model but are fed directly into its [context window](https://www.ibm.com/think/topics/context-window). This window shows the amount of text an LLM can process at once, acting as its temporary memory for generating coherent responses and is the part of the model that processes sequential input.
+
+In-context learning can be acheived by several methods.
+
+- Prompt engineering: prompt templates, few-shot prompting, modifying system prompt
+- Retrieval Augmented Generation (RAG)
+- Model Context Protocol and Tool-calling, in general *(not covered here)*.
+
+### Prompt engineering
 Prompt engineering changes the model's input. It does not update the model
 parameters.
 
@@ -176,7 +188,7 @@ Separate calls make intermediate results easier to inspect, although they also
 increase latency and introduce additional failure points.
 -->
 
-### When prompting is enough
+#### When prompting is enough
 
 Prompt engineering is often sufficient when the base model already has the
 required capability and all necessary information can be included in the
@@ -197,7 +209,7 @@ examples, schema validation, and deterministic or low-temperature decoding.
 Fine-tuning may improve consistency, but it should not be the first mechanism
 used to impose a simple format.
 
-## Retrieval-augmented generation
+### Retrieval-augmented generation
 
 Retrieval-augmented generation (RAG) adds an external
 information-retrieval stage.
@@ -215,7 +227,7 @@ user question
 The model parameters are not normally changed. The model receives additional
 evidence as part of its input.
 
-### What problem does RAG solve?
+#### What problem does RAG solve?
 
 RAG is appropriate when the model cannot answer reliably from its existing
 parameters and the required information exists in an external collection.
@@ -270,7 +282,7 @@ These failures require different remedies. Fine-tuning the generator will not
 repair a missing document or a faulty metadata filter.
 -->
 
-### When RAG is worth introducing
+#### When RAG is worth introducing
 
 RAG is a strong candidate when the application depends on information that is
 private, frequently updated, too large to include in every prompt, or expected
