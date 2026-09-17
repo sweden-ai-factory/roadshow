@@ -1,4 +1,4 @@
-# Adapting large language models
+# Fine tuning tutorial - Adapting large language models
 
 :::{prereq}
 
@@ -130,7 +130,7 @@ material in this lesson.
 
 ## See also
 
-These lessons were inspired from the excellent material developed by the Vienna scientific cluster (VSC) [here](https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers). Moreover, the Hugging Face people published a guidebook of sorts based on their experience training SmolLM, which can be found [here](https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook#beyond-base-modelspost-training-in-2025).
+These lessons were inspired / adapted from the excellent material developed by the Vienna scientific cluster (VSC) [here](https://gitlab.tuwien.ac.at/vsc-public/training/LLMs-on-supercomputers) [License: CC BY-SA 4.0]. Moreover, the Hugging Face people published a guidebook of sorts based on their experience training SmolLM, which can be found [here](https://huggingface.co/spaces/HuggingFaceTB/smol-training-playbook#beyond-base-modelspost-training-in-2025).
 
 ::::{admonition} License
 :class: attention

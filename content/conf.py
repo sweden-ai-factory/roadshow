@@ -14,7 +14,7 @@
 # -- Project information -----------------------------------------------------
 
 # FIXME: choose title
-project = "Fine tuning tutorial - SEAIF roadshow"
+project = "Sweden AI Factory roadshow"
 # FIXME: insert correct author
 author = "The contributors"
 copyright = f"2026, Sweden AI Factory, {author}"
