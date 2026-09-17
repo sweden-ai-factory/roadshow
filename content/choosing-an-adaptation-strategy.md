@@ -98,7 +98,16 @@ In-context learning can be acheived by several methods.
 
 - Prompt engineering: prompt templates, few-shot prompting, modifying system prompt
 - Retrieval Augmented Generation (RAG)
-- Model Context Protocol and Tool-calling, in general *(not covered here)*.
+- Model Context Protocol and tool-calling, in general *(not covered here)*.
+- Memory system *(also not covered here)*.
+
+:::{figure} ./img/prompt_context.webp
+
+In 2026, a good majority of AI engineering is just context engineering.
+
+Image credit: [Anthropic](https://www.anthropic.com/engineering/effective-context-engineering-for-ai-agents).
+
+:::
 
 ### Prompt engineering
 Prompt engineering changes the model's input. It does not update the model
