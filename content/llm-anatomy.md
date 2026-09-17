@@ -327,12 +327,22 @@ sequence, and invokes the model again.
 
 ### Encoder-decoder models
 
+:::{figure} ./img/encoder-decoder-text2img.png
+:alt: Encoder-decoder model
+:width: 100%
+
+Text to image generative model as an example of an encoder-decoder model. Think
+*DALL-E, Stable Diffusion, FLUX.1 \[dev\] etc.*.
+
+:::
+
 An encoder-decoder model first builds representations of the input with an
 encoder. A decoder then generates an output while attending to both the
 already generated output and the encoded input.
 
-This architecture is well suited to sequence-to-sequence tasks such as
-translation and summarization.
+This architecture is well suited for sequence-to-sequence tasks such as
+translation and summarization. They are also used for
+multimodal tasks such as image segmentation (for eg., Detectron) and generation (for eg., Stable Diffusion).
 
 :::{admonition} Focus of this lesson
 :class: note
