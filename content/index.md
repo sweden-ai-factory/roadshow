@@ -1,4 +1,4 @@
-# Fine tuning tutorial - Adapting large language models
+# Fine tuning tutorial
 
 :::{prereq}
 
@@ -12,6 +12,8 @@ trained at a general level
 ```{toctree}
 :caption: The lesson
 :maxdepth: 1
+
+llm-intro
 llm-anatomy
 choosing-an-adaptation-strategy
 fine-tuning
@@ -31,6 +33,10 @@ quantisation
 quick-reference
 guide
 ```
+
+## Overview
+
+**Adapting large language models**
 
 Large language models (LLMs) are now ubiquitous in many applications and a
 variety of both open- and closed-weight are available for many disparate tasks.

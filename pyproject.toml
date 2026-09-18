@@ -11,6 +11,8 @@ dependencies = [
   "sphinx>=8.2.3",
   "sphinx-evita>=0.3.1b0",
   "sphinx-lesson>=0.8.16",
+  # "sphinx-tippy>=0.4.3",
+  "sphinx-tippy @ https://github.com/tovrstra/sphinx-tippy/archive/refs/heads/http-user-agent.zip",
   "sphinxcontrib-bibtex>=2.6.5",
 ]
 

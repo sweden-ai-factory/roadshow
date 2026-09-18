@@ -123,7 +123,7 @@ scientific term or a word from another language into many small fragments.
 The model can still process such text, but the representation uses more
 positions and may have been encountered less often during training.
 
-```{exercise} Think like a tokenizer
+::::{exercise} Think like a tokenizer
 :label: exercise-tokenizer
 
 Consider the following strings:
@@ -143,10 +143,9 @@ could represent all six strings.
 There is no single correct answer. Discuss the trade-off between a larger
 vocabulary and longer token sequences.
 
-```
 
-```{solution} exercise-tokenizer
-:class: dropdown
+
+:::{solution}
 
 One possible vocabulary contains:
 
@@ -170,6 +169,8 @@ retraining     -> re + train + ing
 supercomputer  -> super + computer
 supercomputing -> super + comput + ing
 ```
+:::
+::::
 
 A larger vocabulary could include every complete word, producing shorter
 sequences. A smaller vocabulary would reuse more pieces but produce longer
@@ -205,7 +206,36 @@ vector of length d
 ```
 
 The embedding matrix is learned during training. Tokens that are useful in
-similar contexts often acquire related representations.
+similar contexts often acquire related representations. The number `d` determines
+the number of dimensions in the embedding space, and since it is often large, it
+can be hard to visualize. We can however project the vectors into a 2D or 3D and
+draw some conclusions.
+
+::::{exercise} Embedding vectors and semantic similarity
+
+Visualizing [Word2Vec](https://en.wikipedia.org/wiki/Word2Vec) embeddings.
+
+- Go to [this 3D visualization of Word2Vec](https://anvaka.github.io/pm/#/galaxy/word2vec-wiki?cx=-3746&cy=-8113&cz=3257&lx=0.1196&ly=0.4967&lz=-0.1078&lw=0.8529&ml=150&s=1.75&l=1&v=d50_clean)
+- Search for the word "woman", "boy", "girl", "husband"
+
+Do you notice any patterns?
+
+:::{solution}
+
+Woman and husband has approximately the same "distance" as boy and girl.
+We can see that the Word2Vec model has learned that gender is a meaningful
+dimension in the embedding space.
+
+![](./img/embed-gender.png)
+
+:::
+::::
+
+:::{exercise} More Word2Vec
+
+Go to <https://projector.tensorflow.org/> and explore the embeddings. Click on any random word (depicted as blob), and observe and reflect on the "neighbouring" words.
+
+:::
 
 ### Initial and contextual representations
 
@@ -214,11 +244,19 @@ does not yet express what the token means in a particular sentence.
 
 Consider the word `mole`:
 
+::::{figure} ./img/context-mole.png
+::::
+
+:::{admonition} Another example for the word mole
+:class: note, dropdown
+
 ```text
 A mole damaged the garden.
 The chemist measured one mole of the compound.
 She has a mole on her cheek.
 ```
+:::
+
 
 The tokeniser may assign the same token ID to `mole` in every sentence. The
 embedding lookup therefore produces the same initial vector.
@@ -235,6 +273,11 @@ sea lion
 sea lion cuddly toy
 ```
 
+::::{figure} ./img/context-sea-lion-toy.png
+
+::::
+
+
 The initial vector associated with the token `lion` is unchanged. Its
 contextual representation changes because the words around it change.
 
@@ -249,28 +292,14 @@ Sometimes the word embedding is used to refer to both, which can be confusing.
 
 :::
 
-### Position in the sequence
+:::{important}
 
-Attention alone does not inherently know whether one token comes before or
-after another. The model must therefore include information about position.
+We need a mechanism with which to encode the position, context, and the semantic
+meaning of each (sub-)word/token/embedding in the text. This is what the **transformer** architecture solves.
 
-The original transformer added positional encodings to token embeddings.
-Modern architectures may use other methods, such as learned position
-embeddings or rotary position embeddings.
+:::
 
-The implementation differs, but the purpose is the same: token
-representations must contain enough positional information for the model to
-distinguish sequences such as:
 
-```text
-the dog chased the cat
-```
-
-and:
-
-```text
-the cat chased the dog
-```
 
 ## Type of transformers
 
@@ -298,12 +327,22 @@ sequence, and invokes the model again.
 
 ### Encoder-decoder models
 
+:::{figure} ./img/encoder-decoder-text2img.png
+:alt: Encoder-decoder model
+:width: 100%
+
+Text to image generative model as an example of an encoder-decoder model. Think
+*DALL-E, Stable Diffusion, FLUX.1 \[dev\] etc.*.
+
+:::
+
 An encoder-decoder model first builds representations of the input with an
 encoder. A decoder then generates an output while attending to both the
 already generated output and the encoded input.
 
-This architecture is well suited to sequence-to-sequence tasks such as
-translation and summarization.
+This architecture is well suited for sequence-to-sequence tasks such as
+translation and summarization. They are also used for
+multimodal tasks such as image segmentation (for eg., Detectron) and generation (for eg., Stable Diffusion).
 
 :::{admonition} Focus of this lesson
 :class: note
@@ -346,7 +385,30 @@ The feed-forward network transforms the representation at each position.
 Both components contain learned parameters, and both are changed during
 training.
 
-## Self-attention
+### Position in the sequence
+
+Attention alone does not inherently know whether one token comes before or
+after another. The model must therefore include information about position.
+
+The original transformer added positional encodings to token embeddings.
+Modern architectures may use other methods, such as learned position
+embeddings or rotary position embeddings.
+
+The implementation differs, but the purpose is the same: token
+representations must contain enough positional information for the model to
+distinguish sequences such as:
+
+```text
+the dog chased the cat
+```
+
+and:
+
+```text
+the cat chased the dog
+```
+
+### Self-attention
 
 Self-attention allows the representation at one token position to incorporate
 information from other token positions in the same sequence.
@@ -429,7 +491,23 @@ another head always connects adjectives to nouns, but while it is a useful
 mental model, internal representations are a lot more opaque than this, which
 is one of the sources of the lack of interpretability of LLMs.
 
-## Causal masking
+**Another example:**
+
+```text
+The fat ginger cat sat on a mat
+```
+
+![](./img/attn-cat.png)
+
+It the context contains adjectives (`fat`, `ginger`) which describes the appearance of `cat`
+and also the verb `sat` and object `mat` which describes the position of the `cat`.
+
+![](./img/query-key-cat.png)
+
+If we imagine that there exists a particular **attention head** which focussing on nouns. The query vector is like looking for labels with "adjective" on them to better understand the noun.
+In reality, this is much more abstract.
+
+### Causal masking
 
 During next-token training, a decoder-only model must not use future tokens to
 predict an earlier token.
@@ -457,10 +535,34 @@ query 4      x  x  x  x
 An `x` marks an allowed attention connection. A `-` marks a connection that is
 masked before softmax.
 
+### Query-Key dot product
+
+![](./img/query-key-fat-ginger.png)
+
+Compute the dot product with each query-key pair, to determine how well the key matches the query.
+Where the queries and keys align, the dot product is larger.
+Lower left dot products are masked, as we want the model to predict every next word during training. To prevent data leakage, future words should not influence previous ones.
+
 During inference this is not very important (the future tokens do not exist
 yet), but it is essential in the training phase to prevent "cheating".
 
-### Context length and computational cost
+
+### From values to attention
+
+![](./img/value-fat-ginger.png)
+
+Value matrix multiplied by the embedding of the previous word results in the value vector
+
+
+![](./img/garfield.png)
+
+Each value vector is the multiplied by the corresponding weight and summed up to form the attention vector.
+This attention vector represents a "change" in the embedding to get an updated, richer meaning.
+Since this happens to every word in the sequences we end up with a set of more refined embeddings.
+
+
+
+#### Sidenote: Context length and computational cost
 
 For standard dense attention, a sequence containing \(n\) tokens produces an
 attention-score matrix containing \(n^2\) entries for every head.
@@ -507,6 +609,8 @@ A simplified feed-forward operation is:
 =
 W_2 \sigma(W_1x + b_1) + b_2
 ```
+
+![](./img/ffn-mlp.png){w=400px align=center}
 
 The first projection usually expands the hidden representation to a larger
 intermediate dimension. A nonlinear activation is applied, followed by a
