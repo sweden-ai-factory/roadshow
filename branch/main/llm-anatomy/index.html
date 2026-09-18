@@ -1,0 +1,1067 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/"><link rel="search" title="Search" href="../search/"><link rel="next" title="Choosing an adaptation strategy - aka when NOT to fine-tune" href="../choosing-an-adaptation-strategy/"><link rel="prev" title="What is a Large Language Model?" href="../llm-intro/">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_black.png" as="image">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_white.png" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Anatomy of a Large Language Model - Sweden AI Factory roadshow</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="../_static/furo_ext_lesson.css?v=6c0cde2e" />
+    <link rel="stylesheet" type="text/css" href="../_static/EN_Co-funded.css?v=bf081b0b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/overrides.css?v=1c72d2de" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Sweden AI Factory roadshow</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/SEAIF_favicon_black.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/SEAIF_favicon_white.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Sweden AI Factory roadshow</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../llm-intro/">What is a Large Language Model?</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../choosing-an-adaptation-strategy/">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fine-tuning/">Fine-tuning large language models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluating-llms/">Evaluating large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quantisation/">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/blob/main//content/llm-anatomy.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/edit/main//content/llm-anatomy.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="anatomy-of-a-large-language-model">
+<h1>Anatomy of a Large Language Model<a class="headerlink" href="#anatomy-of-a-large-language-model" title="Link to this heading">¶</a></h1>
+<p>A language model does not read text as words and sentences: text must first be
+converted into numerical representations, then transformer layers update
+those representations using the surrounding context.</p>
+<p>A simplified forward pass looks like this:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>text
+  -&gt; tokens
+  -&gt; token IDs
+  -&gt; embeddings
+  -&gt; transformer blocks
+  -&gt; output logits
+  -&gt; next-token probabilities
+</pre></div>
+</div>
+<p>For a generative language model, the process is repeated one generated token
+at a time.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>How does text become input to a neural network?</p></li>
+<li><p>What information is contained in a token embedding?</p></li>
+<li><p>How does attention introduce context?</p></li>
+<li><p>What do queries, keys, and values represent?</p></li>
+<li><p>What is the role of the feed-forward layers?</p></li>
+<li><p>Why can decoder-only models not attend to future tokens?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>describe the path from text to tokens, embeddings, and output
+probabilities;</p></li>
+<li><p>explain why modern language models use subword tokenisation;</p></li>
+<li><p>distinguish an initial token embedding from a contextual representation;</p></li>
+<li><p>describe self-attention using queries, keys, and values;</p></li>
+<li><p>explain the purpose of causal masking;</p></li>
+<li><p>distinguish the role of attention from the role of a feed-forward network;</p></li>
+<li><p>recognize the main differences between encoder-only, decoder-only, and
+encoder-decoder models.</p></li>
+</ul>
+</div>
+<section id="from-text-to-tokens">
+<h2>From text to tokens<a class="headerlink" href="#from-text-to-tokens" title="Link to this heading">¶</a></h2>
+<p>The first step is tokenisation. A tokeniser divides the input into units
+called <strong>tokens</strong> and maps every token to an integer ID.</p>
+<p>Tokens do not necessarily correspond to words. Depending on the tokeniser, a
+token may represent a complete word, part of a word, punctuation, whitespace,
+or another frequently occurring character sequence.</p>
+<section id="why-not-use-one-token-per-word">
+<h3>Why not use one token per word?<a class="headerlink" href="#why-not-use-one-token-per-word" title="Link to this heading">¶</a></h3>
+<p>A word-level vocabulary is simple to imagine:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>"The"       -&gt; 104
+"model"     -&gt; 527
+"predicts"  -&gt; 8912
+"a"         -&gt; 37
+"token"     -&gt; 2841
+</pre></div>
+</div>
+<p>This approach soon becomes impractical. A vocabulary would need separate
+entries for plurals, conjugations, spelling variants, compound words,
+technical terms, names, and typographical errors. It would also handle
+languages with productive word formation poorly.</p>
+<p>At the other extreme, a model could process individual characters. This keeps
+the vocabulary small, but makes sequences considerably longer. The model must
+then learn how characters form common words before it can learn higher-level
+relationships.</p>
+<p>Modern language models usually use <em>subword tokenisation</em> as a compromise.
+Common words may remain as single tokens, while uncommon words are divided
+into reusable pieces.</p>
+<p>For example, a tokeniser might represent:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>supercomputing
+</pre></div>
+</div>
+<p>as something conceptually similar to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>super + comput + ing
+</pre></div>
+</div>
+<p>The actual split depends on the tokeniser and on the data from which its
+vocabulary was constructed.</p>
+<div class="important admonition">
+<p class="admonition-title">Tokenisation is part of the model</p>
+<p>A model must be used with the tokeniser with which it was trained.</p>
+<p>Token IDs have no universal meaning. Token ID <code class="docutils literal notranslate"><span class="pre">527</span></code> may represent one token
+for one model and an entirely different token for another.</p>
+</div>
+</section>
+<section id="why-tokenisation-matters">
+<h3>Why tokenisation matters<a class="headerlink" href="#why-tokenisation-matters" title="Link to this heading">¶</a></h3>
+<p>Tokenisation affects the length of the sequence seen by the model. This in
+turn affects memory use, computation, and the amount of text that fits within
+the context window.</p>
+<p>It can also affect performance across languages and specialist domains. A
+tokeniser may represent frequent English words efficiently while dividing a
+scientific term or a word from another language into many small fragments.
+The model can still process such text, but the representation uses more
+positions and may have been encountered less often during training.</p>
+<div class="admonition-think-like-a-tokenizer exercise important admonition" id="exercise-0">
+<p class="admonition-title">Think like a tokenizer</p>
+<p>Consider the following strings:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>train
+training
+pretraining
+retraining
+supercomputer
+supercomputing
+</pre></div>
+</div>
+<p>Without using a real tokeniser, propose a possible subword vocabulary that
+could represent all six strings.</p>
+<p>There is no single correct answer. Discuss the trade-off between a larger
+vocabulary and longer token sequences.</p>
+<div class="admonition-solution solution important dropdown admonition" id="solution-0">
+<p class="admonition-title">Solution</p>
+<p>One possible vocabulary contains:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>train
+ing
+pre
+re
+super
+computer
+comput
+</pre></div>
+</div>
+<p>This would allow:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>train          -&gt; train
+training       -&gt; train + ing
+pretraining    -&gt; pre + train + ing
+retraining     -&gt; re + train + ing
+supercomputer  -&gt; super + computer
+supercomputing -&gt; super + comput + ing
+</pre></div>
+</div>
+</div>
+</div>
+<p>A larger vocabulary could include every complete word, producing shorter
+sequences. A smaller vocabulary would reuse more pieces but produce longer
+sequences. Real tokenisers choose a compromise based on frequencies in their
+training corpus, often using an algorithm called byte-pair encoding (<a class="reference external" href="https://en.wikipedia.org/wiki/Byte-pair_encoding">BPE</a>).</p>
+</section>
+</section>
+<section id="from-token-ids-to-embeddings">
+<h2>From token IDs to embeddings<a class="headerlink" href="#from-token-ids-to-embeddings" title="Link to this heading">¶</a></h2>
+<p>A token ID is an integer label. The numerical distance between two token IDs
+has no semantic meaning. Token ID 100 is not inherently more similar to token
+ID 101 than it is to token ID 9000.</p>
+<p>Before the transformer can process the tokens, the model maps every token ID
+to a vector. This operation is performed by an embedding layer.</p>
+<p>If the vocabulary contains (V) tokens and the model uses an embedding
+dimension (d), the embedding layer can be represented as a matrix:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[E \in \mathbb{R}^{V \times d}\]</div>
+</div>
+<p>Looking up a token ID selects the corresponding row of this matrix.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>token ID
+   |
+   v
+embedding matrix lookup
+   |
+   v
+vector of length d
+</pre></div>
+</div>
+<p>The embedding matrix is learned during training. Tokens that are useful in
+similar contexts often acquire related representations. The number <code class="docutils literal notranslate"><span class="pre">d</span></code> determines
+the number of dimensions in the embedding space, and since it is often large, it
+can be hard to visualize. We can however project the vectors into a 2D or 3D and
+draw some conclusions.</p>
+<div class="admonition-embedding-vectors-and-semantic-similarity exercise important admonition" id="exercise-1">
+<p class="admonition-title">Embedding vectors and semantic similarity</p>
+<p>Visualizing <a class="reference external" href="https://en.wikipedia.org/wiki/Word2Vec">Word2Vec</a> embeddings.</p>
+<ul class="simple">
+<li><p>Go to <a class="reference external" href="https://anvaka.github.io/pm/#/galaxy/word2vec-wiki?cx=-3746&amp;cy=-8113&amp;cz=3257&amp;lx=0.1196&amp;ly=0.4967&amp;lz=-0.1078&amp;lw=0.8529&amp;ml=150&amp;s=1.75&amp;l=1&amp;v=d50_clean">this 3D visualization of Word2Vec</a></p></li>
+<li><p>Search for the word “woman”, “boy”, “girl”, “husband”</p></li>
+</ul>
+<p>Do you notice any patterns?</p>
+<div class="admonition-solution solution important dropdown admonition" id="solution-1">
+<p class="admonition-title">Solution</p>
+<p>Woman and husband has approximately the same “distance” as boy and girl.
+We can see that the Word2Vec model has learned that gender is a meaningful
+dimension in the embedding space.</p>
+<p><img alt="" src="../_images/embed-gender.png" /></p>
+</div>
+</div>
+<div class="admonition-more-word2vec exercise important admonition" id="exercise-2">
+<p class="admonition-title">More Word2Vec</p>
+<p>Go to <a class="reference external" href="https://projector.tensorflow.org/">https://projector.tensorflow.org/</a> and explore the embeddings. Click on any random word (depicted as blob), and observe and reflect on the “neighbouring” words.</p>
+</div>
+<section id="initial-and-contextual-representations">
+<h3>Initial and contextual representations<a class="headerlink" href="#initial-and-contextual-representations" title="Link to this heading">¶</a></h3>
+<p>The embedding-layer output is only the initial representation of a token. It
+does not yet express what the token means in a particular sentence.</p>
+<p>Consider the word <code class="docutils literal notranslate"><span class="pre">mole</span></code>:</p>
+<figure class="align-default">
+<img alt="../_images/context-mole.png" src="../_images/context-mole.png" />
+</figure>
+<div class="note dropdown admonition">
+<p class="admonition-title">Another example for the word mole</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A mole damaged the garden.
+The chemist measured one mole of the compound.
+She has a mole on her cheek.
+</pre></div>
+</div>
+</div>
+<p>The tokeniser may assign the same token ID to <code class="docutils literal notranslate"><span class="pre">mole</span></code> in every sentence. The
+embedding lookup therefore produces the same initial vector.</p>
+<p>The surrounding context is different, however. Transformer layers use that
+context to produce a different representation of <code class="docutils literal notranslate"><span class="pre">mole</span></code> in each example.</p>
+<p>The same principle applies when an expression changes meaning as context is
+added:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>lion
+sea lion
+sea lion cuddly toy
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/context-sea-lion-toy.png" src="../_images/context-sea-lion-toy.png" />
+</figure>
+<p>The initial vector associated with the token <code class="docutils literal notranslate"><span class="pre">lion</span></code> is unchanged. Its
+contextual representation changes because the words around it change.</p>
+<div class="note admonition">
+<p class="admonition-title">Embeddings vs contextual representations</p>
+<p>An <strong>embedding</strong> often refers to the initial vector produced by the embedding
+layer, whereas a contextual representation is the vector associated with a
+token after one or more transformer layers have processed the sequence.</p>
+<p>Sometimes the word embedding is used to refer to both, which can be confusing.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>We need a mechanism with which to encode the position, context, and the semantic
+meaning of each (sub-)word/token/embedding in the text. This is what the <strong>transformer</strong> architecture solves.</p>
+</div>
+</section>
+</section>
+<section id="type-of-transformers">
+<h2>Type of transformers<a class="headerlink" href="#type-of-transformers" title="Link to this heading">¶</a></h2>
+<p>Transformer architectures are commonly grouped into three broad families.</p>
+<section id="encoder-only-models">
+<h3>Encoder-only models<a class="headerlink" href="#encoder-only-models" title="Link to this heading">¶</a></h3>
+<p>An encoder-only model builds contextual representations using information
+from both sides of a token. This is useful when the model must understand an
+entire input rather than generate a continuation.</p>
+<p>Encoder-only models are commonly associated with classification,
+named-entity recognition, semantic similarity, and extractive question
+answering.</p>
+</section>
+<section id="decoder-only-models">
+<h3>Decoder-only models<a class="headerlink" href="#decoder-only-models" title="Link to this heading">¶</a></h3>
+<p>A decoder-only model predicts the next token based on the tokens that precede
+it. Most contemporary general-purpose generative language models use this
+architecture.</p>
+<p>At each generation step, the model produces a probability distribution over
+the vocabulary. A decoding procedure selects a token, appends it to the
+sequence, and invokes the model again.</p>
+</section>
+<section id="encoder-decoder-models">
+<h3>Encoder-decoder models<a class="headerlink" href="#encoder-decoder-models" title="Link to this heading">¶</a></h3>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../_images/encoder-decoder-text2img.png"><img alt="Encoder-decoder model" src="../_images/encoder-decoder-text2img.png" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Text to image generative model as an example of an encoder-decoder model. Think
+<em>DALL-E, Stable Diffusion, FLUX.1 [dev] etc.</em>.</span><a class="headerlink" href="#id1" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>An encoder-decoder model first builds representations of the input with an
+encoder. A decoder then generates an output while attending to both the
+already generated output and the encoded input.</p>
+<p>This architecture is well suited for sequence-to-sequence tasks such as
+translation and summarization. They are also used for
+multimodal tasks such as image segmentation (for eg., Detectron) and generation (for eg., Stable Diffusion).</p>
+<div class="note admonition">
+<p class="admonition-title">Focus of this lesson</p>
+<p>The remainder of the episode concentrates on decoder-only models because they
+are the usual basis of instruction-tuned and chat-oriented language models.
+The main components also appear in other transformer families.</p>
+</div>
+</section>
+</section>
+<section id="inside-a-transformer-block">
+<h2>Inside a transformer block<a class="headerlink" href="#inside-a-transformer-block" title="Link to this heading">¶</a></h2>
+<p>A transformer contains a stack of repeated blocks. Although details differ
+between model families, each block contains two major computational
+components:</p>
+<ol class="arabic simple">
+<li><p>an attention sublayer;</p></li>
+<li><p>a position-wise feed-forward network, often called an MLP (multi-layer
+perceptron).</p></li>
+</ol>
+<p>Residual connections and normalization layers support the flow of information
+through the network.</p>
+<figure class="align-default" id="id2">
+<a class="img-responsive reference internal image-reference" href="../_images/transformer-block.png"><img alt="../_images/transformer-block.png" class="img-responsive" src="../_images/transformer-block.png" style="width: 70%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">The original transformer architecture. Modern large language models often use
+decoder-only variants, but retain the repeated pattern of attention,
+feed-forward layers, residual connections, and normalization. <a class="reference external" href="https://en.wikipedia.org/wiki/Transformer_(deep_learning)#/media/File:Transformer,_full_architecture.png">Source</a></span><a class="headerlink" href="#id2" title="Link to this image">¶</a></p>
+</figcaption>
+</figure>
+<p>A concise conceptual distinction is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Attention moves information between token positions.
+
+The feed-forward network transforms the representation at each position.
+</pre></div>
+</div>
+<p>Both components contain learned parameters, and both are changed during
+training.</p>
+<section id="position-in-the-sequence">
+<h3>Position in the sequence<a class="headerlink" href="#position-in-the-sequence" title="Link to this heading">¶</a></h3>
+<p>Attention alone does not inherently know whether one token comes before or
+after another. The model must therefore include information about position.</p>
+<p>The original transformer added positional encodings to token embeddings.
+Modern architectures may use other methods, such as learned position
+embeddings or rotary position embeddings.</p>
+<p>The implementation differs, but the purpose is the same: token
+representations must contain enough positional information for the model to
+distinguish sequences such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>the dog chased the cat
+</pre></div>
+</div>
+<p>and:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>the cat chased the dog
+</pre></div>
+</div>
+</section>
+<section id="self-attention">
+<h3>Self-attention<a class="headerlink" href="#self-attention" title="Link to this heading">¶</a></h3>
+<p>Self-attention allows the representation at one token position to incorporate
+information from other token positions in the same sequence.</p>
+<p>For every token, an attention head computes three vectors:</p>
+<ul class="simple">
+<li><p>the <strong>query</strong> describes what information the current position is looking
+for;</p></li>
+<li><p>the <strong>key</strong> describes information that a position can be matched on;</p></li>
+<li><p>the <strong>value</strong> carries information that can be passed to another position.</p></li>
+</ul>
+<p>The vectors are produced by learned linear projections of the current token
+representations:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[Q = XW_Q\]</div>
+</div>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[K = XW_K\]</div>
+</div>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[V = XW_V\]</div>
+</div>
+<p>Here, <span class="math notranslate nohighlight">\(X\)</span> contains the input representations for all positions. The matrices
+<span class="math notranslate nohighlight">\(W_Q\)</span>, <span class="math notranslate nohighlight">\(W_K\)</span>, and <span class="math notranslate nohighlight">\(W_V\)</span> are learned model parameters.</p>
+</section>
+<section id="comparing-queries-and-keys">
+<h3>Comparing queries and keys<a class="headerlink" href="#comparing-queries-and-keys" title="Link to this heading">¶</a></h3>
+<p>The model computes a dot product between each query and each key. A larger
+dot product means that the query and key are more strongly aligned in the
+learned representation space.</p>
+<p>The scaled dot-product attention operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{Attention}(Q,K,V)
+=
+\operatorname{softmax}
+\left(
+\frac{QK^\mathsf{T}}{\sqrt{d_k}}
+\right)V\]</div>
+</div>
+<p>The expression can be read in three stages.</p>
+<p>First, the model computes:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[QK^\mathsf{T}\]</div>
+</div>
+<p>This produces a matrix of attention scores. Every row corresponds to a query
+position, and every column corresponds to a key position.</p>
+<p>The scores are divided by the square root of the key dimension. Without this
+scaling, dot products tend to grow as the vector dimension increases, which
+can make the softmax operation difficult to optimize.</p>
+<p>Softmax then converts each row into normalized weights. The final matrix
+multiplication uses those weights to form a weighted combination of the value
+vectors.</p>
+</section>
+<section id="a-concrete-interpretation">
+<h3>A concrete interpretation<a class="headerlink" href="#a-concrete-interpretation" title="Link to this heading">¶</a></h3>
+<p>Suppose the model processes:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The researcher deposited the data because it was required.
+</pre></div>
+</div>
+<p>The representation at <code class="docutils literal notranslate"><span class="pre">it</span></code> needs information from the preceding context. One
+or more attention heads may assign useful weight to <code class="docutils literal notranslate"><span class="pre">data</span></code> or to words that
+help establish the relationship between <code class="docutils literal notranslate"><span class="pre">it</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code>.</p>
+<p>It is tempting to say that a particular head is a “pronoun head” or that
+another head always connects adjectives to nouns, but while it is a useful
+mental model, internal representations are a lot more opaque than this, which
+is one of the sources of the lack of interpretability of LLMs.</p>
+<p><strong>Another example:</strong></p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The fat ginger cat sat on a mat
+</pre></div>
+</div>
+<p><img alt="" src="../_images/attn-cat.png" /></p>
+<p>It the context contains adjectives (<code class="docutils literal notranslate"><span class="pre">fat</span></code>, <code class="docutils literal notranslate"><span class="pre">ginger</span></code>) which describes the appearance of <code class="docutils literal notranslate"><span class="pre">cat</span></code>
+and also the verb <code class="docutils literal notranslate"><span class="pre">sat</span></code> and object <code class="docutils literal notranslate"><span class="pre">mat</span></code> which describes the position of the <code class="docutils literal notranslate"><span class="pre">cat</span></code>.</p>
+<p><img alt="" src="../_images/query-key-cat.png" /></p>
+<p>If we imagine that there exists a particular <strong>attention head</strong> which focussing on nouns. The query vector is like looking for labels with “adjective” on them to better understand the noun.
+In reality, this is much more abstract.</p>
+</section>
+<section id="causal-masking">
+<h3>Causal masking<a class="headerlink" href="#causal-masking" title="Link to this heading">¶</a></h3>
+<p>During next-token training, a decoder-only model must not use future tokens to
+predict an earlier token.</p>
+<p>Consider:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The cat sat down
+</pre></div>
+</div>
+<p>When the model predicts <code class="docutils literal notranslate"><span class="pre">sat</span></code>, it may use <code class="docutils literal notranslate"><span class="pre">The</span></code> and <code class="docutils literal notranslate"><span class="pre">cat</span></code>. It must not use
+<code class="docutils literal notranslate"><span class="pre">sat</span></code> or <code class="docutils literal notranslate"><span class="pre">down</span></code> as input evidence for that prediction.</p>
+<p>The model applies a causal mask to the attention scores:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             key position
+             1  2  3  4
+query 1      x  -  -  -
+query 2      x  x  -  -
+query 3      x  x  x  -
+query 4      x  x  x  x
+</pre></div>
+</div>
+<p>An <code class="docutils literal notranslate"><span class="pre">x</span></code> marks an allowed attention connection. A <code class="docutils literal notranslate"><span class="pre">-</span></code> marks a connection that is
+masked before softmax.</p>
+</section>
+<section id="query-key-dot-product">
+<h3>Query-Key dot product<a class="headerlink" href="#query-key-dot-product" title="Link to this heading">¶</a></h3>
+<p><img alt="" src="../_images/query-key-fat-ginger.png" /></p>
+<p>Compute the dot product with each query-key pair, to determine how well the key matches the query.
+Where the queries and keys align, the dot product is larger.
+Lower left dot products are masked, as we want the model to predict every next word during training. To prevent data leakage, future words should not influence previous ones.</p>
+<p>During inference this is not very important (the future tokens do not exist
+yet), but it is essential in the training phase to prevent “cheating”.</p>
+</section>
+<section id="from-values-to-attention">
+<h3>From values to attention<a class="headerlink" href="#from-values-to-attention" title="Link to this heading">¶</a></h3>
+<p><img alt="" src="../_images/value-fat-ginger.png" /></p>
+<p>Value matrix multiplied by the embedding of the previous word results in the value vector</p>
+<p><img alt="" src="../_images/garfield.png" /></p>
+<p>Each value vector is the multiplied by the corresponding weight and summed up to form the attention vector.
+This attention vector represents a “change” in the embedding to get an updated, richer meaning.
+Since this happens to every word in the sequences we end up with a set of more refined embeddings.</p>
+<section id="sidenote-context-length-and-computational-cost">
+<h4>Sidenote: Context length and computational cost<a class="headerlink" href="#sidenote-context-length-and-computational-cost" title="Link to this heading">¶</a></h4>
+<p>For standard dense attention, a sequence containing (n) tokens produces an
+attention-score matrix containing (n^2) entries for every head.</p>
+<p>Doubling the sequence length therefore produces approximately four times as
+many query-key comparisons. The total cost of a transformer also includes
+projection and feed-forward operations, so end-to-end scaling is more
+complicated than one formula suggests. Nevertheless, the quadratic attention
+matrix is an important reason why long contexts can be expensive. There are a
+few tricks to mitigate this, such as <a class="reference external" href="https://huggingface.co/blog/not-lain/kv-caching">KV
+caching</a>.</p>
+</section>
+</section>
+</section>
+<section id="multi-head-attention">
+<h2>Multi-head attention<a class="headerlink" href="#multi-head-attention" title="Link to this heading">¶</a></h2>
+<p>A transformer does not compute a single attention pattern. It computes
+several attention heads in parallel.</p>
+<p>Each head has its own query, key, and value projections. This allows different
+heads to construct different patterns of information exchange. The outputs of
+the heads are concatenated and passed through another learned projection.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input representations
+       |
+       +-&gt; attention head 1 --+
+       +-&gt; attention head 2 --+
+       +-&gt; attention head 3 --+-&gt; concatenate -&gt; output projection
+       +-&gt;        ...         |
+       +-&gt; attention head h --+
+</pre></div>
+</div>
+<p>The number of heads is an architectural choice. More heads do not simply mean
+that the model has a corresponding number of human-interpretable rules.</p>
+</section>
+<section id="feed-forward-networks">
+<h2>Feed-forward networks<a class="headerlink" href="#feed-forward-networks" title="Link to this heading">¶</a></h2>
+<p>After attention has exchanged information between token positions, a
+feed-forward network transforms the representation at each position.</p>
+<p>A simplified feed-forward operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{FFN}(x)
+=
+W_2 \sigma(W_1x + b_1) + b_2\]</div>
+</div>
+<p><a class="reference internal" href="../_images/ffn-mlp.png"><img alt="" class="align-center" src="../_images/ffn-mlp.png" style="width: 400px;" /></a></p>
+<p>The first projection usually expands the hidden representation to a larger
+intermediate dimension. A nonlinear activation is applied, followed by a
+projection back to the model’s hidden dimension.</p>
+<p>The same feed-forward parameters are applied independently at each token
+position.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>token position 1 -&gt; same feed-forward network -&gt; updated position 1
+token position 2 -&gt; same feed-forward network -&gt; updated position 2
+token position 3 -&gt; same feed-forward network -&gt; updated position 3
+</pre></div>
+</div>
+<p>Attention and feed-forward layers therefore perform complementary work.
+Attention allows positions to exchange information. The feed-forward network
+then performs a richer transformation of each resulting representation.</p>
+<p>Feed-forward layers contain a large fraction of the parameters in many
+transformer architectures. This gives them substantial representational
+capacity.</p>
+<div class="caution admonition">
+<p class="admonition-title">Where is model knowledge stored?</p>
+<p>It is sometimes said that attention controls context while the feed-forward
+layers store knowledge. This can be a useful first approximation, but it is
+not a precise division.</p>
+<p>Learned associations are distributed across embeddings, attention
+projections, feed-forward parameters, normalization, and the interactions
+between layers.</p>
+</div>
+</section>
+<section id="residual-connections-and-normalization">
+<h2>Residual connections and normalization<a class="headerlink" href="#residual-connections-and-normalization" title="Link to this heading">¶</a></h2>
+<p>A transformer block does not replace its input representation outright.
+Residual connections allow a sublayer to contribute an update:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[x_{\mathrm{out}} = x_{\mathrm{in}} + f(x_{\mathrm{in}})\]</div>
+</div>
+<p>The original representation can therefore continue through the network while
+each sublayer adds new information.</p>
+<p>Normalization controls the scale of activations and makes deep networks
+easier to train. Different architectures place normalization before or after
+the attention and feed-forward operations, but its general purpose remains
+training stability.</p>
+</section>
+<section id="from-representations-to-token-probabilities">
+<h2>From representations to token probabilities<a class="headerlink" href="#from-representations-to-token-probabilities" title="Link to this heading">¶</a></h2>
+<p>After the final transformer block, the model converts the representation at
+the relevant sequence position into one score for every token in the
+vocabulary. These scores are called <strong>logits</strong>.</p>
+<p>Softmax turns the logits into a probability distribution:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>"the"        0.31
+"a"          0.14
+"this"       0.08
+"model"      0.03
+...          ...
+</pre></div>
+</div>
+<p>A decoding strategy then selects the next token. Always choosing the most
+probable token is called greedy decoding. Other strategies sample from the
+distribution, possibly after adjusting it through temperature, top-k, or
+top-p sampling.</p>
+<p>The selected token is appended to the input, and the process is repeated.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>prompt
+  -&gt; predict one token
+  -&gt; append token
+  -&gt; predict another token
+  -&gt; append token
+  -&gt; continue until stopping
+</pre></div>
+</div>
+<p>A fluent response is therefore constructed through repeated next-token
+prediction, not by producing a complete paragraph in a single operation.</p>
+</section>
+<section id="exercise-trace-information-through-the-model">
+<h2>Exercise: Trace information through the model<a class="headerlink" href="#exercise-trace-information-through-the-model" title="Link to this heading">¶</a></h2>
+<div class="admonition-trace-a-forward-pass exercise important admonition" id="exercise-3">
+<p class="admonition-title">Trace a forward pass</p>
+<p>Consider the prompt:</p>
+<blockquote>
+<div><p>The experiment failed because the input file was</p>
+</div></blockquote>
+<p>Describe what happens between receiving this text and producing a probability
+for the next token.</p>
+<p>Your explanation should include:</p>
+<ol class="arabic simple">
+<li><p>tokenisation;</p></li>
+<li><p>the embedding lookup;</p></li>
+<li><p>positional information;</p></li>
+<li><p>attention;</p></li>
+<li><p>the feed-forward layers;</p></li>
+<li><p>output logits and softmax.</p></li>
+</ol>
+<p>Do not try to predict the exact tokeniser output or the exact next token.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-2">
+<p class="admonition-title">exercise-forward-pass</p>
+<p>The tokenizer divides the text into tokens and maps those tokens to integer
+IDs. The embedding layer maps each ID to an initial vector, and the model
+incorporates positional information so that token order is represented.</p>
+<p>The vectors pass through a sequence of transformer blocks. Masked
+self-attention lets each position combine information from earlier positions
+but prevents access to future positions. Feed-forward layers transform each
+contextual representation independently. Residual connections and
+normalization support the flow of information through the blocks.</p>
+<p>After the final block, the representation at the last input position is
+projected to one logit for every vocabulary token. Softmax converts the logits
+into probabilities. A decoding strategy selects the next token from that
+distribution.</p>
+</div>
+</section>
+<section id="exercise-attention-and-masking">
+<h2>Exercise: Attention and masking<a class="headerlink" href="#exercise-attention-and-masking" title="Link to this heading">¶</a></h2>
+<div class="admonition-construct-a-causal-mask exercise important admonition" id="exercise-4">
+<p class="admonition-title">Construct a causal mask</p>
+<p>Write the causal attention mask for a sequence of five tokens.</p>
+<p>Then answer:</p>
+<ol class="arabic simple">
+<li><p>How many positions can token 1 attend to?</p></li>
+<li><p>How many positions can token 5 attend to?</p></li>
+<li><p>Why is the mask needed during training even though the complete training
+sentence is already available?</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-3">
+<p class="admonition-title">exercise-causal-mask</p>
+<p>The mask is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             key position
+             1  2  3  4  5
+query 1      x  -  -  -  -
+query 2      x  x  -  -  -
+query 3      x  x  x  -  -
+query 4      x  x  x  x  -
+query 5      x  x  x  x  x
+</pre></div>
+</div>
+<p>Token 1 can attend to one position. Token 5 can attend to all five positions,
+including itself.</p>
+<p>The complete sentence is available during training so that predictions for
+many positions can be computed efficiently in parallel. Without the mask,
+the model could inspect the tokens it is meant to predict. That would leak the
+answers into the input and would not reproduce the autoregressive conditions
+used during generation.</p>
+</div>
+</section>
+<section id="training-pipeline">
+<h2>Training pipeline<a class="headerlink" href="#training-pipeline" title="Link to this heading">¶</a></h2>
+<p>When a LLM is first trained, three steps are usually involved:</p>
+<ul class="simple">
+<li><p>Pretraining: the model is trained on large unstructured corpora of text, in
+an unsupervised manner, just trying to predict the next token. This is what
+gives origin to the base models, which understand language constructs and
+syntax.</p></li>
+<li><p>Supervised fine-tuning (SFT): the model is trained on question-answer pairs,
+possibly with reasoning traces. This is when model are actually trained to
+perform a task (coding assistant, chat interface, etc.) and produces the
+so-called “instruct” models.</p></li>
+<li><p>Reinforcement/alignment training: the model is trained using reinforcement
+learning techniques, like DPO and GRPO, to influence its alignment to human
+values and teach it how to reply in a way that better reflects human
+preferences. After this it is usually ready to ship.</p></li>
+</ul>
+<p>The fine-tuning that is the subject of this course is, essentially, a
+repetition of step 2.</p>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<p>A language model begins by dividing text into tokens. Token IDs are mapped to
+initial vectors, and positional information records where those tokens occur
+in the sequence.</p>
+<p>Transformer blocks repeatedly update the representations. Attention exchanges
+information between token positions. Queries and keys determine which
+positions are relevant, while values contain the information that is
+combined. Causal masking prevents a decoder-only model from using future
+tokens.</p>
+<p>Feed-forward layers transform each contextual representation independently.
+Residual connections and normalization make it possible to train a deep stack
+of these operations.</p>
+<p>Finally, the model converts the last representation into logits and then into
+a probability distribution over the vocabulary. Text generation repeats this
+next-token prediction process until a stopping condition is reached.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../choosing-an-adaptation-strategy/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Choosing an adaptation strategy - aka when NOT to fine-tune</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../llm-intro/">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">What is a Large Language Model?</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Sweden AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sweden-ai-factory/roadshow" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Anatomy of a Large Language Model</a><ul>
+<li><a class="reference internal" href="#from-text-to-tokens">From text to tokens</a><ul>
+<li><a class="reference internal" href="#why-not-use-one-token-per-word">Why not use one token per word?</a></li>
+<li><a class="reference internal" href="#why-tokenisation-matters">Why tokenisation matters</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#from-token-ids-to-embeddings">From token IDs to embeddings</a><ul>
+<li><a class="reference internal" href="#initial-and-contextual-representations">Initial and contextual representations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#type-of-transformers">Type of transformers</a><ul>
+<li><a class="reference internal" href="#encoder-only-models">Encoder-only models</a></li>
+<li><a class="reference internal" href="#decoder-only-models">Decoder-only models</a></li>
+<li><a class="reference internal" href="#encoder-decoder-models">Encoder-decoder models</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#inside-a-transformer-block">Inside a transformer block</a><ul>
+<li><a class="reference internal" href="#position-in-the-sequence">Position in the sequence</a></li>
+<li><a class="reference internal" href="#self-attention">Self-attention</a></li>
+<li><a class="reference internal" href="#comparing-queries-and-keys">Comparing queries and keys</a></li>
+<li><a class="reference internal" href="#a-concrete-interpretation">A concrete interpretation</a></li>
+<li><a class="reference internal" href="#causal-masking">Causal masking</a></li>
+<li><a class="reference internal" href="#query-key-dot-product">Query-Key dot product</a></li>
+<li><a class="reference internal" href="#from-values-to-attention">From values to attention</a><ul>
+<li><a class="reference internal" href="#sidenote-context-length-and-computational-cost">Sidenote: Context length and computational cost</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multi-head-attention">Multi-head attention</a></li>
+<li><a class="reference internal" href="#feed-forward-networks">Feed-forward networks</a></li>
+<li><a class="reference internal" href="#residual-connections-and-normalization">Residual connections and normalization</a></li>
+<li><a class="reference internal" href="#from-representations-to-token-probabilities">From representations to token probabilities</a></li>
+<li><a class="reference internal" href="#exercise-trace-information-through-the-model">Exercise: Trace information through the model</a></li>
+<li><a class="reference internal" href="#exercise-attention-and-masking">Exercise: Attention and masking</a></li>
+<li><a class="reference internal" href="#training-pipeline">Training pipeline</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=187304be"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=35a8b989"></script>
+    <script src="../_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+    <script defer="defer" src="../_static/tippy/llm-anatomy.f5bfb914-576e-4d3d-83d4-bdbbd1d66871.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script data-domain="learn.swedenaifactory.se/roadshow" defer="defer" src="https://plausible.io/js/script.js"></script>
+    </body>
+</html>

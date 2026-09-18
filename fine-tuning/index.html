@@ -1,0 +1,1007 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/"><link rel="search" title="Search" href="../search/"><link rel="next" title="Evaluating large language models" href="../evaluating-llms/"><link rel="prev" title="Choosing an adaptation strategy - aka when NOT to fine-tune" href="../choosing-an-adaptation-strategy/">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_black.png" as="image">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_white.png" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Fine-tuning large language models - Sweden AI Factory roadshow</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="../_static/furo_ext_lesson.css?v=6c0cde2e" />
+    <link rel="stylesheet" type="text/css" href="../_static/EN_Co-funded.css?v=bf081b0b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/overrides.css?v=1c72d2de" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Sweden AI Factory roadshow</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/SEAIF_favicon_black.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/SEAIF_favicon_white.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Sweden AI Factory roadshow</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../llm-intro/">What is a Large Language Model?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../llm-anatomy/">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../choosing-an-adaptation-strategy/">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Fine-tuning large language models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluating-llms/">Evaluating large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quantisation/">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/blob/main//content/fine-tuning.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/edit/main//content/fine-tuning.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="fine-tuning-large-language-models">
+<h1>Fine-tuning large language models<a class="headerlink" href="#fine-tuning-large-language-models" title="Link to this heading">¶</a></h1>
+<p>Fine-tuning continues the training of a pretrained model using examples
+selected for a particular task or behaviour.</p>
+<p>Unlike prompt engineering and retrieval-augmented generation, fine-tuning
+changes model parameters. The resulting behaviour is encoded in a new set of
+weights or in a smaller set of adapter parameters.</p>
+<p>Fine-tuning can be useful, but it introduces a complete training lifecycle:
+the process needs suitable data, an objective, a validation strategy,
+hyperparameters, experiment tracking, model artifacts, and an evaluation that
+goes beyond training loss.</p>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>What changes during fine-tuning?</p></li>
+<li><p>What kinds of behaviour can fine-tuning teach?</p></li>
+<li><p>How does full fine-tuning differ from parameter-efficient fine-tuning?</p></li>
+<li><p>What is low-rank adaptation?</p></li>
+<li><p>Which transformer layers can receive LoRA adapters?</p></li>
+<li><p>What must be prepared before training begins?</p></li>
+<li><p>How do we determine whether fine-tuning improved the application?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this episode, learners should be able to:</p>
+<ul class="simple">
+<li><p>explain how fine-tuning differs from prompting and retrieval;</p></li>
+<li><p>identify tasks for which fine-tuning is a reasonable intervention;</p></li>
+<li><p>describe the practical costs of full fine-tuning;</p></li>
+<li><p>explain the idea behind parameter-efficient fine-tuning;</p></li>
+<li><p>describe LoRA as a low-rank update to frozen model weights;</p></li>
+<li><p>explain why LoRA target modules depend on model architecture;</p></li>
+<li><p>identify the data and evaluation requirements for a fine-tuning project;</p></li>
+<li><p>distinguish training progress from evidence of generalization.</p></li>
+</ul>
+</div>
+<section id="what-fine-tuning-changes">
+<h2>What fine-tuning changes<a class="headerlink" href="#what-fine-tuning-changes" title="Link to this heading">¶</a></h2>
+<p>A pretrained language model contains parameters learned from a large
+collection of training data. During fine-tuning, the model processes examples
+that represent a more specific objective. Gradients computed from those
+examples update some or all of the model parameters.</p>
+<p>For supervised fine-tuning, an example commonly contains an input and a
+desired response:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input:
+Summarize the incident report using the required internal schema.
+
+Desired response:
+{
+  "category": "resource_exhaustion",
+  "component": "gpu",
+  "action": "reduce_batch_size"
+}
+</pre></div>
+</div>
+<p>Fine-tuning is well suited to stable patterns that occur repeatedly.
+Thus, a particular application might use fine-tuning to improve adherence to a
+specialized output format, apply domain-specific labels, produce a consistent
+response style, or map recurring inputs to recurring outputs.</p>
+<p>Fine-tuning can change the factual associations produced by a model, but this
+does not make it a suitable document database like RAG; however,it may combine
+the new examples with associations learned during pretraining. Updating or
+removing a fact requires another model update, and the effect of that update
+may not be isolated.</p>
+<p>Usually, two types of fine-tuning can be performed: full fine-tuning and
+parameter-efficient fine-tuning.</p>
+</section>
+<section id="full-fine-tuning">
+<h2>Full fine-tuning<a class="headerlink" href="#full-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>In full fine-tuning, every trainable parameter in the model is updated.</p>
+<p>For a model with billions of parameters, this creates substantial resource
+requirements. The device must hold the model weights, gradients, optimizer
+state, activations, and temporary buffers used by the training operations. In
+particular, the optimizer state can be particularly expensive, since an
+optimizer may maintain multiple values for every trainable parameter. The cost
+for full fine-tuning is comparable to that of pretraining, since all parameters
+need updating. Full fine-tuning also produces a complete new set of model
+weights. If several tasks require separate models, storage and deployment costs
+grow quickly.</p>
+<section id="when-full-fine-tuning-may-be-justified">
+<h3>When full fine-tuning may be justified<a class="headerlink" href="#when-full-fine-tuning-may-be-justified" title="Link to this heading">¶</a></h3>
+<p>Full fine-tuning offers the greatest flexibility because updates are not
+restricted to selected components. It may be appropriate when the task
+requires broad changes, the training dataset is sufficiently large, and the
+project has the compute and evaluation capacity to manage the resulting
+model.</p>
+<p>These conditions are demanding. For many organizational and workshop use
+cases, parameter-efficient fine-tuning is the more practical starting point.</p>
+<div class="caution admonition">
+<p class="admonition-title">More trainable parameters are not automatically better</p>
+<p>Updating the whole model increases capacity, but it also increases memory use,
+storage, and the risk of changing useful existing behaviour.</p>
+<p>The choice between full and parameter-efficient fine-tuning should be based
+on measured task performance rather than on the assumption that a larger
+update must be superior.</p>
+</div>
+</section>
+</section>
+<section id="parameter-efficient-fine-tuning">
+<h2>Parameter-efficient fine-tuning<a class="headerlink" href="#parameter-efficient-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>Parameter-efficient fine-tuning (PEFT) keeps most pretrained parameters
+frozen and learns a much smaller set of task-specific parameters.</p>
+<p>The base model still participates in every forward pass. Freezing the base
+model does not remove the need to load it or execute its layers. The main
+training savings come from not storing gradients and optimizer states for all
+base-model parameters.</p>
+<p>There are several PEFT methods, such as low-rank adapters (LoRA), adapter
+layers and Infused Adapter by Inhibiting and Amplifying Inner Activations
+(IA3), which differ in where the trainable parameters are added and how they
+interact with the frozen model. LoRA is one of the most widely used approaches.</p>
+</section>
+<section id="low-rank-adaptation">
+<h2>Low-rank adaptation<a class="headerlink" href="#low-rank-adaptation" title="Link to this heading">¶</a></h2>
+<p>Suppose a pretrained layer contains a weight matrix:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[W \in \mathbb{R}^{d_{\mathrm{out}} \times d_{\mathrm{in}}}\]</div>
+</div>
+<p>Full fine-tuning would learn an unrestricted update of the same shape:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[W' = W + \Delta W\]</div>
+</div>
+<p>LoRA represents the update as the product of two smaller matrices:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\Delta W = BA\]</div>
+</div>
+<p>where:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[A \in \mathbb{R}^{r \times d_{\mathrm{in}}}\]</div>
+</div>
+<p>and:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[B \in \mathbb{R}^{d_{\mathrm{out}} \times r}\]</div>
+</div>
+<p>The rank (r) is chosen to be much smaller than the input and output
+dimensions.</p>
+<p>The adapted computation can be written as:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[y = Wx + \frac{\alpha}{r}BAx\]</div>
+</div>
+<p>The original matrix (W) remains frozen. Only (A) and (B) are trained.</p>
+<p>Conceptually:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>large frozen weight matrix
+           +
+small trainable low-rank update
+           =
+adapted layer
+</pre></div>
+</div>
+<section id="why-does-a-low-rank-update-help">
+<h3>Why does a low-rank update help?<a class="headerlink" href="#why-does-a-low-rank-update-help" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning does not necessarily require an independent change in every
+direction of a large weight matrix. For many adaptation tasks, a lower
+dimensional update can provide enough capacity to shift the model’s
+behaviour.</p>
+<p>LoRA makes this assumption explicit by restricting the update to a matrix
+whose rank is at most (r).</p>
+<p>This reduces the number of trainable parameters from:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[d_{\mathrm{out}}d_{\mathrm{in}}\]</div>
+</div>
+<p>to:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[r(d_{\mathrm{in}} + d_{\mathrm{out}})\]</div>
+</div>
+<p>For large projection matrices and a small rank, the difference can be
+substantial.</p>
+</section>
+<section id="tunables">
+<h3>Tunables<a class="headerlink" href="#tunables" title="Link to this heading">¶</a></h3>
+<p>The following hyperparameters need to be estimated when performing a LoRA:</p>
+<ul class="simple">
+<li><p>Rank <code class="docutils literal notranslate"><span class="pre">r</span></code>: maximum rank of the learned update. A higher rank can provide more
+adaptation capacity, but makes the process more expensive. Depending on model
+and dataset size, <code class="docutils literal notranslate"><span class="pre">r</span></code> usually ranges between 8 and 64. 16 is a good place to
+start for many experiments.</p></li>
+<li><p>Scaling factor <span class="math notranslate nohighlight">\(\alpha\)</span>: usually the adapter contribution is scaled by
+<span class="math notranslate nohighlight">\(\alpha/r\)</span> to control the influence of the LoRA adapter compared to the
+base model. It can also range commonly from 8 to 64 or more, with 32 being a
+sweet spot based on the empirical rule of <span class="math notranslate nohighlight">\(\alpha=2r\)</span>.</p></li>
+<li><p>Dropout: same as “normal” neural network training, i.e. intentionally
+switching off part of the adapter to avoid overfitting, especially for small
+datasets. Common values range from 0 (no dropout, especially on large datasets)
+to 0.1 (very small). 0.05 is often a sweet spot.</p></li>
+</ul>
+<p>These tunables tend to play a smaller role than most people assume, whereas dataset quality is the real knob that can dramatically change results.</p>
+</section>
+</section>
+<section id="where-lora-adapters-are-placed">
+<h2>Where LoRA adapters are placed<a class="headerlink" href="#where-lora-adapters-are-placed" title="Link to this heading">¶</a></h2>
+<p>LoRA is applied to linear transformations in the model. Attention projections
+are common targets:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>query projection
+key projection
+value projection
+attention output projection
+</pre></div>
+</div>
+<p>Many implementations name these modules using forms such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>q_proj
+k_proj
+v_proj
+o_proj
+</pre></div>
+</div>
+<p>The names are conventions, not a universal interface.</p>
+<p>Adapters may also be placed on feed-forward projections. A gated
+feed-forward network may contain modules with names resembling:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>gate_proj
+up_proj
+down_proj
+</pre></div>
+</div>
+<p>Targeting more modules gives the adapter more ways to modify the model. It
+also increases the number of trainable parameters and the computational cost
+of the adapter path.</p>
+<section id="why-attention-projections-are-common-targets">
+<h3>Why attention projections are common targets<a class="headerlink" href="#why-attention-projections-are-common-targets" title="Link to this heading">¶</a></h3>
+<p>Attention projections determine how token representations are converted into
+queries, keys, values, and attention outputs. Adapting those projections can
+change which contextual relationships the model emphasizes and how
+information is exchanged between positions.</p>
+<p>This makes attention projections a natural target for tasks that require a
+change in how the model responds to context.</p>
+<p>Feed-forward layers also contain substantial capacity. Including their
+projections can improve adaptation for some tasks, although the additional
+parameters should be justified through evaluation.</p>
+</section>
+</section>
+<section id="preparing-fine-tuning-data">
+<h2>Preparing fine-tuning data<a class="headerlink" href="#preparing-fine-tuning-data" title="Link to this heading">¶</a></h2>
+<p>A fine-tuning dataset should represent the behaviour expected in deployment.</p>
+<p>For an instruction-tuned chat model, examples are often represented as
+messages:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">"messages"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"Explain why this training run failed."</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"assistant"</span><span class="p">,</span>
+            <span class="s2">"content"</span><span class="p">:</span> <span class="s2">"The run exhausted device memory while allocating..."</span>
+        <span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The model’s chat template converts the messages into the control tokens and
+text format expected by that model.</p>
+<p>Using the correct template matters. A model trained with one conversation
+format may not interpret another model’s role markers as intended.</p>
+<section id="what-kind-and-how-much-data-do-i-need">
+<h3>What kind and how much data do I need?<a class="headerlink" href="#what-kind-and-how-much-data-do-i-need" title="Link to this heading">¶</a></h3>
+<p>As it might be expected, there is no one-size-fits-all recipe for the type and
+quantity of data needed for fine-tuning, which can vary wildly based on task
+and base model size.</p>
+<p>A general indication is that data should be as <em>representative</em> as possible,
+covering the same variation found in real inputs. It should cover examples that
+are routine, difficult, ambiguous, or where the expected answer is “I do not
+know”. Generally speaking, less good examples are better than many low-quality
+ones (e.g. duplicates, inconsistent formatting, incorrect answers, etc.). As
+stated many times, good segregation between training, validation and test data
+is paramount.</p>
+<p>When it comes to quantity, the answer varies based on task complexity, type of
+fine-tuning and base model size:</p>
+<ul class="simple">
+<li><p>Full fine-tuning generally needs more data than LoRA, since all parameters
+can change and this can lead to a higher risk of overfitting or loss of useful
+pretrained behaviour. A good rule of thumb is that full fine-tuning should be
+attempted when the number of available examples is at least in the order of
+tens of thousands.</p></li>
+<li><p>LoRA, on the other hand, can require just a few hundreds/thousands of
+well-curated examples if the task is narrow. More varied generative tasks would
+put us back in the tens of thousands of needed examples.</p></li>
+</ul>
+<p>Generally speaking, if attempting LoRA, a larger model tends to need less
+examples for narrow tasks. This is because a large, capable model may already
+have the knowledge necessary to carry out the task, and just needs to be
+“nudged” to behave in a certain way.</p>
+</section>
+<section id="representative-data">
+<h3>Representative data<a class="headerlink" href="#representative-data" title="Link to this heading">¶</a></h3>
+<p>Representative data covers the variation expected in real inputs. It should
+include routine examples, difficult cases, ambiguous cases, long and short
+inputs, and examples where the correct response is to refuse or state that
+information is missing.</p>
+<p>Repeatedly generating examples from one template may produce a large dataset
+without producing meaningful diversity.</p>
+<p>Quality is also more important than raw example count. Incorrect answers,
+inconsistent formatting, duplicated examples, and accidental sensitive data
+can all become part of the learned behaviour.</p>
+</section>
+<section id="what-should-contribute-to-the-loss">
+<h3>What should contribute to the loss?<a class="headerlink" href="#what-should-contribute-to-the-loss" title="Link to this heading">¶</a></h3>
+<p>For assistant-response training, the input conversation provides context while
+the desired assistant response provides the prediction target.</p>
+<p>A common approach masks user and system tokens in the labels:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>system message       -&gt; context, ignored by loss
+user message         -&gt; context, ignored by loss
+assistant response   -&gt; context and prediction target
+</pre></div>
+</div>
+<p>The input is still needed because the assistant response must be conditioned
+on the request. Masking a token from the loss does not remove it from the
+model input.</p>
+<p>Different objectives may use different masking strategies. The important
+point is to decide explicitly which tokens the model is being trained to
+predict.</p>
+</section>
+</section>
+<section id="training-configuration">
+<h2>Training configuration<a class="headerlink" href="#training-configuration" title="Link to this heading">¶</a></h2>
+<p>A training configuration controls both optimization and resource use.</p>
+<p>The most visible parameters include learning rate, number of epochs, batch
+size, gradient accumulation, maximum sequence length, evaluation frequency,
+and checkpoint frequency.</p>
+<p>These quantities interact. Changing one may alter memory use, runtime, or the
+number of parameter updates.</p>
+<section id="batch-size-and-gradient-accumulation">
+<h3>Batch size and gradient accumulation<a class="headerlink" href="#batch-size-and-gradient-accumulation" title="Link to this heading">¶</a></h3>
+<p>The per-device batch size is the number of examples processed by one device
+in one forward and backward pass.</p>
+<p>Gradient accumulation performs several such passes before applying an
+optimizer step. With data-parallel training, the effective batch size is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[B_{\mathrm{effective}}
+=
+B_{\mathrm{device}}
+\times
+N_{\mathrm{devices}}
+\times
+N_{\mathrm{accumulation}}\]</div>
+</div>
+<p>For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>per-device batch size       4
+number of devices           2
+gradient accumulation       8
+effective batch size       64
+</pre></div>
+</div>
+<p>Gradient accumulation can produce a larger effective batch without storing
+all examples’ activations simultaneously. It does not avoid their
+computation. Eight accumulation passes still require eight forward and
+backward passes.</p>
+</section>
+<section id="sequence-length">
+<h3>Sequence length<a class="headerlink" href="#sequence-length" title="Link to this heading">¶</a></h3>
+<p>Sequence length has a strong effect on memory and runtime. Longer sequences
+require more activation memory, and standard dense attention forms a
+quadratic attention matrix.</p>
+<p>A batch size that works for short examples may fail when the batch contains
+long examples.</p>
+</section>
+<section id="packing">
+<h3>Packing<a class="headerlink" href="#packing" title="Link to this heading">¶</a></h3>
+<p>Packing places several short examples into one fixed-length training
+sequence. This reduces computation wasted on padding.</p>
+<p>Without packing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example 1 + padding + padding + padding
+example 2 + padding + padding + padding
+</pre></div>
+</div>
+<p>With packing:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>example 1 + example 2 + example 3 + remaining padding
+</pre></div>
+</div>
+<p>The dataloader batch size still refers to packed sequences, not to the number
+of original examples contained inside them. One packed sequence may contain
+several short examples.</p>
+<p>Packing can improve throughput for datasets with many short records. It does
+not increase the configured context length, and examples must remain properly
+separated so that labels and attention behaviour follow the intended training
+objective.</p>
+</section>
+<section id="learning-rate-and-warmup">
+<h3>Learning rate and warmup<a class="headerlink" href="#learning-rate-and-warmup" title="Link to this heading">¶</a></h3>
+<p>The learning rate controls the scale of optimizer updates. An excessively
+large learning rate may destabilize training or damage useful pretrained
+behaviour. An excessively small learning rate may produce little adaptation
+within the available training time.</p>
+<p>Warmup starts with a smaller learning rate and increases it during the early
+part of training. This can reduce instability before the optimizer has
+established useful parameter statistics.</p>
+<p>The appropriate values depend on the optimizer, effective batch size, model,
+adapter configuration, and dataset. Training loss and validation behaviour
+should be observed together.</p>
+</section>
+<section id="training-duration">
+<h3>Training duration<a class="headerlink" href="#training-duration" title="Link to this heading">¶</a></h3>
+<p>More epochs expose the model to the training examples more times. This may
+improve learning initially, but eventually increases the risk of overfitting.</p>
+<p>A small dataset can be memorized quickly. The best checkpoint is not
+necessarily the final checkpoint.</p>
+<p>Evaluate at useful intervals and retain enough checkpoint information to
+compare validation results rather than relying only on the last training
+step.</p>
+</section>
+</section>
+<section id="evaluation-during-fine-tuning">
+<h2>Evaluation during fine-tuning<a class="headerlink" href="#evaluation-during-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>Training loss answers a narrow question: how well does the current model
+predict the training targets?</p>
+<p>It does not show whether the model generalizes to new examples, whether the
+application has improved, or whether unrelated capabilities have degraded.</p>
+<section id="validation-loss">
+<h3>Validation loss<a class="headerlink" href="#validation-loss" title="Link to this heading">¶</a></h3>
+<p>Validation loss applies the same token-prediction objective to examples that
+were not used for parameter updates.</p>
+<p>If training loss continues to fall while validation loss stops improving or
+begins to rise, overfitting is a possible explanation.</p>
+<p>Validation loss is useful, but application-level evaluation remains necessary.
+A small change in language-model loss may not correspond to a meaningful
+change in task quality.</p>
+</section>
+<section id="task-evaluation">
+<h3>Task evaluation<a class="headerlink" href="#task-evaluation" title="Link to this heading">¶</a></h3>
+<p>The evaluation should match the intended behaviour.</p>
+<p>For structured output, measure whether the response parses and whether the
+fields are correct. For classification, use suitable class-level metrics. For
+summarization or open-ended generation, combine human review with checks for
+required content, unsupported claims, format adherence, and omissions.</p>
+<p>Compare the fine-tuned model with the strongest non-fine-tuned baseline, not
+only with an unhelpfully vague prompt. This part is nowadays outsourced to an
+LLM (<em>LLM as a judge</em>), provided that it is first aligned with a human
+evaluator. See <a class="reference internal" href="../evaluating-llms/"><span class="std std-doc">evaluating large language models</span></a> for how
+this works and where it can fail.</p>
+</section>
+<section id="regression-evaluation">
+<h3>Regression evaluation<a class="headerlink" href="#regression-evaluation" title="Link to this heading">¶</a></h3>
+<p>Fine-tuning may improve the target task while changing other behaviour.</p>
+<p>A regression set should cover important capabilities that the adapted model
+must retain. This may include general instruction following, multilingual
+inputs, code formatting, safety constraints, or appropriate abstention.</p>
+<p>The contents of the regression set depend on the application. The important
+point is to decide what must not worsen before accepting the adapter.</p>
+<div class="important admonition">
+<p class="admonition-title">Evaluation is part of fine-tuning</p>
+<p>A training run without held-out evaluation is an experiment in optimisation,
+not evidence that the application improved.</p>
+</div>
+</section>
+</section>
+<section id="saving-and-deploying-adapters">
+<h2>Saving and deploying adapters<a class="headerlink" href="#saving-and-deploying-adapters" title="Link to this heading">¶</a></h2>
+<p>One advantage of LoRA is that the adapter is much smaller than the full base
+model.</p>
+<p>The base model and adapter can be stored separately:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>base model
+    +
+task-specific adapter
+    =
+adapted model
+</pre></div>
+</div>
+<p>Several adapters can share the same base model artifact. This simplifies
+storage and makes the distinction between the original model and the
+task-specific update explicit.</p>
+<p>For deployment, the adapter may be loaded alongside the base model. Some
+workflows also merge the adapter update into the base weights. Merging can
+simplify inference in environments that do not support adapters directly, but
+it produces another complete model artifact.
+Deploying a base model + a LoRA adapter is extremely common in image diffusion
+models, where a large backbone represent the baseline generation, and a
+swappable LoRA head is attached to tweak the style (very photorealistic, anime
+style, etc.).</p>
+</section>
+<section id="a-minimal-fine-tuning-workflow">
+<h2>A minimal fine-tuning workflow<a class="headerlink" href="#a-minimal-fine-tuning-workflow" title="Link to this heading">¶</a></h2>
+<p>A fine-tuning project can be organized as the following sequence:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define the target behaviour
+    -&gt; build and evaluate a prompt baseline
+    -&gt; collect representative examples
+    -&gt; create train, validation, and test splits
+    -&gt; select the base model and chat template
+    -&gt; select full fine-tuning or PEFT
+    -&gt; configure and run training
+    -&gt; inspect validation and checkpoints
+    -&gt; evaluate task performance and regressions
+    -&gt; package the model or adapter
+    -&gt; monitor behaviour after deployment
+</pre></div>
+</div>
+<p>The training command occupies only one part of this sequence. Data definition
+and evaluation usually determine whether the result is useful.</p>
+</section>
+<section id="exercise-count-lora-parameters">
+<h2>Exercise: Count LoRA parameters<a class="headerlink" href="#exercise-count-lora-parameters" title="Link to this heading">¶</a></h2>
+<div class="admonition-count-the-adapter-parameters exercise important admonition" id="exercise-0">
+<p class="admonition-title">Count the adapter parameters</p>
+<p>A linear layer has:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>input dimension:   4096
+output dimension:  4096
+LoRA rank:            8
+</pre></div>
+</div>
+<p>Calculate:</p>
+<ol class="arabic simple">
+<li><p>the number of parameters in the original weight matrix;</p></li>
+<li><p>the number of trainable parameters in the two LoRA matrices;</p></li>
+<li><p>the fraction of the original parameter count represented by the adapter.</p></li>
+</ol>
+<p>Ignore biases.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-lora-parameters</p>
+<p>The original matrix contains:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[4096 \times 4096 = 16{,}777{,}216\]</div>
+</div>
+<p>parameters.</p>
+<p>The two LoRA matrices contain:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[8 \times 4096 + 4096 \times 8
+=
+65{,}536\]</div>
+</div>
+<p>parameters.</p>
+<p>The ratio is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\frac{65{,}536}{16{,}777{,}216}
+=
+0.00390625\]</div>
+</div>
+<p>The adapter therefore contains approximately (0.39%) as many parameters as
+the original matrix.</p>
+<p>This calculation concerns one adapted matrix. A complete configuration may
+apply LoRA to many projections across all transformer blocks.</p>
+</div>
+<!--
+## Exercise: Select LoRA targets
+
+:::{exercise} Inspect a model before configuring LoRA
+:label: exercise-lora-targets
+
+Suppose a model contains repeated blocks with the following linear modules:
+
+```text
+self_attn.query_key_value
+self_attn.dense
+mlp.dense_h_to_4h
+mlp.dense_4h_to_h
+```
+
+A tutorial for another model recommends:
+
+```python
+target_modules=["q_proj", "v_proj"]
+```
+
+Answer the following questions:
+
+1. Why is the tutorial configuration unlikely to work as intended?
+2. Which modules in the current model might correspond to attention
+   projections?
+3. What should be verified after applying the adapter?
+4. What is the trade-off involved in also targeting the MLP projections?
+:::
+
+:::{solution} exercise-lora-targets
+:class: dropdown
+
+The tutorial uses module names from a different model implementation. The
+current model has no modules named `q_proj` or `v_proj`, so the adapter library
+may match nothing or raise an error.
+
+The combined `self_attn.query_key_value` module appears to contain the query,
+key, and value projections. The `self_attn.dense` module is likely the
+attention output projection. The exact interpretation should be checked
+against the model implementation.
+
+After applying the adapter, inspect the names and number of trainable
+parameters. Confirm that the base-model parameters are frozen and that LoRA
+parameters were created for the intended modules.
+
+Targeting the MLP projections gives the adapter more capacity to change the
+model, but increases trainable parameters, optimizer state, and computation.
+:::
+-->
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Fine-tuning changes model parameters by continuing training on examples of a
+target behaviour.</p></li>
+<li><p>Full fine-tuning updates the complete model. It provides substantial capacity
+but has high memory, storage, and evaluation costs.</p></li>
+<li><p>Parameter-efficient fine-tuning keeps most pretrained parameters frozen. LoRA
+represents selected weight updates as the product of two small matrices. This
+greatly reduces the number of trainable parameters and the associated optimizer
+state.</p></li>
+<li><p>LoRA adapters are commonly applied to attention projections and may also be
+applied to feed-forward projections. The correct target-module names depend on
+the model implementation and must be inspected rather than copied uncritically
+from another architecture.</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="../evaluating-llms/">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Evaluating large language models</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../choosing-an-adaptation-strategy/">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Choosing an adaptation strategy - aka when NOT to fine-tune</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Sweden AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sweden-ai-factory/roadshow" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Fine-tuning large language models</a><ul>
+<li><a class="reference internal" href="#what-fine-tuning-changes">What fine-tuning changes</a></li>
+<li><a class="reference internal" href="#full-fine-tuning">Full fine-tuning</a><ul>
+<li><a class="reference internal" href="#when-full-fine-tuning-may-be-justified">When full fine-tuning may be justified</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#parameter-efficient-fine-tuning">Parameter-efficient fine-tuning</a></li>
+<li><a class="reference internal" href="#low-rank-adaptation">Low-rank adaptation</a><ul>
+<li><a class="reference internal" href="#why-does-a-low-rank-update-help">Why does a low-rank update help?</a></li>
+<li><a class="reference internal" href="#tunables">Tunables</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#where-lora-adapters-are-placed">Where LoRA adapters are placed</a><ul>
+<li><a class="reference internal" href="#why-attention-projections-are-common-targets">Why attention projections are common targets</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#preparing-fine-tuning-data">Preparing fine-tuning data</a><ul>
+<li><a class="reference internal" href="#what-kind-and-how-much-data-do-i-need">What kind and how much data do I need?</a></li>
+<li><a class="reference internal" href="#representative-data">Representative data</a></li>
+<li><a class="reference internal" href="#what-should-contribute-to-the-loss">What should contribute to the loss?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#training-configuration">Training configuration</a><ul>
+<li><a class="reference internal" href="#batch-size-and-gradient-accumulation">Batch size and gradient accumulation</a></li>
+<li><a class="reference internal" href="#sequence-length">Sequence length</a></li>
+<li><a class="reference internal" href="#packing">Packing</a></li>
+<li><a class="reference internal" href="#learning-rate-and-warmup">Learning rate and warmup</a></li>
+<li><a class="reference internal" href="#training-duration">Training duration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evaluation-during-fine-tuning">Evaluation during fine-tuning</a><ul>
+<li><a class="reference internal" href="#validation-loss">Validation loss</a></li>
+<li><a class="reference internal" href="#task-evaluation">Task evaluation</a></li>
+<li><a class="reference internal" href="#regression-evaluation">Regression evaluation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#saving-and-deploying-adapters">Saving and deploying adapters</a></li>
+<li><a class="reference internal" href="#a-minimal-fine-tuning-workflow">A minimal fine-tuning workflow</a></li>
+<li><a class="reference internal" href="#exercise-count-lora-parameters">Exercise: Count LoRA parameters</a></li>
+<li><a class="reference internal" href="#summary">Summary</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=187304be"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=35a8b989"></script>
+    <script src="../_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+    <script defer="defer" src="../_static/tippy/fine-tuning.cf713cc9-5e92-4522-9456-aea0035c617b.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script data-domain="learn.swedenaifactory.se/roadshow" defer="defer" src="https://plausible.io/js/script.js"></script>
+    </body>
+</html>

@@ -1,0 +1,1560 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../genindex/"><link rel="search" title="Search" href="../search/">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_black.png" as="image">
+        <link rel="prefetch" href="../_static/SEAIF_favicon_white.png" as="image">
+
+    <link rel="shortcut icon" href="../_static/favicon.png"><!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
+        <title>Anatomy of an LLM - Sweden AI Factory roadshow</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx_lesson.css?v=e9df6548" />
+    <link rel="stylesheet" type="text/css" href="../_static/term_role_formatting.css?v=4194e21c" />
+    <link rel="stylesheet" type="text/css" href="../_static/furo_ext_lesson.css?v=6c0cde2e" />
+    <link rel="stylesheet" type="text/css" href="../_static/EN_Co-funded.css?v=bf081b0b" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="../_static/overrides.css?v=1c72d2de" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../"><div class="brand">Sweden AI Factory roadshow</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo only-light" src="../_static/SEAIF_favicon_black.png" alt="Light Logo"/>
+    <img class="sidebar-logo only-dark" src="../_static/SEAIF_favicon_white.png" alt="Dark Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">Sweden AI Factory roadshow</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../search/" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../llm-intro/">What is a Large Language Model?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../llm-anatomy/">Anatomy of a Large Language Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../choosing-an-adaptation-strategy/">Choosing an adaptation strategy - aka when NOT to fine-tune</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fine-tuning/">Fine-tuning large language models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../evaluating-llms/">Evaluating large language models</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Optional material</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quantisation/">Quantisation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/blob/main//content/episode.md?plain=true" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div><div class="edit-this-page">
+  <a class="muted-link" href="https://github.com/sweden-ai-factory/roadshow/edit/main//content/episode.md" rel="edit" title="Edit this page">
+    <svg><use href="#svg-pencil"></use></svg>
+    <span class="visually-hidden">Edit this page</span>
+  </a>
+</div><div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="anatomy-of-an-llm">
+<h1>Anatomy of an LLM<a class="headerlink" href="#anatomy-of-an-llm" title="Link to this heading">¶</a></h1>
+<p>Large language models can be adapted to a task in several ways. The simplest
+approach is to improve the instructions given to the model. More involved
+approaches add external information at inference time or modify some of the
+model parameters through training.</p>
+<p>In this lesson, we will use the following progression:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering -&gt; Retrieval-augmented generation -&gt; Fine-tuning
+</pre></div>
+</div>
+<p>Moving from left to right gives us more control, but also introduces more
+infrastructure, data requirements, evaluation work, and operational cost.</p>
+<div class="attention admonition">
+<p class="admonition-title">Central question</p>
+<p>What is the least complex intervention that produces sufficiently reliable
+results for our application?</p>
+</div>
+<div class="admonition-questions questions admonition" id="questions-0">
+<p class="admonition-title">Questions</p>
+<ul class="simple">
+<li><p>How does a transformer turn text into predictions?</p></li>
+<li><p>What do attention and feed-forward layers contribute?</p></li>
+<li><p>What can prompt engineering change?</p></li>
+<li><p>When should external knowledge be supplied using retrieval?</p></li>
+<li><p>When is fine-tuning justified?</p></li>
+<li><p>Where do LoRA and quantization fit into this progression?</p></li>
+</ul>
+</div>
+<div class="admonition-objectives objectives admonition" id="objectives-0">
+<p class="admonition-title">Objectives</p>
+<p>By the end of this lesson, learners should be able to:</p>
+<ul class="simple">
+<li><p>describe the path from text to tokens, embeddings, contextual
+representations, and output predictions;</p></li>
+<li><p>distinguish encoder-only, decoder-only, and encoder-decoder transformers;</p></li>
+<li><p>explain the roles of queries, keys, values, causal masking, and
+feed-forward networks;</p></li>
+<li><p>improve a prompt by specifying direction, format, examples, and evaluation
+criteria;</p></li>
+<li><p>distinguish behavioral adaptation from knowledge retrieval;</p></li>
+<li><p>choose between prompt engineering, RAG, and fine-tuning for a concrete use
+case;</p></li>
+<li><p>explain why LoRA reduces the number of trainable parameters;</p></li>
+<li><p>describe quantization as a memory and deployment optimization;</p></li>
+<li><p>identify the evaluation and maintenance costs introduced at each level of
+adaptation.</p></li>
+</ul>
+</div>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading">¶</a></h2>
+<p>Learners should have:</p>
+<ul class="simple">
+<li><p>basic familiarity with Python;</p></li>
+<li><p>used a chat-based language model at least once;</p></li>
+<li><p>a conceptual understanding of vectors and matrix multiplication;</p></li>
+<li><p>no prior experience with model training.</p></li>
+</ul>
+<p>A detailed derivation of backpropagation is not required.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="how-a-language-model-processes-text">
+<h1>1. How a language model processes text<a class="headerlink" href="#how-a-language-model-processes-text" title="Link to this heading">¶</a></h1>
+<p>Before deciding how to adapt a model, it helps to understand where model
+behavior comes from.</p>
+<p>A transformer does not operate directly on words or sentences. A simplified
+forward pass is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>text
+  -&gt; tokens
+  -&gt; token IDs
+  -&gt; embeddings
+  -&gt; transformer blocks
+  -&gt; output logits
+  -&gt; next-token probabilities
+</pre></div>
+</div>
+<p>For a generative model, this process is repeated one token at a time.</p>
+<section id="tokenization">
+<h2>1.1 Tokenization<a class="headerlink" href="#tokenization" title="Link to this heading">¶</a></h2>
+<p>A tokenizer divides text into units called <strong>tokens</strong> and maps each token to an
+integer ID.</p>
+<p>A vocabulary containing every possible word would be impractical. It would be
+very large and would need separate entries for related forms such as
+<code class="docutils literal notranslate"><span class="pre">compute</span></code>, <code class="docutils literal notranslate"><span class="pre">computer</span></code>, and <code class="docutils literal notranslate"><span class="pre">computing</span></code>.</p>
+<p>Modern language models therefore commonly use <strong>subword tokenization</strong>.
+Frequent words may remain intact, while rarer words are divided into reusable
+pieces.</p>
+<p>For example, a tokenizer might process:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>supercomputing
+</pre></div>
+</div>
+<p>as something conceptually similar to:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>super + comput + ing
+</pre></div>
+</div>
+<p>The actual split depends on the tokenizer.</p>
+<div class="note admonition">
+<p class="admonition-title">Why tokenization matters</p>
+<p>Tokenization affects:</p>
+<ul class="simple">
+<li><p>the effective length of an input;</p></li>
+<li><p>the cost of inference and training;</p></li>
+<li><p>how efficiently different languages and specialist vocabularies are
+represented;</p></li>
+<li><p>whether the model sees a domain-specific term as one familiar unit or as
+several rare fragments.</p></li>
+</ul>
+</div>
+</section>
+<section id="embeddings">
+<h2>1.2 Embeddings<a class="headerlink" href="#embeddings" title="Link to this heading">¶</a></h2>
+<p>Token IDs are discrete integers. Neural networks instead operate on vectors.</p>
+<p>An embedding layer contains a learned matrix:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>number of tokens in the vocabulary x embedding dimension
+</pre></div>
+</div>
+<p>Looking up a token ID selects one row from this matrix. That row is the token’s
+initial embedding.</p>
+<p>Tokens used in similar contexts tend to acquire related representations.
+However, the initial token embedding alone is not enough to represent the
+meaning of a token in a particular sentence.</p>
+<p>Consider the token <code class="docutils literal notranslate"><span class="pre">mole</span></code> in:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>A mole damaged the garden.
+The chemist measured one mole of the compound.
+She has a mole on her cheek.
+</pre></div>
+</div>
+<p>The initial token embedding is the same in each sentence. Transformer layers
+turn it into a different contextual representation in each case.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="transformer-anatomy">
+<h1>2. Transformer anatomy<a class="headerlink" href="#transformer-anatomy" title="Link to this heading">¶</a></h1>
+<p>A transformer is composed of repeated blocks. Each block contains two major
+computational components:</p>
+<ol class="arabic simple">
+<li><p>a multi-head attention sublayer;</p></li>
+<li><p>a position-wise feed-forward network, often called an MLP.</p></li>
+</ol>
+<p>Residual connections and normalization layers stabilize and preserve the
+flow of information through the model.</p>
+<figure class="align-default">
+<img alt="Simplified transformer block containing attention, a feed-forward" src="figures/transformer-block.svg" />
+</figure>
+<p>A useful conceptual model is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>attention:
+    move information between token positions
+
+feed-forward network:
+    transform the representation at each position
+</pre></div>
+</div>
+<p>This distinction is important for understanding prompt engineering, RAG,
+fine-tuning, and LoRA.</p>
+<section id="transformer-families">
+<h2>2.1 Transformer families<a class="headerlink" href="#transformer-families" title="Link to this heading">¶</a></h2>
+<p>Transformer architectures are commonly grouped into three families.</p>
+<section id="encoder-only-models">
+<h3>Encoder-only models<a class="headerlink" href="#encoder-only-models" title="Link to this heading">¶</a></h3>
+<p>Encoder-only models produce representations using context from both sides of a
+token. They are well suited to tasks such as:</p>
+<ul class="simple">
+<li><p>text classification;</p></li>
+<li><p>named-entity recognition;</p></li>
+<li><p>semantic similarity;</p></li>
+<li><p>extractive question answering.</p></li>
+</ul>
+</section>
+<section id="decoder-only-models">
+<h3>Decoder-only models<a class="headerlink" href="#decoder-only-models" title="Link to this heading">¶</a></h3>
+<p>Decoder-only models predict the next token from the tokens preceding it. They
+are the dominant architecture for generative large language models.</p>
+<p>During training, causal masking prevents each position from attending to
+future tokens.</p>
+</section>
+<section id="encoder-decoder-models">
+<h3>Encoder-decoder models<a class="headerlink" href="#encoder-decoder-models" title="Link to this heading">¶</a></h3>
+<p>Encoder-decoder models first encode an input sequence and then generate an
+output sequence. They are often used for:</p>
+<ul class="simple">
+<li><p>translation;</p></li>
+<li><p>summarization;</p></li>
+<li><p>other sequence-to-sequence tasks.</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Workshop focus</p>
+<p>This lesson concentrates on decoder-only models because they are typical of
+modern text-generation systems and instruction-tuned chat models.</p>
+</div>
+</section>
+</section>
+<section id="self-attention">
+<h2>2.2 Self-attention<a class="headerlink" href="#self-attention" title="Link to this heading">¶</a></h2>
+<p>Self-attention lets each token representation incorporate information from
+other relevant positions.</p>
+<p>For every token, an attention head constructs three vectors:</p>
+<ul class="simple">
+<li><p>a <strong>query</strong>, describing what information this position is looking for;</p></li>
+<li><p>a <strong>key</strong>, describing what information a position may provide;</p></li>
+<li><p>a <strong>value</strong>, containing the information that can be transferred.</p></li>
+</ul>
+<p>These vectors are learned projections of the current token representation.</p>
+<p>The scaled dot-product attention operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{Attention}(Q,K,V)
+=
+\operatorname{softmax}
+\left(
+\frac{QK^\mathsf{T}}{\sqrt{d_k}}
+\right)V\]</div>
+</div>
+<p>The calculation has three conceptual steps:</p>
+<ol class="arabic simple">
+<li><p>compare queries with keys;</p></li>
+<li><p>normalize the resulting relevance scores;</p></li>
+<li><p>use the scores to combine the value vectors.</p></li>
+</ol>
+<p>The dot product between a query and a key is large when they align strongly.
+Dividing by the square root of the key dimension keeps the scale numerically
+manageable. Softmax converts the scores into weights that sum to one.</p>
+<figure class="align-default">
+<img alt="Tokens projected into query, key, and value vectors, followed by an" src="figures/query-key-value.svg" />
+</figure>
+<div class="caution admonition">
+<p class="admonition-title">Avoid an overly literal interpretation</p>
+<p>It can be useful to imagine an attention head looking for grammatical
+relationships, such as a noun attending to an adjective. In real models,
+attention features are learned, distributed, and often more abstract than
+human-interpretable grammatical rules.</p>
+</div>
+</section>
+<section id="causal-masking">
+<h2>2.3 Causal masking<a class="headerlink" href="#causal-masking" title="Link to this heading">¶</a></h2>
+<p>A decoder-only model must not use future tokens to predict an earlier token.</p>
+<p>For the sequence:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>The cat sat down
+</pre></div>
+</div>
+<p>the representation at <code class="docutils literal notranslate"><span class="pre">cat</span></code> may use <code class="docutils literal notranslate"><span class="pre">The</span></code>, but it must not use <code class="docutils literal notranslate"><span class="pre">sat</span></code> or <code class="docutils literal notranslate"><span class="pre">down</span></code>
+when learning to predict the next token.</p>
+<p>This is enforced by applying a causal mask to the attention-score matrix:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>             key position
+             1  2  3  4
+query 1      x  -  -  -
+query 2      x  x  -  -
+query 3      x  x  x  -
+query 4      x  x  x  x
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">x</span></code> denotes an allowed attention connection and <code class="docutils literal notranslate"><span class="pre">-</span></code> a masked connection.</p>
+<p>For standard dense attention, the attention matrix grows with the square of
+the sequence length. Long contexts can therefore require substantial memory
+and computation.</p>
+</section>
+<section id="multi-head-attention">
+<h2>2.4 Multi-head attention<a class="headerlink" href="#multi-head-attention" title="Link to this heading">¶</a></h2>
+<p>A model uses several attention heads in parallel. Each head has its own
+query, key, and value projections.</p>
+<p>Different heads can learn different patterns of information flow. Their
+outputs are concatenated and projected back into the model’s hidden
+dimension.</p>
+<p>Multi-head attention is not a set of manually assigned linguistic rules.
+The heads learn useful projections from the training objective.</p>
+</section>
+<section id="feed-forward-networks">
+<h2>2.5 Feed-forward networks<a class="headerlink" href="#feed-forward-networks" title="Link to this heading">¶</a></h2>
+<p>After attention has exchanged information between positions, the feed-forward
+network transforms each position independently.</p>
+<p>A simplified feed-forward operation is:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\operatorname{FFN}(x) = W_2 \sigma(W_1 x + b_1) + b_2\]</div>
+</div>
+<p>The same network is applied to every token position.</p>
+<p>In many transformer architectures, the feed-forward layers contain a large
+fraction of the model parameters. They provide substantial representational
+capacity, while attention controls how information flows between positions.</p>
+<div class="important admonition">
+<p class="admonition-title">A careful interpretation of model knowledge</p>
+<p>It is common to say that factual associations are “stored” in feed-forward
+layers. This is a helpful first approximation, but model knowledge is
+distributed across embeddings, attention projections, MLP parameters, and
+their interactions.</p>
+<p>Hallucinations should consequently not be attributed to one single component.
+They arise from the model’s probabilistic objective, its training data, the
+prompt and context, and the absence of reliable external evidence.</p>
+</div>
+</section>
+<section id="residual-connections-and-normalization">
+<h2>2.6 Residual connections and normalization<a class="headerlink" href="#residual-connections-and-normalization" title="Link to this heading">¶</a></h2>
+<p>Transformer blocks also contain residual connections and normalization.</p>
+<p>Residual connections allow a block to update, rather than completely replace,
+a representation:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[x_{\mathrm{out}} = x_{\mathrm{in}} + f(x_{\mathrm{in}})\]</div>
+</div>
+<p>This makes it easier to train deep networks and helps information move through
+many layers.</p>
+<p>Normalization keeps activation scales manageable and supports stable
+optimization.</p>
+<div class="admonition-trace-information-through-a-transformer exercise important admonition" id="exercise-0">
+<p class="admonition-title">Trace information through a transformer</p>
+<p>Consider the sentence:</p>
+<blockquote>
+<div><p>The researcher deposited the data because it was required by the journal.</p>
+</div></blockquote>
+<p>Discuss the following questions in pairs:</p>
+<ol class="arabic simple">
+<li><p>Why is the initial embedding for <code class="docutils literal notranslate"><span class="pre">it</span></code> insufficient?</p></li>
+<li><p>Which earlier tokens might provide useful contextual information?</p></li>
+<li><p>What is the role of query-key matching?</p></li>
+<li><p>What information is carried by the value vectors?</p></li>
+<li><p>What changes in a decoder-only model if relevant information appears after
+<code class="docutils literal notranslate"><span class="pre">it</span></code>?</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-0">
+<p class="admonition-title">exercise-transformer-trace</p>
+<ol class="arabic simple">
+<li><p>The initial embedding represents the token type but does not identify what
+<code class="docutils literal notranslate"><span class="pre">it</span></code> refers to in this sentence.</p></li>
+<li><p>Tokens associated with <code class="docutils literal notranslate"><span class="pre">data</span></code>, <code class="docutils literal notranslate"><span class="pre">deposited</span></code>, <code class="docutils literal notranslate"><span class="pre">required</span></code>, and <code class="docutils literal notranslate"><span class="pre">journal</span></code> may be
+relevant.</p></li>
+<li><p>Query-key matching determines which positions are relevant to updating the
+representation of <code class="docutils literal notranslate"><span class="pre">it</span></code>.</p></li>
+<li><p>Value vectors carry the information combined into the updated
+representation.</p></li>
+<li><p>Causal masking prevents <code class="docutils literal notranslate"><span class="pre">it</span></code> from using later positions while predicting
+the next token. A later representation may still integrate information
+from <code class="docutils literal notranslate"><span class="pre">it</span></code>, but information cannot flow backwards from a future position.</p></li>
+</ol>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="a-ladder-of-adaptation">
+<h1>3. A ladder of adaptation<a class="headerlink" href="#a-ladder-of-adaptation" title="Link to this heading">¶</a></h1>
+<p>There are several ways to influence a language model.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Level 1: Prompt engineering
+         Change the input.
+
+Level 2: Retrieval-augmented generation
+         Change the input and supply external evidence.
+
+Level 3: Fine-tuning
+         Change some or all of the model parameters.
+</pre></div>
+</div>
+<p>This ladder represents increasing complexity, not increasing quality in every
+situation.</p>
+<figure class="align-default">
+<img alt="Three ascending levels labelled prompt engineering, retrieval-augmented" src="figures/adaptation-ladder.svg" />
+</figure>
+<p>As we move upward, we generally increase:</p>
+<ul class="simple">
+<li><p>engineering effort;</p></li>
+<li><p>infrastructure requirements;</p></li>
+<li><p>data preparation;</p></li>
+<li><p>evaluation requirements;</p></li>
+<li><p>maintenance cost;</p></li>
+<li><p>the number of ways the system can fail.</p></li>
+</ul>
+<p>A practical development strategy is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>define success criteria
+    -&gt; build a prompt baseline
+    -&gt; evaluate
+    -&gt; add retrieval if evidence is missing
+    -&gt; evaluate
+    -&gt; fine-tune if behavior remains inadequate
+</pre></div>
+</div>
+<div class="attention admonition">
+<p class="admonition-title">Important</p>
+<p>Do not fine-tune merely because it is technically possible.</p>
+<p>Fine-tuning is worthwhile when repeated, measurable deficiencies remain after
+a strong prompt and, where relevant, a retrieval baseline.</p>
+</div>
+</section>
+<hr class="docutils" />
+<section id="level-1-prompt-engineering">
+<h1>4. Level 1: Prompt engineering<a class="headerlink" href="#level-1-prompt-engineering" title="Link to this heading">¶</a></h1>
+<p>Prompt engineering is the practice of designing model inputs to improve the
+relevance, accuracy, reliability, and controllability of the output.</p>
+<p>Prompt engineering does not change model parameters. It changes the context
+from which the model generates a response.</p>
+<section id="five-prompt-design-principles">
+<h2>4.1 Five prompt-design principles<a class="headerlink" href="#five-prompt-design-principles" title="Link to this heading">¶</a></h2>
+<section id="give-direction">
+<h3>Give direction<a class="headerlink" href="#give-direction" title="Link to this heading">¶</a></h3>
+<p>State the task and the intended audience.</p>
+<p>Instead of:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Explain transformers.
+</pre></div>
+</div>
+<p>try:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Explain self-attention to research software engineers who understand vectors
+but have not studied deep learning.
+</pre></div>
+</div>
+</section>
+<section id="specify-the-output-format">
+<h3>Specify the output format<a class="headerlink" href="#specify-the-output-format" title="Link to this heading">¶</a></h3>
+<p>Describe the expected structure.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Return:
+
+1. a two-sentence summary;
+2. three key concepts as bullet points;
+3. one limitation;
+4. one concrete example.
+</pre></div>
+</div>
+</section>
+<section id="provide-examples">
+<h3>Provide examples<a class="headerlink" href="#provide-examples" title="Link to this heading">¶</a></h3>
+<p>Examples are useful when the desired behavior is easier to demonstrate than
+to describe.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Input: GPU memory exhausted during model loading
+Category: resource limitation
+
+Input: Dataset field contains unexpected strings
+Category: data-format error
+
+Input: Collective operation times out
+Category:
+</pre></div>
+</div>
+</section>
+<section id="divide-the-work">
+<h3>Divide the work<a class="headerlink" href="#divide-the-work" title="Link to this heading">¶</a></h3>
+<p>Break a complex task into stages.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>1. Identify the claims in the text.
+2. List the evidence provided for each claim.
+3. Mark unsupported claims.
+4. Produce a revised version containing only supported claims.
+</pre></div>
+</div>
+<p>The stages may be contained in one prompt or implemented as a prompt chain.</p>
+</section>
+<section id="evaluate-quality">
+<h3>Evaluate quality<a class="headerlink" href="#evaluate-quality" title="Link to this heading">¶</a></h3>
+<p>Prompt design is an empirical process. A prompt that works for one example may
+fail across a broader dataset.</p>
+<p>Test prompts on:</p>
+<ul class="simple">
+<li><p>typical inputs;</p></li>
+<li><p>difficult inputs;</p></li>
+<li><p>ambiguous inputs;</p></li>
+<li><p>long inputs;</p></li>
+<li><p>malformed inputs;</p></li>
+<li><p>cases where the correct response is to abstain.</p></li>
+</ul>
+</section>
+</section>
+<section id="role-prompting">
+<h2>4.2 Role prompting<a class="headerlink" href="#role-prompting" title="Link to this heading">¶</a></h2>
+<p>Role prompting asks the model to adopt a functional perspective.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Act as a technical editor for documentation aimed at research software
+engineers.
+</pre></div>
+</div>
+<p>A role can influence tone, vocabulary, and priorities, but it does not grant
+the model new knowledge or guaranteed expertise.</p>
+<p>A role should be combined with explicit instructions and acceptance criteria.</p>
+</section>
+<section id="prompt-chaining">
+<h2>4.3 Prompt chaining<a class="headerlink" href="#prompt-chaining" title="Link to this heading">¶</a></h2>
+<p>Prompt chaining connects several focused model calls.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>source material
+    -&gt; extract claims
+    -&gt; retrieve evidence
+    -&gt; compare claims with evidence
+    -&gt; write final answer
+</pre></div>
+</div>
+<p>Chaining can make intermediate results inspectable and simplify evaluation.
+It can also increase latency and create additional failure points.</p>
+</section>
+<section id="meta-prompting">
+<h2>4.4 Meta-prompting<a class="headerlink" href="#meta-prompting" title="Link to this heading">¶</a></h2>
+<p>A meta-prompt asks a model to formulate or improve instructions.</p>
+<p>For example:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Rewrite the following task as a precise prompt. Ask for any missing
+information, specify the expected output schema, and include criteria for
+rejecting unsupported conclusions.
+</pre></div>
+</div>
+<p>Meta-prompting can accelerate prompt development, but the resulting prompt
+still needs systematic evaluation.</p>
+<div class="admonition-improve-a-prompt exercise important admonition" id="exercise-1">
+<p class="admonition-title">Improve a prompt</p>
+<p>Start with:</p>
+<blockquote>
+<div><p>Summarize this research paper.</p>
+</div></blockquote>
+<p>Rewrite the prompt so that it specifies:</p>
+<ol class="arabic simple">
+<li><p>the intended reader;</p></li>
+<li><p>the maximum length;</p></li>
+<li><p>the required structure;</p></li>
+<li><p>how limitations should be handled;</p></li>
+<li><p>what the model should do if information is missing.</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-1">
+<p class="admonition-title">exercise-improve-prompt</p>
+<p>One possible prompt is:</p>
+<blockquote>
+<div><p>Summarize the supplied research paper for research software engineers who
+are familiar with machine learning but not with this application domain.
+Use at most 300 words. Structure the response under the headings Question,
+Method, Results, Limitations, and Reproducibility. Distinguish limitations
+reported by the authors from limitations you infer. Do not invent missing
+details. Write “not reported in the supplied text” when the source does not
+contain the required information.</p>
+</div></blockquote>
+</div>
+</section>
+<section id="when-prompt-engineering-is-enough">
+<h2>4.5 When prompt engineering is enough<a class="headerlink" href="#when-prompt-engineering-is-enough" title="Link to this heading">¶</a></h2>
+<p>Prompt engineering is often enough when:</p>
+<ul class="simple">
+<li><p>the model already has the necessary capability;</p></li>
+<li><p>all required information fits in the context;</p></li>
+<li><p>the task can be described clearly;</p></li>
+<li><p>output variation is acceptable or can be evaluated;</p></li>
+<li><p>examples can adequately demonstrate the desired behavior;</p></li>
+<li><p>low implementation and maintenance cost are important.</p></li>
+</ul>
+<p>Move beyond prompting when failures are caused by missing or changing
+knowledge, rather than unclear instructions.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="level-2-retrieval-augmented-generation">
+<h1>5. Level 2: Retrieval-augmented generation<a class="headerlink" href="#level-2-retrieval-augmented-generation" title="Link to this heading">¶</a></h1>
+<p>Retrieval-augmented generation, or RAG, retrieves relevant external material
+and adds it to the model’s context.</p>
+<p>A simplified RAG pipeline is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>user question
+    -&gt; search or retrieval
+    -&gt; selected passages
+    -&gt; prompt containing question and evidence
+    -&gt; generated answer
+</pre></div>
+</div>
+<p>RAG changes the evidence available at inference time. It does not normally
+change the model parameters.</p>
+<section id="why-use-rag">
+<h2>5.1 Why use RAG?<a class="headerlink" href="#why-use-rag" title="Link to this heading">¶</a></h2>
+<p>RAG is useful when answers depend on:</p>
+<ul class="simple">
+<li><p>private documents;</p></li>
+<li><p>scientific literature;</p></li>
+<li><p>frequently changing information;</p></li>
+<li><p>organizational policies;</p></li>
+<li><p>source attribution;</p></li>
+<li><p>evidence that should be inspectable by the user.</p></li>
+</ul>
+<p>Because documents can be updated independently of the model, RAG is often a
+better choice than fine-tuning for changing factual knowledge.</p>
+</section>
+<section id="what-rag-does-not-guarantee">
+<h2>5.2 What RAG does not guarantee<a class="headerlink" href="#what-rag-does-not-guarantee" title="Link to this heading">¶</a></h2>
+<p>RAG can reduce unsupported answers, but retrieval alone does not guarantee
+correctness.</p>
+<p>A RAG system can still fail because:</p>
+<ul class="simple">
+<li><p>the required document was not indexed;</p></li>
+<li><p>the query did not retrieve the relevant passage;</p></li>
+<li><p>chunk boundaries removed necessary context;</p></li>
+<li><p>the ranking placed irrelevant passages first;</p></li>
+<li><p>too much context distracted the model;</p></li>
+<li><p>the model ignored or misinterpreted the evidence;</p></li>
+<li><p>the source itself was incorrect.</p></li>
+</ul>
+<p>RAG must therefore be evaluated as a full system.</p>
+</section>
+<section id="minimal-grounded-generation-prompt">
+<h2>5.3 Minimal grounded-generation prompt<a class="headerlink" href="#minimal-grounded-generation-prompt" title="Link to this heading">¶</a></h2>
+<p>A basic prompt for the generation stage could be:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Answer the question using only the supplied sources.
+
+If the sources do not contain enough information, state that the available
+evidence is insufficient.
+
+For every factual claim, cite the corresponding source identifier.
+
+Question:
+{question}
+
+Sources:
+{retrieved_passages}
+</pre></div>
+</div>
+<p>This prompt is only one component. Retrieval quality and source management are
+at least as important as prompt wording.</p>
+</section>
+<section id="when-rag-is-worth-the-complexity">
+<h2>5.4 When RAG is worth the complexity<a class="headerlink" href="#when-rag-is-worth-the-complexity" title="Link to this heading">¶</a></h2>
+<p>RAG is a strong candidate when:</p>
+<ul class="simple">
+<li><p>the problem is primarily missing knowledge;</p></li>
+<li><p>the knowledge changes more quickly than a model can be retrained;</p></li>
+<li><p>users need citations or source traceability;</p></li>
+<li><p>documents are private or organization-specific;</p></li>
+<li><p>the corpus can be indexed and searched effectively.</p></li>
+</ul>
+<p>RAG may be unnecessary when the task is transformation rather than knowledge
+retrieval, such as consistently rewriting text into a fixed style.</p>
+<div class="admonition-diagnose-a-rag-system exercise important admonition" id="exercise-2">
+<p class="admonition-title">Diagnose a RAG system</p>
+<p>A user asks:</p>
+<blockquote>
+<div><p>What is our current policy for storing sensitive research data?</p>
+</div></blockquote>
+<p>The system returns an outdated policy even though the current policy exists in
+the document collection.</p>
+<p>List at least four possible causes. For each cause, suggest one diagnostic
+test.</p>
+</div>
+<div class="dropdown solution important admonition" id="solution-2">
+<p class="admonition-title">exercise-diagnose-rag</p>
+<p>Possible causes and tests include:</p>
+<ul class="simple">
+<li><p><strong>The current document was not indexed.</strong>
+Search the index directly for a unique sentence from the current policy.</p></li>
+<li><p><strong>Metadata filters excluded the current document.</strong>
+Log and inspect the filters used for the request.</p></li>
+<li><p><strong>The query did not match the terminology in the current policy.</strong>
+compare retrieval results for the original query and several paraphrases.</p></li>
+<li><p><strong>The current policy was split into poor chunks.</strong>
+inspect the retrieved chunks and their neighboring chunks.</p></li>
+<li><p><strong>The ranking favored the older document.</strong>
+inspect retrieval scores, timestamps, and reranking output.</p></li>
+<li><p><strong>Both documents were supplied and the model chose the older one.</strong>
+log the complete generation context and require the prompt to prioritize the
+policy with the most recent effective date.</p></li>
+</ul>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="level-3-fine-tuning">
+<h1>6. Level 3: Fine-tuning<a class="headerlink" href="#level-3-fine-tuning" title="Link to this heading">¶</a></h1>
+<p>Fine-tuning continues training a pretrained model using examples chosen for a
+particular objective.</p>
+<p>Unlike prompt engineering and RAG, fine-tuning changes model parameters.</p>
+<p>Fine-tuning is particularly useful for repeated behavioral patterns, such as:</p>
+<ul class="simple">
+<li><p>generating a specialized output structure;</p></li>
+<li><p>following domain-specific conventions;</p></li>
+<li><p>using specialist vocabulary;</p></li>
+<li><p>adopting a consistent response style;</p></li>
+<li><p>mapping recurring inputs to recurring outputs;</p></li>
+<li><p>improving behavior on a well-defined task with representative examples.</p></li>
+</ul>
+<section id="fine-tuning-is-not-a-document-database">
+<h2>6.1 Fine-tuning is not a document database<a class="headerlink" href="#fine-tuning-is-not-a-document-database" title="Link to this heading">¶</a></h2>
+<p>Fine-tuning should not be the default way to insert changing factual
+information.</p>
+<p>A fine-tuned model:</p>
+<ul class="simple">
+<li><p>does not provide a reliable mechanism for exact factual recall;</p></li>
+<li><p>cannot easily show where a learned statement came from;</p></li>
+<li><p>may mix new examples with prior associations;</p></li>
+<li><p>must be retrained or updated when the facts change.</p></li>
+</ul>
+<p>If a model needs access to current policies, publications, or internal
+documentation, RAG is usually the better first approach.</p>
+<p>Fine-tuning and RAG can also be combined:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>fine-tuning:
+    teaches the desired behavior
+
+RAG:
+    supplies the current evidence
+</pre></div>
+</div>
+</section>
+<section id="full-fine-tuning">
+<h2>6.2 Full fine-tuning<a class="headerlink" href="#full-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>In full fine-tuning, all model parameters are updated.</p>
+<p>This provides maximum flexibility, but it requires substantial compute,
+memory, storage, and training data. It can also make it more difficult to
+preserve the model’s general capabilities.</p>
+<p>For many workshop and organizational use cases, full fine-tuning is not the
+best starting point.</p>
+</section>
+<section id="parameter-efficient-fine-tuning">
+<h2>6.3 Parameter-efficient fine-tuning<a class="headerlink" href="#parameter-efficient-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>Parameter-efficient fine-tuning, or PEFT, updates a relatively small number of
+parameters while keeping most pretrained weights frozen.</p>
+<p>Low-rank adaptation, or LoRA, is a widely used PEFT method.</p>
+<p>Suppose a pretrained layer contains a weight matrix (W). Instead of updating
+all of (W), LoRA learns an update represented by two smaller matrices:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[W' = W + \Delta W\]</div>
+</div>
+<p>with:</p>
+<div class="math-wrapper docutils container">
+<div class="math notranslate nohighlight">
+\[\Delta W = BA\]</div>
+</div>
+<p>where the intermediate rank is much smaller than the dimensions of (W).</p>
+<p>Conceptually:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>large frozen weight matrix
+        +
+small trainable low-rank update
+        =
+adapted layer
+</pre></div>
+</div>
+<p>LoRA reduces:</p>
+<ul class="simple">
+<li><p>the number of trainable parameters;</p></li>
+<li><p>optimizer-state memory;</p></li>
+<li><p>the storage required for each task-specific adapter;</p></li>
+<li><p>the cost of experimenting with several adaptations.</p></li>
+</ul>
+<p>It does not eliminate the need to load and execute the base model.</p>
+</section>
+<section id="where-lora-is-applied">
+<h2>6.4 Where LoRA is applied<a class="headerlink" href="#where-lora-is-applied" title="Link to this heading">¶</a></h2>
+<p>LoRA is commonly applied to linear projections in transformer blocks,
+especially attention projections such as:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>query projection
+key projection
+value projection
+attention output projection
+</pre></div>
+</div>
+<p>Depending on the model and task, adapters may also be applied to feed-forward
+projections.</p>
+<p>There is no universal list of target-module names. Their names depend on the
+model implementation.</p>
+<p>Before configuring LoRA:</p>
+<ol class="arabic simple">
+<li><p>inspect the model architecture;</p></li>
+<li><p>identify linear layers and their module names;</p></li>
+<li><p>consult model-specific examples;</p></li>
+<li><p>verify which parameters are trainable;</p></li>
+<li><p>evaluate whether the selected targets provide sufficient capacity.</p></li>
+</ol>
+<div class="caution admonition">
+<p class="admonition-title">LoRA is still training</p>
+<p>LoRA reduces training cost, but it does not remove the need for:</p>
+<ul class="simple">
+<li><p>clean and representative data;</p></li>
+<li><p>train and validation splits;</p></li>
+<li><p>careful hyperparameter selection;</p></li>
+<li><p>held-out evaluation;</p></li>
+<li><p>experiment tracking;</p></li>
+<li><p>checks for regressions and memorization.</p></li>
+</ul>
+<div class="docutils">
+<p class="rubric" id="when-fine-tuning-is-worth-it">6.5 When fine-tuning is worth it</p>
+<p>Fine-tuning becomes a reasonable next step when all of the following are true:</p>
+<ul class="simple">
+<li><p>there is a clearly defined and recurring task;</p></li>
+<li><p>a prompt baseline has been implemented;</p></li>
+<li><p>RAG has been considered when external knowledge is required;</p></li>
+<li><p>failures are behavioral and systematic;</p></li>
+<li><p>representative training examples are available;</p></li>
+<li><p>success can be measured on held-out data;</p></li>
+<li><p>the expected usage volume justifies training and maintenance;</p></li>
+<li><p>the organization can monitor regressions.</p></li>
+</ul>
+<p>Warning signs that fine-tuning may be premature include:</p>
+<ul class="simple">
+<li><p>“We want the model to know our latest documents.”</p></li>
+<li><p>“We have not yet created an evaluation set.”</p></li>
+<li><p>“We do not know whether the problem is retrieval or generation.”</p></li>
+<li><p>“We have only a handful of unrepresentative examples.”</p></li>
+<li><p>“The prompt baseline has not been measured.”</p></li>
+<li><p>“We want the model to stop all hallucinations.”</p></li>
+</ul>
+<hr class="docutils" />
+<p class="rubric" id="where-quantization-fits">7. Where quantization fits</p>
+<p>Quantization represents model weights, and sometimes activations, with fewer
+bits.</p>
+<p>For example, a model may use:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>FP32 -&gt; 32 bits per value
+FP16 or BF16 -&gt; 16 bits per value
+INT8 -&gt; 8 bits per value
+4-bit representation -&gt; approximately 4 bits per quantized value
+</pre></div>
+</div>
+</div>
+</div>
+<p>Lower precision can reduce memory use and, on supported hardware and software,
+may improve speed.</p>
+<p>Quantization introduces a trade-off:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>lower memory and potentially higher throughput
+                     versus
+approximation error and hardware-dependent behavior
+</pre></div>
+</div>
+</section>
+<section id="quantization-is-orthogonal-to-the-adaptation-ladder">
+<h2>7.1 Quantization is orthogonal to the adaptation ladder<a class="headerlink" href="#quantization-is-orthogonal-to-the-adaptation-ladder" title="Link to this heading">¶</a></h2>
+<p>Quantization is not a fourth adaptation level.</p>
+<p>It does not answer the same question as prompt engineering, RAG, or
+fine-tuning.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering, RAG, fine-tuning:
+    How should we change model behavior or provide information?
+
+Quantization:
+    How can we represent and execute the model more efficiently?
+</pre></div>
+</div>
+<p>A model used only for prompting can be quantized. A model in a RAG pipeline can
+be quantized. A fine-tuned model can also be quantized.</p>
+</section>
+<section id="quantization-aware-fine-tuning">
+<h2>7.2 Quantization-aware fine-tuning<a class="headerlink" href="#quantization-aware-fine-tuning" title="Link to this heading">¶</a></h2>
+<p>In quantized LoRA training, often called QLoRA, the base model is loaded in a
+low-precision quantized representation while LoRA adapters are trained using
+higher-precision computation where needed.</p>
+<p>The key idea is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>quantized frozen base model
+           +
+trainable LoRA adapters
+           =
+lower-memory parameter-efficient training
+</pre></div>
+</div>
+<p>QLoRA can make adaptation possible on hardware that cannot hold the base model
+in 16-bit precision together with all required training state.</p>
+<p>It does not make training free. Memory is still needed for:</p>
+<ul class="simple">
+<li><p>activations;</p></li>
+<li><p>LoRA parameters;</p></li>
+<li><p>gradients;</p></li>
+<li><p>optimizer state;</p></li>
+<li><p>temporary computation buffers.</p></li>
+</ul>
+<p>Actual support and performance depend on the accelerator, numerical format,
+kernels, framework, and model architecture.</p>
+</section>
+<section id="optimized-training-implementations">
+<h2>7.3 Optimized training implementations<a class="headerlink" href="#optimized-training-implementations" title="Link to this heading">¶</a></h2>
+<p>Libraries such as Unsloth aim to reduce the memory and runtime costs of
+fine-tuning through optimized implementations and GPU kernels.</p>
+<p>These tools may be useful, but they should be thought of as implementation
+optimizations rather than a substitute for understanding:</p>
+<ul class="simple">
+<li><p>the training objective;</p></li>
+<li><p>data preparation;</p></li>
+<li><p>LoRA configuration;</p></li>
+<li><p>evaluation;</p></li>
+<li><p>hardware compatibility;</p></li>
+<li><p>numerical precision.</p></li>
+</ul>
+<p>For a workshop, it is useful to first teach the standard training concepts and
+then introduce optimized implementations as optional accelerators.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="choosing-the-right-intervention">
+<h1>8. Choosing the right intervention<a class="headerlink" href="#choosing-the-right-intervention" title="Link to this heading">¶</a></h1>
+<p>Use the following decision process.</p>
+<section id="step-1-define-the-failure">
+<h2>Step 1: Define the failure<a class="headerlink" href="#step-1-define-the-failure" title="Link to this heading">¶</a></h2>
+<p>Ask:</p>
+<ul class="simple">
+<li><p>Is the model missing instructions?</p></li>
+<li><p>Is it missing evidence?</p></li>
+<li><p>Is it following the wrong behavioral pattern?</p></li>
+<li><p>Is the problem actually retrieval, latency, context length, or evaluation?</p></li>
+</ul>
+</section>
+<section id="step-2-establish-a-prompt-baseline">
+<h2>Step 2: Establish a prompt baseline<a class="headerlink" href="#step-2-establish-a-prompt-baseline" title="Link to this heading">¶</a></h2>
+<p>Create the simplest prompt that specifies:</p>
+<ul class="simple">
+<li><p>task;</p></li>
+<li><p>audience;</p></li>
+<li><p>constraints;</p></li>
+<li><p>output format;</p></li>
+<li><p>examples;</p></li>
+<li><p>abstention behavior.</p></li>
+</ul>
+<p>Evaluate it on a representative test set.</p>
+</section>
+<section id="step-3-add-retrieval-if-knowledge-is-missing">
+<h2>Step 3: Add retrieval if knowledge is missing<a class="headerlink" href="#step-3-add-retrieval-if-knowledge-is-missing" title="Link to this heading">¶</a></h2>
+<p>Use RAG if the answer depends on material that is:</p>
+<ul class="simple">
+<li><p>private;</p></li>
+<li><p>changing;</p></li>
+<li><p>too large for a fixed prompt;</p></li>
+<li><p>expected to be cited.</p></li>
+</ul>
+<p>Evaluate retrieval separately from generation.</p>
+</section>
+<section id="step-4-fine-tune-only-for-persistent-behavior-gaps">
+<h2>Step 4: Fine-tune only for persistent behavior gaps<a class="headerlink" href="#step-4-fine-tune-only-for-persistent-behavior-gaps" title="Link to this heading">¶</a></h2>
+<p>Fine-tune when the system repeatedly fails to produce the required behavior
+despite adequate instructions and evidence.</p>
+<p>Begin with PEFT unless there is a well-supported reason to update the entire
+model.</p>
+</section>
+<section id="step-5-optimize-after-measuring">
+<h2>Step 5: Optimize after measuring<a class="headerlink" href="#step-5-optimize-after-measuring" title="Link to this heading">¶</a></h2>
+<p>Apply quantization, batching, optimized kernels, or distributed training after
+profiling identifies a resource or performance bottleneck.</p>
+<div class="tip admonition">
+<p class="admonition-title">Recommended order</p>
+<ol class="arabic simple">
+<li><p>Make it measurable.</p></li>
+<li><p>Make it work with prompting.</p></li>
+<li><p>Add evidence with RAG if required.</p></li>
+<li><p>Fine-tune only for persistent behavioral shortcomings.</p></li>
+<li><p>Optimize memory and throughput.</p></li>
+</ol>
+<div class="docutils">
+<p class="rubric" id="decision-guide">Decision guide</p>
+<p class="rubric" id="use-prompt-engineering-when">Use prompt engineering when</p>
+<ul class="simple">
+<li><p>the base model can already perform the task;</p></li>
+<li><p>the task is easy to specify;</p></li>
+<li><p>required context fits in the prompt;</p></li>
+<li><p>iteration speed is important.</p></li>
+</ul>
+<p class="rubric" id="add-rag-when">Add RAG when</p>
+<ul class="simple">
+<li><p>answers depend on external or changing knowledge;</p></li>
+<li><p>sources must be inspectable;</p></li>
+<li><p>the corpus can be searched;</p></li>
+<li><p>missing evidence is the dominant failure.</p></li>
+</ul>
+<p class="rubric" id="fine-tune-when">Fine-tune when</p>
+<ul class="simple">
+<li><p>the failure is systematic behavior rather than missing evidence;</p></li>
+<li><p>enough representative examples exist;</p></li>
+<li><p>the expected behavior can be evaluated;</p></li>
+<li><p>usage volume or quality requirements justify the lifecycle cost.</p></li>
+</ul>
+<p class="rubric" id="add-quantization-when">Add quantization when</p>
+<ul class="simple">
+<li><p>memory prevents loading or training the selected model;</p></li>
+<li><p>deployment cost is a concern;</p></li>
+<li><p>supported low-precision kernels are available;</p></li>
+<li><p>measurements show that the quality and performance trade-off is acceptable.</p></li>
+</ul>
+<div class="admonition-select-an-adaptation-strategy exercise important admonition" id="exercise-3">
+<p class="admonition-title">Select an adaptation strategy</p>
+<p>For each scenario, choose one of the following starting points:</p>
+<ul class="simple">
+<li><p>prompt engineering;</p></li>
+<li><p>prompt engineering plus RAG;</p></li>
+<li><p>fine-tuning;</p></li>
+<li><p>RAG plus fine-tuning.</p></li>
+</ul>
+<p>Explain your choice.</p>
+<ol class="arabic simple">
+<li><p>A model must answer questions about policies that change every month and
+cite the relevant policy section.</p></li>
+<li><p>A model must convert thousands of recurring incident reports into a strict
+internal schema.</p></li>
+<li><p>A model writes good summaries but uses the wrong headings.</p></li>
+<li><p>A model must use live documentation while consistently producing commands
+in an organization’s preferred style.</p></li>
+<li><p>A model must answer questions about a set of papers that is updated every
+week.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="dropdown solution important admonition" id="solution-3">
+<p class="admonition-title">exercise-select-strategy</p>
+<ol class="arabic simple">
+<li><p><strong>Prompt engineering plus RAG.</strong> The information changes and must be cited.</p></li>
+<li><p><strong>Fine-tuning may be justified</strong>, after establishing a prompt baseline.
+The problem is a recurring input-to-output behavior, assuming enough
+representative examples exist.</p></li>
+<li><p><strong>Prompt engineering.</strong> Explicit formatting instructions and examples are
+the least complex intervention.</p></li>
+<li><p><strong>RAG plus fine-tuning may eventually be appropriate.</strong> RAG supplies current
+documentation. Fine-tuning may be justified if the preferred style remains
+inconsistent after strong prompting.</p></li>
+<li><p><strong>Prompt engineering plus RAG.</strong> The paper collection changes frequently
+and should remain independently updateable.</p></li>
+</ol>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="evaluation-should-precede-complexity">
+<h1>9. Evaluation should precede complexity<a class="headerlink" href="#evaluation-should-precede-complexity" title="Link to this heading">¶</a></h1>
+<p>Each adaptation level requires evaluation.</p>
+<p>Without an evaluation baseline, it is impossible to know whether additional
+complexity helped.</p>
+<section id="separate-evaluation-dimensions">
+<h2>9.1 Separate evaluation dimensions<a class="headerlink" href="#separate-evaluation-dimensions" title="Link to this heading">¶</a></h2>
+<p>Useful dimensions include:</p>
+<ul class="simple">
+<li><p>task correctness;</p></li>
+<li><p>factual support;</p></li>
+<li><p>completeness;</p></li>
+<li><p>adherence to format;</p></li>
+<li><p>consistency;</p></li>
+<li><p>latency;</p></li>
+<li><p>memory use;</p></li>
+<li><p>cost;</p></li>
+<li><p>robustness to difficult inputs;</p></li>
+<li><p>appropriate abstention.</p></li>
+</ul>
+<p>Do not collapse every dimension into one score too early. A system may become
+more fluent while becoming less factually grounded.</p>
+</section>
+<section id="evaluate-components-separately">
+<h2>9.2 Evaluate components separately<a class="headerlink" href="#evaluate-components-separately" title="Link to this heading">¶</a></h2>
+<p>For prompt-only systems, evaluate the complete prompt on a fixed test set.</p>
+<p>For RAG systems, separate:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>retrieval evaluation:
+    Did we retrieve the necessary evidence?
+
+generation evaluation:
+    Did the answer use the evidence correctly?
+
+end-to-end evaluation:
+    Did the user receive a correct and useful answer?
+</pre></div>
+</div>
+<p>For fine-tuned systems, compare:</p>
+<ul class="simple">
+<li><p>the unchanged base model;</p></li>
+<li><p>the prompt baseline;</p></li>
+<li><p>the fine-tuned model;</p></li>
+<li><p>performance on the target task;</p></li>
+<li><p>performance on important general capabilities.</p></li>
+</ul>
+</section>
+<section id="automated-and-human-evaluation">
+<h2>9.3 Automated and human evaluation<a class="headerlink" href="#automated-and-human-evaluation" title="Link to this heading">¶</a></h2>
+<p>Automated metrics can be useful for well-defined outputs. Depending on the
+task, these may include:</p>
+<ul class="simple">
+<li><p>accuracy;</p></li>
+<li><p>precision and recall;</p></li>
+<li><p>F1 score;</p></li>
+<li><p>perplexity;</p></li>
+<li><p>task-specific text-generation metrics;</p></li>
+<li><p>schema-validity checks;</p></li>
+<li><p>retrieval recall and ranking metrics.</p></li>
+</ul>
+<p>An LLM can also be used as an evaluator, but it should not be treated as an
+objective authority. LLM-based evaluation can be sensitive to prompt wording,
+model preference, output ordering, verbosity, and shared failure modes.</p>
+<p>Human evaluation remains important when quality is contextual or subjective.</p>
+<div class="admonition-design-a-minimal-evaluation exercise important admonition" id="exercise-4">
+<p class="admonition-title">Design a minimal evaluation</p>
+<p>Choose one of the scenarios from the previous exercise.</p>
+<p>Design a minimal evaluation plan containing:</p>
+<ol class="arabic simple">
+<li><p>a baseline;</p></li>
+<li><p>a held-out test set;</p></li>
+<li><p>two quality dimensions;</p></li>
+<li><p>one operational metric;</p></li>
+<li><p>a criterion for deciding whether to move to the next adaptation level.</p></li>
+</ol>
+</div>
+<div class="dropdown solution important admonition" id="solution-4">
+<p class="admonition-title">exercise-design-evaluation</p>
+<p>For the policy-question scenario, one possible plan is:</p>
+<ul class="simple">
+<li><p><strong>Baseline:</strong> a prompt-only model without retrieval.</p></li>
+<li><p><strong>Test set:</strong> 30 questions covering current, old, ambiguous, and
+deliberately unanswerable policy questions.</p></li>
+<li><p><strong>Quality dimension 1:</strong> percentage of answers supported by the current
+policy.</p></li>
+<li><p><strong>Quality dimension 2:</strong> citation correctness.</p></li>
+<li><p><strong>Operational metric:</strong> median response latency.</p></li>
+<li><p><strong>Decision criterion:</strong> adopt RAG if it substantially improves evidence
+support and citation correctness while keeping latency within the service
+requirement.</p></li>
+</ul>
+<p>The precise threshold should be chosen from the application’s risk and cost
+requirements, not invented after seeing the results.</p>
+</div>
+</section>
+</section>
+<hr class="docutils" />
+<section id="summary">
+<h1>10. Summary<a class="headerlink" href="#summary" title="Link to this heading">¶</a></h1>
+<p>A language model first maps text to tokens and embeddings. Transformer blocks
+then contextualize these representations.</p>
+<p>Within a transformer block:</p>
+<ul class="simple">
+<li><p>attention moves information between token positions;</p></li>
+<li><p>queries and keys determine relevance;</p></li>
+<li><p>values carry the information being combined;</p></li>
+<li><p>causal masking prevents a decoder from using future tokens;</p></li>
+<li><p>feed-forward networks transform each position independently;</p></li>
+<li><p>residual connections and normalization support stable deep computation.</p></li>
+</ul>
+<p>There is a rising ladder of adaptation:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Prompt engineering
+    simplest and cheapest
+    changes instructions and context
+
+Retrieval-augmented generation
+    adds external, updateable evidence
+    introduces retrieval infrastructure
+
+Fine-tuning
+    changes model parameters
+    requires representative data and stronger evaluation
+</pre></div>
+</div>
+<p>Quantization is an enabling optimization across these levels. It reduces
+memory use by representing the model with fewer bits, but it does not decide
+what information or behavior the application needs.</p>
+<p>The main engineering principle is:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Start with the least complex intervention that can be shown, through
+evaluation, to satisfy the requirements.
+</pre></div>
+</div>
+<section id="key-points">
+<h2>Key points<a class="headerlink" href="#key-points" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Understand the model architecture before adapting it.</p></li>
+<li><p>Treat prompt engineering as a real baseline, not as a preliminary toy.</p></li>
+<li><p>Use RAG for changing, private, or citable knowledge.</p></li>
+<li><p>Use fine-tuning for persistent and measurable behavioral adaptation.</p></li>
+<li><p>Prefer parameter-efficient methods such as LoRA as an initial fine-tuning
+approach.</p></li>
+<li><p>Introduce quantization when memory or deployment constraints justify it.</p></li>
+<li><p>Evaluate before and after every increase in system complexity.</p></li>
+</ul>
+</section>
+<section id="optional-follow-up-exercises">
+<h2>Optional follow-up exercises<a class="headerlink" href="#optional-follow-up-exercises" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p>Inspect how a tokenizer splits technical terms from your own domain.</p></li>
+<li><p>Visualize a causal attention mask for several sequence lengths.</p></li>
+<li><p>Compare three prompts on a fixed set of examples.</p></li>
+<li><p>Evaluate retrieval and generation failures separately in a small RAG system.</p></li>
+<li><p>Inspect the module names of a transformer and identify possible LoRA
+targets.</p></li>
+<li><p>Compare model memory use at 32-bit, 16-bit, 8-bit, and 4-bit storage.</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2026, Sweden AI Factory, The contributors
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            <div class="icons">
+              <a class="muted-link " href="https://github.com/sweden-ai-factory/roadshow" aria-label="GitHub">
+                <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path>
+                </svg>
+            </a>
+              
+            </div>
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Anatomy of an LLM</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#how-a-language-model-processes-text">1. How a language model processes text</a><ul>
+<li><a class="reference internal" href="#tokenization">1.1 Tokenization</a></li>
+<li><a class="reference internal" href="#embeddings">1.2 Embeddings</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transformer-anatomy">2. Transformer anatomy</a><ul>
+<li><a class="reference internal" href="#transformer-families">2.1 Transformer families</a><ul>
+<li><a class="reference internal" href="#encoder-only-models">Encoder-only models</a></li>
+<li><a class="reference internal" href="#decoder-only-models">Decoder-only models</a></li>
+<li><a class="reference internal" href="#encoder-decoder-models">Encoder-decoder models</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#self-attention">2.2 Self-attention</a></li>
+<li><a class="reference internal" href="#causal-masking">2.3 Causal masking</a></li>
+<li><a class="reference internal" href="#multi-head-attention">2.4 Multi-head attention</a></li>
+<li><a class="reference internal" href="#feed-forward-networks">2.5 Feed-forward networks</a></li>
+<li><a class="reference internal" href="#residual-connections-and-normalization">2.6 Residual connections and normalization</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#a-ladder-of-adaptation">3. A ladder of adaptation</a></li>
+<li><a class="reference internal" href="#level-1-prompt-engineering">4. Level 1: Prompt engineering</a><ul>
+<li><a class="reference internal" href="#five-prompt-design-principles">4.1 Five prompt-design principles</a><ul>
+<li><a class="reference internal" href="#give-direction">Give direction</a></li>
+<li><a class="reference internal" href="#specify-the-output-format">Specify the output format</a></li>
+<li><a class="reference internal" href="#provide-examples">Provide examples</a></li>
+<li><a class="reference internal" href="#divide-the-work">Divide the work</a></li>
+<li><a class="reference internal" href="#evaluate-quality">Evaluate quality</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#role-prompting">4.2 Role prompting</a></li>
+<li><a class="reference internal" href="#prompt-chaining">4.3 Prompt chaining</a></li>
+<li><a class="reference internal" href="#meta-prompting">4.4 Meta-prompting</a></li>
+<li><a class="reference internal" href="#when-prompt-engineering-is-enough">4.5 When prompt engineering is enough</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#level-2-retrieval-augmented-generation">5. Level 2: Retrieval-augmented generation</a><ul>
+<li><a class="reference internal" href="#why-use-rag">5.1 Why use RAG?</a></li>
+<li><a class="reference internal" href="#what-rag-does-not-guarantee">5.2 What RAG does not guarantee</a></li>
+<li><a class="reference internal" href="#minimal-grounded-generation-prompt">5.3 Minimal grounded-generation prompt</a></li>
+<li><a class="reference internal" href="#when-rag-is-worth-the-complexity">5.4 When RAG is worth the complexity</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#level-3-fine-tuning">6. Level 3: Fine-tuning</a><ul>
+<li><a class="reference internal" href="#fine-tuning-is-not-a-document-database">6.1 Fine-tuning is not a document database</a></li>
+<li><a class="reference internal" href="#full-fine-tuning">6.2 Full fine-tuning</a></li>
+<li><a class="reference internal" href="#parameter-efficient-fine-tuning">6.3 Parameter-efficient fine-tuning</a></li>
+<li><a class="reference internal" href="#where-lora-is-applied">6.4 Where LoRA is applied</a></li>
+<li><a class="reference internal" href="#quantization-is-orthogonal-to-the-adaptation-ladder">7.1 Quantization is orthogonal to the adaptation ladder</a></li>
+<li><a class="reference internal" href="#quantization-aware-fine-tuning">7.2 Quantization-aware fine-tuning</a></li>
+<li><a class="reference internal" href="#optimized-training-implementations">7.3 Optimized training implementations</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#choosing-the-right-intervention">8. Choosing the right intervention</a><ul>
+<li><a class="reference internal" href="#step-1-define-the-failure">Step 1: Define the failure</a></li>
+<li><a class="reference internal" href="#step-2-establish-a-prompt-baseline">Step 2: Establish a prompt baseline</a></li>
+<li><a class="reference internal" href="#step-3-add-retrieval-if-knowledge-is-missing">Step 3: Add retrieval if knowledge is missing</a></li>
+<li><a class="reference internal" href="#step-4-fine-tune-only-for-persistent-behavior-gaps">Step 4: Fine-tune only for persistent behavior gaps</a></li>
+<li><a class="reference internal" href="#step-5-optimize-after-measuring">Step 5: Optimize after measuring</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#evaluation-should-precede-complexity">9. Evaluation should precede complexity</a><ul>
+<li><a class="reference internal" href="#separate-evaluation-dimensions">9.1 Separate evaluation dimensions</a></li>
+<li><a class="reference internal" href="#evaluate-components-separately">9.2 Evaluate components separately</a></li>
+<li><a class="reference internal" href="#automated-and-human-evaluation">9.3 Automated and human evaluation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#summary">10. Summary</a><ul>
+<li><a class="reference internal" href="#key-points">Key points</a></li>
+<li><a class="reference internal" href="#optional-follow-up-exercises">Optional follow-up exercises</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../_static/documentation_options.js?v=187304be"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=35a8b989"></script>
+    <script src="../_static/minipres.js?v=a0d29692"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script defer="defer" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script defer="defer" src="https://unpkg.com/tippy.js@6"></script>
+    <script defer="defer" src="../_static/tippy/episode.1218edbb-fb58-4ae4-a6a7-8e79149bd62f.js"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script data-domain="learn.swedenaifactory.se/roadshow" defer="defer" src="https://plausible.io/js/script.js"></script>
+    </body>
+</html>
